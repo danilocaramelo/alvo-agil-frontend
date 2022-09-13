@@ -1,7 +1,11 @@
 import { Tabs } from 'antd';
 import React from 'react';
 import './Participant.css';
-import { ParticipantForm, ParticipantTable } from '../../containers';
+import {
+  FunctionForm,
+  ParticipantForm,
+  ParticipantTable,
+} from '../../containers';
 
 export function Participant() {
   return (
@@ -12,6 +16,9 @@ export function Participant() {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Cadastrar novo" key="2">
           <ParticipantForm />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Nova função" key="3">
+          <FunctionForm />
         </Tabs.TabPane>
       </Tabs>
     </div>

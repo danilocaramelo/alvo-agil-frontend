@@ -1,12 +1,10 @@
 import { Space, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
-export function TeamTable() {
+export function CerimoniesTable() {
   interface DataType {
     key: string;
     name: string;
-    startDate: string;
-    framework: string;
     status: 'ativo' | 'inativo';
   }
 
@@ -15,16 +13,6 @@ export function TeamTable() {
       title: 'Nome',
       dataIndex: 'name',
       key: 'name',
-    },
-    {
-      title: 'Data de início',
-      dataIndex: 'startDate',
-      key: 'age',
-    },
-    {
-      title: 'Framework',
-      dataIndex: 'framework',
-      key: 'address',
     },
     {
       title: 'Status',
@@ -42,26 +30,24 @@ export function TeamTable() {
   const data: DataType[] = [
     {
       key: '1',
-      name: 'Time 1',
-      startDate: '09/10/2022',
-      framework: 'Spring Boot',
+      name: 'Cerimonia 1',
       status: 'ativo',
     },
     {
       key: '2',
-      name: 'Time 2',
-      startDate: '09/10/2022',
-      framework: 'React',
+      name: 'Cerimonia 2',
       status: 'inativo',
     },
     {
       key: '3',
-      name: 'Time 3',
-      startDate: '09/10/2022',
-      framework: 'React',
+      name: 'Cerimonia 3',
       status: 'ativo',
     },
   ];
 
-  return <Table columns={columns} dataSource={data} />;
+  return (
+    <div id="team-table">
+      <Table columns={columns} dataSource={data} />
+    </div>
+  );
 }
