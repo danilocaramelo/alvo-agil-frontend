@@ -1,11 +1,11 @@
-import { Space, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { getTeams, Team } from '../../../connections/team';
 import './TeamTable.scss';
 
 export function TeamTable() {
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<Team[] | undefined>([]);
   const [loadingTable, setLoadingTable] = useState(false);
 
   const requestTeams = useCallback(async () => {
@@ -34,24 +34,20 @@ export function TeamTable() {
       title: 'Framework',
       dataIndex: 'framework',
       key: 'framework',
-      render: (_, { framework }) => framework ? framework.nmFramework : '-',
+      render: (_, { framework }) => (framework ? framework.nmFramework : '-'),
     },
     {
       title: 'Status',
       key: 'flTime',
       dataIndex: 'flTime',
       render: (_, { flTime }) =>
-        flTime === 'S' ? (
-          <Tag color="green">Ativo</Tag>
-        ) : (
-          <Tag color="red">Inativo</Tag>
-        ),
+        flTime === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
   ];
 
   return (
-    <div id="team-table">
-      <Table columns={columns} dataSource={teams} loading={loadingTable} rowKey="cdTime"/>
+    <div id='team-table'>
+      <Table columns={columns} dataSource={teams} loading={loadingTable} rowKey='cdTime' />
     </div>
   );
 }

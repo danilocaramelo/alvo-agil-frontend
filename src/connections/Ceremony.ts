@@ -9,9 +9,9 @@ export type Ceremony = {
 export type NewCeremony = {
   nmCerimonia: string;
   flCerimonia: string;
-}
+};
 
-export async function getCeremonies(): Promise<any> {
+export async function getCeremonies(): Promise<Ceremony[] | undefined> {
   try {
     const response = await api.get('/cerimonia/todos');
     return response.data;
@@ -20,9 +20,9 @@ export async function getCeremonies(): Promise<any> {
   }
 }
 
-export async function createCeremony(newCeremony : NewCeremony) {
+export async function createCeremony(newCeremony: NewCeremony) {
   try {
-    const response = await api.post('/cerimonia/add', newCeremony);
+    await api.post('/cerimonia/add', newCeremony);
   } catch (e) {
     console.log(e);
   }

@@ -3,9 +3,7 @@ import './App.css';
 import { BaseLayout } from './components';
 
 function App() {
-  return (
-    <BaseLayout />
-  );
+  return <BaseLayout />;
 }
 
 export default App;

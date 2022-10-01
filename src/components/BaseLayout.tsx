@@ -1,9 +1,5 @@
-import React, { ReactNode, useMemo, useState } from 'react';
-import {
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import React, { useMemo, useState } from 'react';
+import { PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { MenuProps, Row, Layout, Menu } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import paths from '../config/paths';
@@ -13,10 +9,6 @@ import logo from '../assets/logo-white.png';
 const { Header, Content, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-type BaseLayoutProps = {
-  children?: ReactNode;
-};
 
 function getItem(
   label: React.ReactNode,
@@ -35,11 +27,7 @@ function getItem(
 const items: MenuItem[] = [
   getItem(<Link to={paths.HOME}>home</Link>, paths.HOME, <PieChartOutlined />),
   getItem(<Link to={paths.TEAMS}>teams</Link>, paths.TEAMS, <TeamOutlined />),
-  getItem(
-    <Link to={paths.PARTICIPANT}>participantes</Link>,
-    paths.PARTICIPANT,
-    <UserOutlined />,
-  ),
+  getItem(<Link to={paths.PARTICIPANT}>participantes</Link>, paths.PARTICIPANT, <UserOutlined />),
   getItem('Test crumb', 'sub1', <UserOutlined />, [
     getItem('first', '3'),
     getItem('second', '4'),
@@ -47,34 +35,18 @@ const items: MenuItem[] = [
   ]),
 ];
 
-function BaseLayout({ children }: BaseLayoutProps) {
+function BaseLayout() {
   const [collapsed, setCollapsed] = useState(false);
 
-  const menuKeyByPathname = useMemo(
-    () => location.pathname || '/',
-    [location.pathname],
-  );
+  const menuKeyByPathname = useMemo(() => location.pathname || '/', [location.pathname]);
 
   return (
     <Layout style={{ height: '100%' }}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <Row align="middle" justify="center">
-          <img
-            src={logo}
-            alt="logo do projeto: um foguete"
-            style={{ width: 60 }}
-          />
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <Row align='middle' justify='center'>
+          <img src={logo} alt='logo do projeto: um foguete' style={{ width: 60 }} />
         </Row>
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={[menuKeyByPathname]}
-          mode="inline"
-          items={items}
-        />
+        <Menu theme='dark' defaultSelectedKeys={[menuKeyByPathname]} mode='inline' items={items} />
       </Sider>
       <Layout>
         <Header style={{ backgroundColor: 'white' }}>teste</Header>

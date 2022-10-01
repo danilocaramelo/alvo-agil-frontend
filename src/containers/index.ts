@@ -6,4 +6,3 @@ export { FunctionForm } from './Participant/FunctionForm';
 export { CerimoniesTable } from './Team/CeremoniesTable';
 export { CerimonyForm } from './Team/CeremonyForm';
 export { FrameworksTable } from './Team/FrameworksTable';
-

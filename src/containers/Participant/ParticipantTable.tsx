@@ -1,4 +1,4 @@
-import { Space, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
 export function ParticipantTable() {
@@ -31,11 +31,7 @@ export function ParticipantTable() {
       key: 'status',
       dataIndex: 'status',
       render: (_, { status }) =>
-        status === 'ativo' ? (
-          <Tag color="green">{status}</Tag>
-        ) : (
-          <Tag color="red">{status}</Tag>
-        ),
+        status === 'ativo' ? <Tag color='green'>{status}</Tag> : <Tag color='red'>{status}</Tag>,
     },
   ];
 

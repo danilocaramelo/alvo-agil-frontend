@@ -3,10 +3,10 @@ import api from '../config/httRequest';
 export type Technology = {
   cdTecnologia: number;
   nmTecnologia: string;
-  flTecnologia: 'S' | 'N'; 
+  flTecnologia: 'S' | 'N';
 };
 
-export async function getTechnologies(): Promise<any> {
+export async function getTechnologies(): Promise<Technology[] | undefined> {
   try {
     const response = await api.get('/tecnologia/todos');
     return response.data;

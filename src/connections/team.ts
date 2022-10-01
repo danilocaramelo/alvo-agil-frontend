@@ -14,7 +14,7 @@ export type Team = {
   tecnologias: Technology[];
 };
 
-export async function getTeams(): Promise<any> {
+export async function getTeams(): Promise<Team[] | undefined> {
   try {
     const response = await api.get('/time/todos');
     return response.data;

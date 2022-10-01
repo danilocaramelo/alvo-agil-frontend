@@ -6,7 +6,7 @@ export type Framework = {
   flFramework: 'S' | 'N';
 };
 
-export async function getFrameworks(): Promise<any> {
+export async function getFrameworks(): Promise<Framework[] | undefined> {
   try {
     const response = await api.get('/framework/todos');
     return response.data;

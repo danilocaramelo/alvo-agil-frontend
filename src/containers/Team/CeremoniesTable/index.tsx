@@ -1,10 +1,10 @@
-import { Space, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { Ceremony, getCeremonies } from '../../../connections/Ceremony';
 
 export function CerimoniesTable() {
-  const [ceremonies, setCeremonies] = useState([]);
+  const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
   const [loadingTable, setLoadingTable] = useState(false);
 
   const requestCeremonies = useCallback(async () => {
@@ -29,17 +29,18 @@ export function CerimoniesTable() {
       key: 'flCerimonia',
       dataIndex: 'flCerimonia',
       render: (_, { flCerimonia }) =>
-      flCerimonia === 'S' ? (
-          <Tag color="green">Ativo</Tag>
-        ) : (
-          <Tag color="red">Inativo</Tag>
-        ),
+        flCerimonia === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
   ];
 
   return (
-    <div id="ceremonies-table">
-      <Table columns={columns} dataSource={ceremonies} loading={loadingTable} rowKey="cdCerimonia"/>
+    <div id='ceremonies-table'>
+      <Table
+        columns={columns}
+        dataSource={ceremonies}
+        loading={loadingTable}
+        rowKey='cdCerimonia'
+      />
     </div>
   );
 }

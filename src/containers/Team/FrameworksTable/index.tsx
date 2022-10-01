@@ -1,10 +1,10 @@
-import { Space, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { Framework, getFrameworks } from '../../../connections/framework';
 
 export function FrameworksTable() {
-  const [frameworks, setFrameworks] = useState([]);
+  const [frameworks, setFrameworks] = useState<Framework[] | undefined>([]);
   const [loadingTable, setLoadingTable] = useState(false);
 
   const requestFrameworks = useCallback(async () => {
@@ -29,17 +29,18 @@ export function FrameworksTable() {
       key: 'flFramework',
       dataIndex: 'flFramework',
       render: (_, { flFramework }) =>
-      flFramework === 'S' ? (
-          <Tag color="green">Ativo</Tag>
-        ) : (
-          <Tag color="red">Inativo</Tag>
-        ),
+        flFramework === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
   ];
 
   return (
-    <div id="frameworks-table">
-      <Table columns={columns} dataSource={frameworks} loading={loadingTable} rowKey="cdFramework"/>
+    <div id='frameworks-table'>
+      <Table
+        columns={columns}
+        dataSource={frameworks}
+        loading={loadingTable}
+        rowKey='cdFramework'
+      />
     </div>
   );
 }
