@@ -1,11 +1,13 @@
 import { Button, Col, Row, Tabs } from 'antd';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   CerimoniesTable,
   CerimonyForm,
+  FrameworksTable,
   TeamForm,
   TeamTable,
 } from '../../containers';
+import { TechnologiesTable } from '../../containers/Team/TechnologiesTable';
 
 export function Team() {
   const [isCerimonyModalOpen, setIsCerimonyModalOpen] = useState(false);
@@ -27,7 +29,11 @@ export function Team() {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Tecnolgias" key="4">
           <Button onClick={openCerimonyModal}>Nova Tecnologia</Button>
-          <CerimoniesTable />
+          <TechnologiesTable />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Frameworks" key="5">
+          <Button onClick={openCerimonyModal}>Nova Framework</Button>
+          <FrameworksTable />
         </Tabs.TabPane>
       </Tabs>
       <CerimonyForm

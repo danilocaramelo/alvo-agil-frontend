@@ -1,18 +1,16 @@
+import React, { ReactNode, useMemo, useState } from 'react';
 import {
-  DesktopOutlined,
-  FileOutlined,
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Layout, Menu } from 'antd';
-import React, { ReactNode, useMemo, useState } from 'react';
+import { MenuProps, Row, Layout, Menu } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import paths from '../config/paths';
 import { Home, Participant, Team } from '../pages';
+import logo from '../assets/logo-white.png';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -37,7 +35,11 @@ function getItem(
 const items: MenuItem[] = [
   getItem(<Link to={paths.HOME}>home</Link>, paths.HOME, <PieChartOutlined />),
   getItem(<Link to={paths.TEAMS}>teams</Link>, paths.TEAMS, <TeamOutlined />),
-  getItem(<Link to={paths.PARTICIPANT}>participantes</Link>, paths.PARTICIPANT , <UserOutlined />),
+  getItem(
+    <Link to={paths.PARTICIPANT}>participantes</Link>,
+    paths.PARTICIPANT,
+    <UserOutlined />,
+  ),
   getItem('Test crumb', 'sub1', <UserOutlined />, [
     getItem('first', '3'),
     getItem('second', '4'),
@@ -53,24 +55,29 @@ function BaseLayout({ children }: BaseLayoutProps) {
     [location.pathname],
   );
 
-  console.log(location.pathname);
-
   return (
     <Layout style={{ height: '100%' }}>
-      <Header></Header>
-      <Layout>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-        >
-          <Menu
-            theme="dark"
-            defaultSelectedKeys={[menuKeyByPathname]}
-            mode="inline"
-            items={items}
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+      >
+        <Row align="middle" justify="center">
+          <img
+            src={logo}
+            alt="logo do projeto: um foguete"
+            style={{ width: 60 }}
           />
-        </Sider>
+        </Row>
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={[menuKeyByPathname]}
+          mode="inline"
+          items={items}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ backgroundColor: 'white' }}>teste</Header>
         <Content style={{ height: '100%', padding: '50px' }}>
           <Routes>
             <Route path={paths.HOME} element={<Home />} />

@@ -1,9 +1,9 @@
-import { Button, Form, Input, Modal, Row, Select } from 'antd';
 import { useCallback } from 'react';
+import { Button, Form, Input, Modal, Row, Select } from 'antd';
 
 type CerimonyFormProps = {
   visible: boolean;
-  setVisible: Function;
+  setVisible: (arg: boolean) => void;
 };
 
 export function CerimonyForm({ visible, setVisible }: CerimonyFormProps) {
