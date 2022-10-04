@@ -1,8 +1,6 @@
-import { Button, Tabs } from 'antd';
-import { useCallback, useState } from 'react';
+import { Tabs } from 'antd';
 import {
-  CerimoniesTable,
-  CerimonyForm,
+  CeremoniesTable,
   FrameworksTable,
   TeamForm,
   TeamTable,
@@ -10,9 +8,6 @@ import {
 import { TechnologiesTable } from '../../containers/Team/TechnologiesTable';
 
 export function Team() {
-  const [isCerimonyModalOpen, setIsCerimonyModalOpen] = useState(false);
-
-  const openCerimonyModal = useCallback(() => setIsCerimonyModalOpen(true), []);
 
   return (
     <div className='card-container'>
@@ -24,19 +19,15 @@ export function Team() {
           <TeamForm />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Cerimônias' key='3'>
-          <Button onClick={openCerimonyModal}>Nova Cerimonia</Button>
-          <CerimoniesTable />
+          <CeremoniesTable />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Tecnolgias' key='4'>
-          <Button onClick={openCerimonyModal}>Nova Tecnologia</Button>
           <TechnologiesTable />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Frameworks' key='5'>
-          <Button onClick={openCerimonyModal}>Nova Framework</Button>
           <FrameworksTable />
         </Tabs.TabPane>
       </Tabs>
-      <CerimonyForm visible={isCerimonyModalOpen} setVisible={setIsCerimonyModalOpen} />
     </div>
   );
 }

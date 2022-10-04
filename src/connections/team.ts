@@ -1,5 +1,6 @@
+import { notification } from 'antd';
 import api from '../config/httRequest';
-import { Ceremony } from './Ceremony';
+import { Ceremony } from './ceremony';
 import { Framework } from './framework';
 import { Technology } from './technology';
 
@@ -14,11 +15,28 @@ export type Team = {
   tecnologias: Technology[];
 };
 
+export type NewTeam = {
+  cerimonias: Ceremony[];
+  flTime: 'S' | 'N';
+  framework: Framework;
+}
+
 export async function getTeams(): Promise<Team[] | undefined> {
   try {
     const response = await api.get('/time/todos');
     return response.data;
   } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}
+
+export async function createTeam(body: NewTeam) {
+  try {
+    await api.post('/time/add', body);
+    notification.success({ message: 'Sucesso ao criar o time :)' });
+  } catch (e) {
+    notification.error({ message: 'erro ao criar o time :(' });
     console.log(e);
   }
 }

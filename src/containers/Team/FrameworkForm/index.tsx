@@ -1,29 +1,29 @@
 import { useCallback } from 'react';
 import { Button, Form, Input, Modal, Row, Select } from 'antd';
-import { createCeremony, NewCeremony } from '../../../connections/ceremony';
+import { createFramework, NewFramework } from '../../../connections/framework';
 
-type CerimonyFormProps = {
+type FrameworkFormProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
-  requestCeremonies: () => void;
+  requestFrameworks: () => void;
 };
 
-export function CerimonyForm({ visible, setVisible, requestCeremonies }: CerimonyFormProps) {
+export function FrameworkForm({ visible, setVisible, requestFrameworks }: FrameworkFormProps) {
   const closeModal = useCallback(() => setVisible(false), []);
 
-  const newCeremony = useCallback(async (values: NewCeremony) => {
-    await createCeremony(values);
-    requestCeremonies();
+  const newFramework = useCallback(async (values: NewFramework) => {
+    await createFramework(values);
+    requestFrameworks();
     closeModal();
   }, []);
 
   return (
     <Modal visible={visible} onCancel={closeModal} closable={false} footer={null} centered>
-      <Form onFinish={newCeremony}>
-        <Form.Item label='Nome da Cerimônia' name='nmCerimonia'>
+      <Form onFinish={newFramework}>
+        <Form.Item label='Nome do Framework' name='nmFramework'>
           <Input />
         </Form.Item>
-        <Form.Item label='Status' name='flCerimonia'>
+        <Form.Item label='Status' name='flFramework'>
           <Select>
             <Select.Option value='S'>Ativo</Select.Option>
             <Select.Option value='N'>Inativo</Select.Option>

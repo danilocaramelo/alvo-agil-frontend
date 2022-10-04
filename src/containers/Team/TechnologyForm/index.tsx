@@ -1,29 +1,29 @@
 import { useCallback } from 'react';
 import { Button, Form, Input, Modal, Row, Select } from 'antd';
-import { createCeremony, NewCeremony } from '../../../connections/ceremony';
+import { createTechnology, NewTechnology } from '../../../connections/technology';
 
-type CerimonyFormProps = {
+type TechnologyFormProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
-  requestCeremonies: () => void;
+  requestTechnologies: () => void;
 };
 
-export function CerimonyForm({ visible, setVisible, requestCeremonies }: CerimonyFormProps) {
+export function TechnologyForm({ visible, setVisible, requestTechnologies }: TechnologyFormProps) {
   const closeModal = useCallback(() => setVisible(false), []);
 
-  const newCeremony = useCallback(async (values: NewCeremony) => {
-    await createCeremony(values);
-    requestCeremonies();
+  const newTechnology = useCallback(async (values: NewTechnology) => {
+    await createTechnology(values);
+    requestTechnologies();
     closeModal();
   }, []);
 
   return (
     <Modal visible={visible} onCancel={closeModal} closable={false} footer={null} centered>
-      <Form onFinish={newCeremony}>
-        <Form.Item label='Nome da Cerimônia' name='nmCerimonia'>
+      <Form onFinish={newTechnology}>
+        <Form.Item label='Nome da Tecnologia' name='nmTecnologia'>
           <Input />
         </Form.Item>
-        <Form.Item label='Status' name='flCerimonia'>
+        <Form.Item label='Status' name='flTecnologia'>
           <Select>
             <Select.Option value='S'>Ativo</Select.Option>
             <Select.Option value='N'>Inativo</Select.Option>
