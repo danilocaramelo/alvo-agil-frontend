@@ -16,10 +16,24 @@ export type Team = {
 };
 
 export type NewTeam = {
-  cerimonias: Ceremony[];
+  nmTime: string;
   flTime: 'S' | 'N';
-  framework: Framework;
-}
+  dtInicioTime: string;
+  cerimonias: [
+    {
+      cdCerimonia: number;
+    },
+  ];
+  framework: {
+    cdFramework: number;
+  };
+  tecnologias: [
+    {
+      cdTecnologia: number;
+    },
+  ];
+  perguntas: null;
+};
 
 export async function getTeams(): Promise<Team[] | undefined> {
   try {

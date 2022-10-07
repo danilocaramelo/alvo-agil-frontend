@@ -10,10 +10,6 @@ export function TeamForm() {
   const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
   const [technologies, setTechnologies] = useState<Technology[] | undefined>([]);
 
-  const newTeam = useCallback(async (values: NewTeam) => {
-    await createTeam(values);
-  }, []);
-
   const requestFrameworks = useCallback(async () => {
     const responseFrameworks = await getFrameworks();
     setFrameworks(responseFrameworks);
@@ -35,7 +31,9 @@ export function TeamForm() {
     requestTechnologies();
   }, []);
 
-  console.log(frameworks);
+  const newTeam = useCallback(async (values: NewTeam) => {
+    await createTeam(values);
+  }, []);
 
   return (
     <Form onFinish={newTeam}>
@@ -61,7 +59,7 @@ export function TeamForm() {
         </Select>
       </Form.Item>
       <Form.Item label='Cerimonias' name='ceremonies'>
-        <Select mode="multiple">
+        <Select mode='multiple'>
           {ceremonies?.map((ceremony) => (
             <Select.Option value={ceremony.cdCerimonia} key={ceremony.cdCerimonia}>
               {ceremony.nmCerimonia}
@@ -70,7 +68,7 @@ export function TeamForm() {
         </Select>
       </Form.Item>
       <Form.Item label='Tecnologias' name='technologies'>
-        <Select mode="multiple">
+        <Select mode='multiple'>
           {technologies?.map((technology) => (
             <Select.Option value={technology.cdTecnologia} key={technology.cdTecnologia}>
               {technology.nmTecnologia}

@@ -37,7 +37,6 @@ const items: MenuItem[] = [
 
 function BaseLayout() {
   const [collapsed, setCollapsed] = useState(false);
-
   const menuKeyByPathname = useMemo(() => location.pathname || '/', [location.pathname]);
 
   return (
