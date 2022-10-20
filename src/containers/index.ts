@@ -6,3 +6,4 @@ export { FunctionForm } from './Participant/FunctionForm';
 export { CeremoniesTable } from './Team/CeremoniesTable';
 export { CerimonyForm } from './Team/CeremonyForm';
 export { FrameworksTable } from './Team/FrameworksTable';
+export { DemoSunburst } from './General/AgilWheel';

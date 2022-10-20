@@ -2,7 +2,7 @@ import { Tabs } from 'antd';
 import { CeremoniesTable, FrameworksTable, TeamForm, TeamTable } from '../../containers';
 import { TechnologiesTable } from '../../containers/Team/TechnologiesTable';
 
-export function Team() {
+export function TeamsList() {
   return (
     <div className='card-container'>
       <Tabs type='card'>

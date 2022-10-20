@@ -1,3 +1,3 @@
 export function Home() {
-  return <div>teste</div>;
+  return <div>Em construção</div>;
 }

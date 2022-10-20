@@ -28,13 +28,13 @@ export function ParticipantTable() {
       title: 'Time',
       dataIndex: 'time',
       key: 'time',
-      render: (_, { time }) => time.nmTime,
+      render: (_, { time }) => time ? time.nmTime : '-',
     },
     {
       title: 'Função',
       dataIndex: 'funcao',
       key: 'funcao',
-      render: (_, { funcao }) => funcao.nmFuncao,
+      render: (_, { funcao }) => funcao?.nmFuncao,
     },
     {
       title: 'Status',
