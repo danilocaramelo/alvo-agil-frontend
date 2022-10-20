@@ -1,4 +1,6 @@
-import { Table, Tag } from 'antd';
+import { Button, Table, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { getTeams, Team } from '../../../connections/team';
@@ -7,7 +9,7 @@ import './TeamTable.scss';
 export function TeamTable() {
   const [teams, setTeams] = useState<Team[] | undefined>([]);
   const [loadingTable, setLoadingTable] = useState(false);
-
+  const navigate = useNavigate();
   const requestTeams = useCallback(async () => {
     setLoadingTable(true);
     const response = await getTeams();
@@ -17,6 +19,10 @@ export function TeamTable() {
 
   useEffect(() => {
     requestTeams();
+  }, []);
+
+  const redirect = useCallback((teamId: number) => {
+    navigate(teamId.toString());
   }, []);
 
   const columns: ColumnsType<Team> = [
@@ -42,6 +48,17 @@ export function TeamTable() {
       dataIndex: 'flTime',
       render: (_, { flTime }) =>
         flTime === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
+    },
+    {
+      title: 'Ações',
+      key: 'actions',
+      render: (_, team) => (
+        <>
+          <Button onClick={() => redirect(team.cdTime)} icon={<EyeOutlined />} />
+          <Button icon={<EditOutlined />} />
+          <Button icon={<DeleteOutlined />} />
+        </>
+      ),
     },
   ];
 

@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
-import { PieChartOutlined, TeamOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import React, { useMemo } from 'react';
+import { PieChartOutlined, TeamOutlined, UserOutlined, LogoutOutlined, QuestionOutlined } from '@ant-design/icons';
 import { MenuProps, Row, Layout, Menu, Typography, Button } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import paths from '../config/paths';
 import { Home, Participant, Team, TeamsList } from '../pages';
-import logo from '../assets/logo-white.png';
+import { Questions } from '../pages/Question';
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -29,6 +29,7 @@ const items: MenuItem[] = [
   getItem(<Link to={paths.HOME}>home</Link>, paths.HOME, <PieChartOutlined />),
   getItem(<Link to={paths.TEAMS}>teams</Link>, paths.TEAMS, <TeamOutlined />),
   getItem(<Link to={paths.PARTICIPANT}>participantes</Link>, paths.PARTICIPANT, <UserOutlined />),
+  getItem(<Link to={paths.QUESTION}>perguntas</Link>, paths.QUESTION, <QuestionOutlined />),
 ];
 
 function BaseLayout() {
@@ -56,6 +57,7 @@ function BaseLayout() {
             <Route path={paths.TEAMS} element={<TeamsList />} />
             <Route path={paths.PARTICIPANT} element={<Participant />} />
             <Route path={paths.TEAM} element={<Team />} />
+            <Route path={paths.QUESTION} element={<Questions />} />
           </Routes>
         </Content>
       </Layout>
