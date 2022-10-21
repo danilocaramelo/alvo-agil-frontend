@@ -7,4 +7,4 @@ export { ParticipantDrawer } from './Participant/ParticipantDrawer';
 export { CeremoniesTable } from './Team/CeremoniesTable';
 export { CerimonyForm } from './Team/CeremonyForm';
 export { FrameworksTable } from './Team/FrameworksTable';
-export { DemoSunburst } from './General/AgilWheel';
+export { AgilWheel } from './General/AgilWheel';

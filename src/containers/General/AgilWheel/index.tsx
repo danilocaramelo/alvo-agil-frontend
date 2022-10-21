@@ -1,11 +1,14 @@
 import { Sunburst } from '@ant-design/plots';
 import { SunburstConfig } from '@ant-design/charts';
-import { data } from './datamock';
-import { Col, Row } from 'antd';
+import { AgilWheelData } from './types';
 
-export const DemoSunburst = () => {
+type AgilWheelProps = {
+  data: AgilWheelData;
+};
+
+export const AgilWheel = ({ data }: AgilWheelProps) => {
   const config = {
-    data,
+    data: data,
     innerRadius: 0.3,
     interactions: [
       {
@@ -13,11 +16,12 @@ export const DemoSunburst = () => {
       },
     ],
     hierarchyConfig: {
-      field: 'sum',
+      field: 'score',
+      ignoreParentValue: true,
     },
     drilldown: {
       breadCrumb: {
-        rootText: '起始',
+        rootText: 'início',
       },
     },
   };

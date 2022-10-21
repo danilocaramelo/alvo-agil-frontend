@@ -1,4 +1,4 @@
-import { Avatar, Col, Divider, List, Row, Select, Skeleton, Tooltip, Typography } from 'antd';
+import { Avatar, Col, List, Row, Select, Skeleton, Tooltip, Typography } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
   TeamOutlined,
@@ -7,9 +7,10 @@ import {
   ToolOutlined,
   AimOutlined,
 } from '@ant-design/icons';
-import { DemoSunburst } from '../../containers';
-import { useEffect, useState } from 'react';
+import { AgilWheel, ParticipantDrawer } from '../../containers';
+import { useCallback, useEffect, useState } from 'react';
 import './style.scss';
+import { data2 } from '../../containers/General/AgilWheel/datamock_copy';
 const { Title, Text } = Typography;
 
 interface DataType {
@@ -31,6 +32,7 @@ interface DataType {
 export function Team() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DataType[]>([]);
+  const [showParticipantDrawer, setShowParticipantDrawer] = useState(false);
 
   const secondList = [
     'Racing car sprays burning fuel into crowd.',
@@ -59,6 +61,9 @@ export function Team() {
   useEffect(() => {
     loadMoreData();
   }, []);
+
+  const closeParticipantDrawer = useCallback(() => setShowParticipantDrawer(false), []);
+  const openParticipantDrawer = useCallback(() => setShowParticipantDrawer(true), []);
 
   return (
     <div className='team-page'>
@@ -119,7 +124,7 @@ export function Team() {
               <Select.Option value='2'>23/10/2022</Select.Option>
             </Select>
           </Row>
-          <DemoSunburst />
+          <AgilWheel data={data2}/>
         </Col>
         <Col span={12}>
           <Row>
@@ -146,7 +151,7 @@ export function Team() {
                       <List.Item key={item.email}>
                         <List.Item.Meta
                           avatar={<Avatar src={item.picture.large} />}
-                          title={<a href='https://ant.design'>{item.name.last}</a>}
+                          title={<a onClick={openParticipantDrawer}>{item.name.last}</a>}
                           description={item.email}
                         />
                       </List.Item>
@@ -165,6 +170,7 @@ export function Team() {
           </Row>
         </Col>
       </Row>
+      <ParticipantDrawer showDrawer={showParticipantDrawer} closeDrawer={closeParticipantDrawer} />
     </div>
   );
 }
