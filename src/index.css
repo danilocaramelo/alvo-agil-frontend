@@ -15,3 +15,11 @@ code {
 #root {
   height: 100%;
 }
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #2c00d5 !important;
+}
+
+.ant-pagination-item-active a {
+  color: #2c00d5 !important;
+}

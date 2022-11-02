@@ -1,9 +1,10 @@
-import { Button, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { getParticipants, Participant } from '../../connections/particpant';
 import { ParticipantDrawer } from './ParticipantDrawer';
+import { CustomButton } from '../../components';
 
 export function ParticipantTable() {
   const [participants, setParticipants] = useState<Participant[] | undefined>([]);
@@ -29,16 +30,19 @@ export function ParticipantTable() {
       title: 'Nome',
       dataIndex: 'nmParticipante',
       key: 'nmParticipante',
+      align: 'center',
     },
     {
       title: 'Time',
       dataIndex: 'time',
       key: 'time',
+      align: 'center',
       render: (_, { time }) => (time ? time.nmTime : '-'),
     },
     {
       title: 'Função',
       dataIndex: 'funcao',
+      align: 'center',
       key: 'funcao',
       render: (_, { funcao }) => funcao?.nmFuncao,
     },
@@ -46,17 +50,31 @@ export function ParticipantTable() {
       title: 'Status',
       key: 'status',
       dataIndex: 'status',
+      align: 'center',
       render: (_, { flParticipante }) =>
         flParticipante === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
     {
       title: 'Ações',
       key: 'actions',
+      align: 'center',
       render: (_, participant) => (
         <>
-          <Button onClick={openParticipantDrawer} icon={<EyeOutlined />} />
-          <Button icon={<EditOutlined />} />
-          <Button icon={<DeleteOutlined />} />
+          <CustomButton
+            style={{ marginRight: '10px' }}
+            onClick={openParticipantDrawer}
+            icon={<EyeOutlined />}
+          />
+          <CustomButton
+            style={{ marginRight: '10px' }}
+            onClick={() => console.log()}
+            icon={<EditOutlined />}
+          />
+          <CustomButton
+            style={{ marginRight: '10px' }}
+            onClick={() => console.log()}
+            icon={<DeleteOutlined />}
+          />
         </>
       ),
     },
@@ -67,10 +85,7 @@ export function ParticipantTable() {
       <div id='participant-table'>
         <Table columns={columns} dataSource={participants} loading={loadingTable} rowKey='cdTime' />
       </div>
-      <ParticipantDrawer
-        showDrawer={showParticipantDrawer}
-        closeDrawer={closeParticipantDrawer}
-      />
+      <ParticipantDrawer showDrawer={showParticipantDrawer} closeDrawer={closeParticipantDrawer} />
     </>
   );
 }
