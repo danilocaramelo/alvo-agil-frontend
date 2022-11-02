@@ -1,85 +1,131 @@
-import { Button, Card, Col, Row } from 'antd';
+import { Button, Card, Col, Collapse, Result, Row, Typography } from 'antd';
 import { useCallback, useState } from 'react';
+import { CustomButton } from '../../components';
 import { AgilWheel } from '../../containers';
-import {
-  AgilWheelData,
-  AgilWheelElement,
-  Quadrant,
-} from '../../containers/General/AgilWheel/types';
-import { CreateLaneModal } from '../../containers/Questions/CreateLaneModal';
-import { CreateQuadrantModal } from '../../containers/Questions/CreateQuadrantModal';
+import { AgilWheelData, AgilWheelElement } from '../../containers/General/AgilWheel/types';
+import { CreateThemeModal } from '../../containers/Questions/CreateThemeModal';
+import { CreateLayerModal } from '../../containers/Questions/CreateLayerModal';
 import { CreateQuestionModal } from '../../containers/Questions/CreateQuestionModal';
+import './style.scss';
+
+const { Panel } = Collapse;
+const { Title } = Typography;
 
 export function Questions() {
-  const [agilWheelData, setAgilWheelData] = useState<AgilWheelData>({
+  const [agilWheelData] = useState<AgilWheelData>({
     label: 'Start',
     children: [],
   });
-  const [createQuadrantModalVisible, setCreateQuadrantModalVisible] = useState<boolean>(false);
-  const [createLaneModalVisible, setCreateLaneModalVisible] = useState<boolean>(false);
+  const [createLayerModalVisible, setCreateLayerModalVisible] = useState<boolean>(false);
+  const [createThemeModalVisible, setCreateThemeModalVisible] = useState<boolean>(false);
   const [createQuestionModalVisible, setCreateQuestionModalVisible] = useState<boolean>(false);
-  const [quadrants, setQuadrants] = useState<Quadrant[]>([]);
 
-  const createQuadrant = useCallback((label: string) => {
+  const createLayer = useCallback((label: string) => {
     const newElement: AgilWheelElement = { label, score: 1, children: [] };
-    const newQuadrant: Quadrant = { label, lanes: [] };
     agilWheelData.children.push(newElement);
-    quadrants.push(newQuadrant);
   }, []);
 
-  const createLane = useCallback((label: string, quadrant: string) => {
-    const newElement: AgilWheelElement = { label, score: 1 };
-    const quadrantIndex = agilWheelData.children.findIndex((element) => element.label === quadrant);
-    agilWheelData.children[quadrantIndex].children?.push(newElement);
+  const createTheme = useCallback((label: string, layer: string) => {
+    const newElement: AgilWheelElement = { label, score: 1, children: [] };
+    const layerIndex = agilWheelData.children.findIndex((element) => element.label === layer);
+    agilWheelData.children[layerIndex].children?.push(newElement);
   }, []);
 
-  const createQuestion = useCallback((label: string, quadrant: string, lane: string) => {
+  const createQuestion = useCallback((label: string, layer: string, theme: string) => {
     const newElement: AgilWheelElement = { label, score: 1 };
-    const quadrantIndex = agilWheelData.children.findIndex((element) => element.label === quadrant);
-    const laneIndex = agilWheelData.children[quadrantIndex].children?.findIndex(
-      (element) => element.label === lane,
+    const layerIndex = agilWheelData.children.findIndex((element) => element.label === layer);
+    const themeIndex = agilWheelData.children[layerIndex].children?.findIndex(
+      (element) => element.label === theme,
     );
-    // agilWheelData.children[quadrantIndex].children[laneIndex].children.push(newElement);
+    const targetLayer = agilWheelData.children[layerIndex];
+    const targetTheme = targetLayer ? targetLayer.children![themeIndex!] : null;
+    if (targetTheme) {
+      targetTheme.children!.push(newElement);
+    }
   }, []);
 
-  const openQuadrantModalVisible = useCallback(() => setCreateQuadrantModalVisible(true), []);
-  const openLaneModalVisible = useCallback(() => setCreateLaneModalVisible(true), []);
+  const openLayerModalVisible = useCallback(() => setCreateLayerModalVisible(true), []);
+  const openThemeModalVisible = useCallback(() => setCreateThemeModalVisible(true), []);
   const openQuestionModalVisible = useCallback(() => setCreateQuestionModalVisible(true), []);
 
   return (
-    <>
-      <Row>
-        <Button onClick={openQuadrantModalVisible}>Criar Quadrante</Button>
-        <Button onClick={openLaneModalVisible}>Criar Raia</Button>
-        <Button onClick={openQuestionModalVisible}>Criar Pergunta</Button>
-      </Row>
-      <Row>
+    <div className='question-page'>
+      <div>
+        <CustomButton onClick={openLayerModalVisible} label='criar camada' />
+      </div>
+      <div>
+        <Button
+          style={{
+            borderRadius: '10px',
+            fontSize: '12px',
+            backgroundColor: '#2c00d5',
+            color: '#fff',
+          }}
+          onClick={openThemeModalVisible}
+        >
+          criar tema
+        </Button>
+      </div>
+      <div>
+        <Button
+          style={{
+            borderRadius: '10px',
+            fontSize: '12px',
+            backgroundColor: '#2c00d5',
+            color: '#fff',
+          }}
+          onClick={openQuestionModalVisible}
+        >
+          criar pergunta
+        </Button>
+      </div>
+      <Row align='middle' style={{ height: '440px' }}>
         <Col span={12}>
-          <AgilWheel data={agilWheelData} />
+          {agilWheelData.children.length ? (
+            <AgilWheel data={agilWheelData} />
+          ) : (
+            <Result status='404' subTitle='Hum... nada por aqui ainda. Comece a criar :)' />
+          )}
         </Col>
-        <Col span={12}>
-          <Card>
-            <div>teste</div>
+        <Col span={12} style={{ height: '100%' }}>
+          <Card style={{ height: '100%' }}>
+            {agilWheelData.children[0]?.children?.length ? (
+              <Collapse>
+                {agilWheelData.children.map((layer) =>
+                  layer.children?.map((theme) => (
+                    <Panel key={theme.label} header={theme.label} className='collapse-panel'>
+                      {theme.children?.map((question) => (
+                        <p key={question.label}>{question.label}</p>
+                      ))}
+                    </Panel>
+                  )),
+                )}
+              </Collapse>
+            ) : (
+              <Row align='middle' justify='center' style={{ height: '100%' }}>
+                <Title level={5}>Quando você criar temas e perguntas eles aparecerão aqui (:</Title>
+              </Row>
+            )}
           </Card>
         </Col>
       </Row>
-      <CreateQuadrantModal
-        visible={createQuadrantModalVisible}
-        setVisible={setCreateQuadrantModalVisible}
-        createQuadrant={createQuadrant}
+      <CreateLayerModal
+        visible={createLayerModalVisible}
+        setVisible={setCreateLayerModalVisible}
+        createLayer={createLayer}
       />
-      <CreateLaneModal
-        visible={createLaneModalVisible}
-        setVisible={setCreateLaneModalVisible}
-        createLane={createLane}
-        quadrants={quadrants}
+      <CreateThemeModal
+        visible={createThemeModalVisible}
+        setVisible={setCreateThemeModalVisible}
+        createTheme={createTheme}
+        agilWheelData={agilWheelData}
       />
       <CreateQuestionModal
         visible={createQuestionModalVisible}
         setVisible={setCreateQuestionModalVisible}
         createQuestion={createQuestion}
-        quadrants={quadrants}
+        agilWheelData={agilWheelData}
       />
-    </>
+    </div>
   );
 }

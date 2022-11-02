@@ -1,74 +1,80 @@
 import { useCallback, useState } from 'react';
 import { Button, Form, Input, Modal, Row, Select } from 'antd';
-import { Quadrant } from '../../General/AgilWheel/types';
+import { AgilWheelData, AgilWheelElement } from '../../General/AgilWheel/types';
+import { useForm } from 'antd/es/form/Form';
+import { CustomModal } from '../../../components';
 
 type CreateQuestionModalProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
-  createQuestion: (label: string, quadrant: string, lane: string) => void;
-  quadrants: Quadrant[];
+  createQuestion: (label: string, layer: string, theme: string) => void;
+  agilWheelData: AgilWheelData;
 };
 
 export function CreateQuestionModal({
   visible,
   setVisible,
   createQuestion,
-  quadrants,
+  agilWheelData,
 }: CreateQuestionModalProps) {
-  const [lanes, setLanes] = useState<string[] | undefined>([]);
+  const [themes, setThemes] = useState<AgilWheelElement[] | undefined>([]);
   const closeModal = useCallback(() => setVisible(false), []);
+  const [form] = useForm();
+
+  const layers = agilWheelData.children;
 
   const onChangeFormValues = useCallback(
-    (values: { label: string; quadrant: string; lane: string }) => {
-      if (values.quadrant) {
-        const selectQuadrant = quadrants.find((element) => element.label === values.quadrant);
-        setLanes(selectQuadrant?.lanes);
+    (changedValues: { label: string; layer: string; theme: string }) => {
+      if (changedValues.layer) {
+        const selectLayer = layers.find((element) => element.label === changedValues.layer);
+        setThemes(selectLayer?.children);
+        form.setFieldValue('theme', undefined);
       }
     },
     [],
   );
 
   const newQuestion = useCallback(
-    async (values: { label: string; quadrant: string; lane: string }) => {
-      createQuestion(values.label, values.quadrant, values.lane);
+    async (values: { label: string; layer: string; theme: string }) => {
+      createQuestion(values.label, values.layer, values.theme);
+      form.resetFields();
       closeModal();
     },
     [],
   );
 
   return (
-    <Modal visible={visible} onCancel={closeModal} closable={false} footer={null} centered>
-      <Form onFinish={newQuestion} onValuesChange={onChangeFormValues}>
+    <CustomModal
+      visible={visible}
+      closeModal={closeModal}
+      onFinish={newQuestion}
+      onFormValuesChange={onChangeFormValues}
+      form={form}
+      okButtonText='Criar'
+    >
+      <>
         <Form.Item label='Nome da Pergunta' name='label'>
           <Input />
         </Form.Item>
-        <Form.Item label='Nome do Quadrante' name='quadrant'>
+        <Form.Item label='Nome da Camada' name='layer'>
           <Select>
-            {quadrants.map((quadrant) => (
-              <Select.Option key={quadrant.label} value={quadrant.label}>
-                {quadrant.label}
+            {layers.map((layer) => (
+              <Select.Option key={layer.label} value={layer.label}>
+                {layer.label}
               </Select.Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label='Nome da Lane' name='lane'>
+        <Form.Item label='Nome do Tema' name='theme'>
           <Select>
-            {lanes?.map((lane) => (
-              <Select.Option key={lane} value={lane}>
-                {lane}
+            {themes?.map((theme) => (
+              <Select.Option key={theme.label} value={theme.label}>
+                {theme.label}
               </Select.Option>
             ))}
           </Select>
         </Form.Item>
-        <Row>
-          <Button onClick={closeModal} style={{}}>
-            Cancelar
-          </Button>
-          <Button htmlType='submit' type='primary'>
-            Criar
-          </Button>
-        </Row>
-      </Form>
-    </Modal>
+      </>
+    </CustomModal>
   );
 }

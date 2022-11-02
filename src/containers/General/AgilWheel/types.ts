@@ -10,8 +10,3 @@ export type AgilWheelData = {
     label: string;
     children: AgilWheelElement[];
 }
-
-export type Quadrant = {
-    label: string;
-    lanes: string[];
-  };

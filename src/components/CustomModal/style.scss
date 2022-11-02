@@ -1,0 +1,19 @@
+.custom-modal {
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+
+  .ant-form-item-label > label {
+    font-weight: 500;
+  }
+
+  .cancel-button {
+    border-radius: 10px;
+    margin-right: 10px;
+  }
+
+  .ok-button {
+    border-radius: 10px;
+    background-color: #2c00d5;
+  }
+}

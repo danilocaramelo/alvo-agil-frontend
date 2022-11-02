@@ -26,10 +26,10 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link to={paths.HOME}>home</Link>, paths.HOME, <PieChartOutlined />),
-  getItem(<Link to={paths.TEAMS}>teams</Link>, paths.TEAMS, <TeamOutlined />),
-  getItem(<Link to={paths.PARTICIPANT}>participantes</Link>, paths.PARTICIPANT, <UserOutlined />),
-  getItem(<Link to={paths.QUESTION}>perguntas</Link>, paths.QUESTION, <QuestionOutlined />),
+  getItem(<Link to={paths.HOME}>home</Link>, paths.HOME, <PieChartOutlined style={{color: '#2c00d5'}}/>),
+  getItem(<Link to={paths.TEAMS}>teams</Link>, paths.TEAMS, <TeamOutlined style={{color: '#2c00d5'}}/>),
+  getItem(<Link to={paths.PARTICIPANT}>participantes</Link>, paths.PARTICIPANT, <UserOutlined style={{color: '#2c00d5'}}/>),
+  getItem(<Link to={paths.QUESTION}>perguntas</Link>, paths.QUESTION, <QuestionOutlined style={{color: '#2c00d5'}}/>),
 ];
 
 function BaseLayout() {
@@ -45,10 +45,10 @@ function BaseLayout() {
       <Layout>
         <Header style={{ backgroundColor: 'white' }}>
           <Row align='middle' justify='space-between' style={{ height: '100%' }}>
-            <Title style={{ margin: 0 }} level={4}>
+            <Title style={{ margin: 0, color: '#F58327' }} level={4}>
               Olá, User (:
             </Title>
-            <Button style={{ borderRadius: '6px' }} icon={<LogoutOutlined />} />
+            <Button style={{ borderRadius: '6px', color: '#F58327' }} icon={<LogoutOutlined />} />
           </Row>
         </Header>
         <Content style={{ height: '100%', padding: '50px' }}>

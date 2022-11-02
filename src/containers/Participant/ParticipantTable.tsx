@@ -17,7 +17,6 @@ export function ParticipantTable() {
     setLoadingTable(false);
   }, []);
 
-  console.log(showParticipantDrawer);
   useEffect(() => {
     requestParticipants();
   }, []);
