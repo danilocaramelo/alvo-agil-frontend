@@ -1,10 +1,11 @@
-import { Button, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { getTeams, Team } from '../../../connections/team';
 import './TeamTable.scss';
+import { CustomButton } from '../../../components';
 
 export function TeamTable() {
   const [teams, setTeams] = useState<Team[] | undefined>([]);
@@ -30,33 +31,46 @@ export function TeamTable() {
       title: 'Nome',
       dataIndex: 'nmTime',
       key: 'nmTime',
+      align: 'center',
     },
     {
       title: 'Data de início',
       dataIndex: 'dtInicioTime',
       key: 'dtInicioTime',
+      align: 'center',
     },
     {
       title: 'Framework',
       dataIndex: 'framework',
       key: 'framework',
       render: (_, { framework }) => (framework ? framework.nmFramework : '-'),
+      align: 'center',
     },
     {
       title: 'Status',
       key: 'flTime',
       dataIndex: 'flTime',
+      align: 'center',
       render: (_, { flTime }) =>
         flTime === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
     {
       title: 'Ações',
       key: 'actions',
+      align: 'center',
       render: (_, team) => (
         <>
-          <Button onClick={() => redirect(team.cdTime)} icon={<EyeOutlined />} />
-          <Button icon={<EditOutlined />} />
-          <Button icon={<DeleteOutlined />} />
+          <CustomButton
+            onClick={() => redirect(team.cdTime)}
+            icon={<EyeOutlined />}
+            style={{ marginRight: '10px' }}
+          />
+          <CustomButton
+            icon={<EditOutlined />}
+            onClick={() => console.log()}
+            style={{ marginRight: '10px' }}
+          />
+          <CustomButton icon={<DeleteOutlined />} onClick={() => console.log()} />
         </>
       ),
     },
@@ -64,7 +78,13 @@ export function TeamTable() {
 
   return (
     <div id='team-table'>
-      <Table columns={columns} dataSource={teams} loading={loadingTable} rowKey='cdTime' />
+      <Table
+        columns={columns}
+        dataSource={teams}
+        loading={loadingTable}
+        rowKey='cdTime'
+        pagination={{ pageSize: 4 }}
+      />
     </div>
   );
 }

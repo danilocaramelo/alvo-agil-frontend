@@ -71,6 +71,7 @@ export function TechnologiesTable() {
         dataSource={technologies}
         loading={loadingTable}
         rowKey='cdTecnologia'
+        pagination={{ pageSize: 4 }}
       />
       <TechnologyForm
         requestTechnologies={requestTechnologies}

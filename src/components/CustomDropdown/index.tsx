@@ -1,33 +1,30 @@
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown, Menu } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import './style.scss';
 
-export function CustomDropdown() {
-//   const items: MenuProps['items'] = [
-//     {
-//       label: '1st menu item',
-//       key: '1',
-//       icon: <UserOutlined />,
-//     },
-//     {
-//       label: '2nd menu item',
-//       key: '2',
-//       icon: <UserOutlined />,
-//     },
-//     {
-//       label: '3rd menu item',
-//       key: '3',
-//       icon: <UserOutlined />,
-//     },
-//   ];
+type MenuItem = {
+  label: string;
+  onClick: () => void;
+};
 
-//   const menuProps = {
-//     items,
-//     onClick: handleMenuClick,
-//   };
+type CustomDropdownProps = {
+  menuItems: MenuItem[];
+};
 
-//   return (
-//     <Dropdown overlay={}>
-//       <Button icon={<PlusOutlined />} />
-//     </Dropdown>
-//   );
+export function CustomDropdown({ menuItems }: CustomDropdownProps) {
+  const menu = (
+    <Menu>
+      {menuItems.map((menuItem: MenuItem) => (
+        <Menu.Item key={menuItem.label} onClick={menuItem.onClick}>
+          {menuItem.label}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
+  return (
+    <Dropdown overlay={menu} className='custom-dropdown'>
+      <Button icon={<PlusOutlined />} size='large' />
+    </Dropdown>
+  );
 }

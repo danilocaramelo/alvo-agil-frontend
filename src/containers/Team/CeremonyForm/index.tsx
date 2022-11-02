@@ -1,25 +1,33 @@
 import { useCallback } from 'react';
-import { Button, Form, Input, Modal, Row, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import { createCeremony, NewCeremony } from '../../../connections/ceremony';
+import { CustomModal } from '../../../components';
+import { useForm } from 'antd/lib/form/Form';
 
 type CerimonyFormProps = {
   visible: boolean;
-  setVisible: (arg: boolean) => void;
-  requestCeremonies: () => void;
+  closeModal: () => void;
+  // requestCeremonies: () => void;
 };
 
-export function CerimonyForm({ visible, setVisible, requestCeremonies }: CerimonyFormProps) {
-  const closeModal = useCallback(() => setVisible(false), []);
+export function CerimonyForm({ visible, closeModal }: CerimonyFormProps) {
+  const [form] = useForm();
 
   const newCeremony = useCallback(async (values: NewCeremony) => {
     await createCeremony(values);
-    requestCeremonies();
+    // requestCeremonies();
     closeModal();
   }, []);
 
   return (
-    <Modal visible={visible} onCancel={closeModal} closable={false} footer={null} centered>
-      <Form onFinish={newCeremony}>
+    <CustomModal
+      visible={visible}
+      closeModal={closeModal}
+      onFinish={newCeremony}
+      okButtonText='Criar'
+      form={form}
+    >
+      <>
         <Form.Item label='Nome da Cerimônia' name='nmCerimonia'>
           <Input />
         </Form.Item>
@@ -29,15 +37,7 @@ export function CerimonyForm({ visible, setVisible, requestCeremonies }: Cerimon
             <Select.Option value='N'>Inativo</Select.Option>
           </Select>
         </Form.Item>
-        <Row>
-          <Button onClick={closeModal} style={{}}>
-            Cancelar
-          </Button>
-          <Button htmlType='submit' type='primary'>
-            Enviar
-          </Button>
-        </Row>
-      </Form>
-    </Modal>
+      </>
+    </CustomModal>
   );
 }

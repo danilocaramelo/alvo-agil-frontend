@@ -83,7 +83,13 @@ export function ParticipantTable() {
   return (
     <>
       <div id='participant-table'>
-        <Table columns={columns} dataSource={participants} loading={loadingTable} rowKey='cdTime' />
+        <Table
+          columns={columns}
+          dataSource={participants}
+          loading={loadingTable}
+          rowKey='cdTime'
+          pagination={{ pageSize: 4 }}
+        />
       </div>
       <ParticipantDrawer showDrawer={showParticipantDrawer} closeDrawer={closeParticipantDrawer} />
     </>

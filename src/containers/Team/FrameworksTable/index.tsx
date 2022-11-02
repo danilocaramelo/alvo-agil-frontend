@@ -71,6 +71,7 @@ export function FrameworksTable() {
         dataSource={frameworks}
         loading={loadingTable}
         rowKey='cdFramework'
+        pagination={{ pageSize: 4 }}
       />
       <FrameworkForm
         requestFrameworks={requestFrameworks}

@@ -3,13 +3,10 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { Ceremony, deleteCeremony, getCeremonies } from '../../../connections/ceremony';
-import { CerimonyForm } from '../CeremonyForm';
 
 export function CeremoniesTable() {
   const [loadingTable, setLoadingTable] = useState(false);
   const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
-  const [isCerimonyModalOpen, setIsCerimonyModalOpen] = useState(false);
-  const openCerimonyModal = useCallback(() => setIsCerimonyModalOpen(true), []);
   // const [popOverDelete, setPopOverDelete] = useState<boolean>(false);
   // const hide = () => {
   //   setPopOverDelete(false);
@@ -69,17 +66,12 @@ export function CeremoniesTable() {
 
   return (
     <div id='ceremonies-table'>
-      <Button onClick={openCerimonyModal}>Nova Cerimonia</Button>
       <Table
         columns={columns}
         dataSource={ceremonies}
         loading={loadingTable}
         rowKey='cdCerimonia'
-      />
-      <CerimonyForm
-        visible={isCerimonyModalOpen}
-        setVisible={setIsCerimonyModalOpen}
-        requestCeremonies={requestCeremonies}
+        pagination={{ pageSize: 4 }}
       />
     </div>
   );
