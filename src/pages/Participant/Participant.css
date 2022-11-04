@@ -29,6 +29,7 @@
 [data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab-active {
   background: #fff;
   border-color: #fff;
+  border-radius: 15px 15px 0 0 !important;
 }
 #components-tabs-demo-card-top .code-box-demo {
   padding: 24px;

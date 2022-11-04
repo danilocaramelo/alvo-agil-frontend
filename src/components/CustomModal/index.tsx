@@ -13,6 +13,7 @@ type CustomModalProps = {
   visible: boolean;
   form: FormInstance;
   onFormValuesChange?: ((changedValues: any, values: any) => void) | undefined;
+  initialValues?: any;
 };
 
 export function CustomModal({
@@ -25,6 +26,7 @@ export function CustomModal({
   form,
   onFinish,
   onFormValuesChange,
+  initialValues,
 }: CustomModalProps) {
   return (
     <Modal
@@ -36,7 +38,12 @@ export function CustomModal({
       centered
       className='custom-modal'
     >
-      <Form form={form} onFinish={onFinish} onValuesChange={onFormValuesChange}>
+      <Form
+        form={form}
+        onFinish={onFinish}
+        onValuesChange={onFormValuesChange}
+        initialValues={initialValues}
+      >
         {children}
         <Row justify='center'>
           <Button onClick={closeModal} className='cancel-button'>

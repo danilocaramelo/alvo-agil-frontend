@@ -1,26 +1,37 @@
 import { Button, Popover, Row, Table, Tag } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { deleteFramework, Framework, getFrameworks } from '../../../connections/framework';
-import { FrameworkForm } from '../FrameworkForm';
+import { deleteFramework, Framework, updateFramework } from '../../../connections/framework';
+import { CustomButton } from '../../../components';
+import { SimpleForm, SimpleFormTypes } from '../../General/SimpleForm';
 
-export function FrameworksTable() {
-  const [frameworks, setFrameworks] = useState<Framework[] | undefined>([]);
-  const [loadingTable, setLoadingTable] = useState(false);
-  const [isFrameworkModalOpen, setIsFrameworkModalOpen] = useState(false);
+type FrameworksTableProps = {
+  frameworks: Framework[] | undefined;
+  loading: boolean;
+  requestFrameworks: () => void;
+};
 
-  const openFrameworkModal = useCallback(() => setIsFrameworkModalOpen(true), []);
+export function FrameworksTable({ frameworks, loading, requestFrameworks }: FrameworksTableProps) {
+  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
+  const [editFormInitialValues, setEditFormInitialValues] = useState<boolean>(false);
 
-  const requestFrameworks = useCallback(async () => {
-    setLoadingTable(true);
-    const response = await getFrameworks();
-    setFrameworks(response);
-    setLoadingTable(false);
-  }, []);
+  const openEditForm = useCallback(
+    (initialValues: any) => () => {
+      setEditFormInitialValues(initialValues);
+      setEditFormVisible(true);
+    },
+    [],
+  );
+  const closeEditForm = useCallback(() => setEditFormVisible(false), []);
 
   const removeFramework = useCallback(async (ceremonyId: number) => {
     await deleteFramework(ceremonyId);
+    requestFrameworks();
+  }, []);
+
+  const editFramework = useCallback(async (values: Framework) => {
+    await updateFramework(values);
     requestFrameworks();
   }, []);
 
@@ -33,11 +44,13 @@ export function FrameworksTable() {
       title: 'Nome',
       dataIndex: 'nmFramework',
       key: 'nmFramework',
+      align: 'center',
     },
     {
       title: 'Status',
       key: 'flFramework',
       dataIndex: 'flFramework',
+      align: 'center',
       render: (_, { flFramework }) =>
         flFramework === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
@@ -45,38 +58,48 @@ export function FrameworksTable() {
       title: 'Ações',
       key: 'actions',
       dataIndex: 'cdFramework',
-      render: (_, { cdFramework }) => (
-        <Popover
-          content={
-            <>
-              <div>Tem certeza que deseja excluir?</div>
-              <Row justify='center'>
-                <Button onClick={() => removeFramework(cdFramework)}>Confirma</Button>
-              </Row>
-            </>
-          }
-          trigger='click'
-        >
-          <Button shape='circle' icon={<DeleteOutlined />} />
-        </Popover>
+      align: 'center',
+      render: (_, framework) => (
+        <>
+          <CustomButton
+            icon={<EditOutlined />}
+            onClick={openEditForm(framework)}
+            style={{ marginRight: '10px' }}
+          />
+          <Popover
+            content={
+              <>
+                <div>Tem certeza que deseja excluir?</div>
+                <Row justify='center'>
+                  <Button onClick={() => removeFramework(framework.cdFramework)}>Confirma</Button>
+                </Row>
+              </>
+            }
+            trigger='click'
+          >
+            <CustomButton icon={<DeleteOutlined />} />
+          </Popover>
+        </>
       ),
     },
   ];
 
   return (
     <div id='frameworks-table'>
-      <Button onClick={openFrameworkModal}>Novo Framework</Button>
       <Table
         columns={columns}
         dataSource={frameworks}
-        loading={loadingTable}
+        loading={loading}
         rowKey='cdFramework'
         pagination={{ pageSize: 4 }}
       />
-      <FrameworkForm
-        requestFrameworks={requestFrameworks}
-        visible={isFrameworkModalOpen}
-        setVisible={setIsFrameworkModalOpen}
+      <SimpleForm
+        visible={editFormVisible}
+        closeModal={closeEditForm}
+        submit={editFramework}
+        type={SimpleFormTypes.FRAMEWORK}
+        request={requestFrameworks}
+        initialValues={editFormInitialValues}
       />
     </div>
   );

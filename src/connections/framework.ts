@@ -40,3 +40,12 @@ export async function deleteFramework(frameworkId: number) {
     console.log(e);
   }
 }
+
+export async function updateFramework(framework: Framework) {
+  try {
+    await api.put('/framework/atualiza/', framework);
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}

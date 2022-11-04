@@ -40,3 +40,12 @@ export async function deleteCeremony(ceremonyId: number) {
     console.log(e);
   }
 }
+
+export async function updateCeremony(ceremony: Ceremony) {
+  try {
+    await api.put('/cerimonia/atualiza/', ceremony);
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}

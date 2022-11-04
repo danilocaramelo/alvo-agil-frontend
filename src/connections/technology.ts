@@ -40,3 +40,12 @@ export async function deleteTechnology(technologyId: number) {
     console.log(e);
   }
 }
+
+export async function updateTechnology(technology: Technology) {
+  try {
+    await api.put('/tecnologia/atualiza/', technology);
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}

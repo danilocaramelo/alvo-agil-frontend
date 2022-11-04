@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import './style.scss';
-import { Button, ButtonProps } from 'antd';
+import { Button } from 'antd';
 
 type CustomButtonProps = {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  onClick: () => void;
+  onClick?: () => void;
   label?: string;
   icon?: any;
   style?: React.CSSProperties;
