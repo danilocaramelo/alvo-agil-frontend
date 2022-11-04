@@ -18,7 +18,7 @@ export function TechnologiesTable({
   requestTechnologies,
 }: TechnologiesTableProps) {
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [editFormInitialValues, setEditFormInitialValues] = useState<boolean>(false);
+  const [editFormInitialValues, setEditFormInitialValues] = useState<Technology | undefined>();
 
   const closeEditForm = useCallback(() => setEditFormVisible(false), []);
 
@@ -28,7 +28,7 @@ export function TechnologiesTable({
   }, []);
 
   const openEditForm = useCallback(
-    (initialValues: any) => () => {
+    (initialValues: Technology) => () => {
       setEditFormInitialValues(initialValues);
       setEditFormVisible(true);
     },

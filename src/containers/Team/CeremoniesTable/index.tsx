@@ -14,10 +14,10 @@ type CeremoniesTableProps = {
 
 export function CeremoniesTable({ ceremonies, loading, requestCeremonies }: CeremoniesTableProps) {
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [editFormInitialValues, setEditFormInitialValues] = useState<boolean>(false);
+  const [editFormInitialValues, setEditFormInitialValues] = useState<Ceremony | undefined>();
 
   const openEditForm = useCallback(
-    (initialValues: any) => () => {
+    (initialValues: Ceremony) => () => {
       setEditFormInitialValues(initialValues);
       setEditFormVisible(true);
     },

@@ -14,10 +14,10 @@ type FrameworksTableProps = {
 
 export function FrameworksTable({ frameworks, loading, requestFrameworks }: FrameworksTableProps) {
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [editFormInitialValues, setEditFormInitialValues] = useState<boolean>(false);
+  const [editFormInitialValues, setEditFormInitialValues] = useState<Framework | undefined>();
 
   const openEditForm = useCallback(
-    (initialValues: any) => () => {
+    (initialValues: Framework) => () => {
       setEditFormInitialValues(initialValues);
       setEditFormVisible(true);
     },
