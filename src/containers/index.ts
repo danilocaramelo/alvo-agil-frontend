@@ -2,6 +2,7 @@ export { TeamForm } from './Team/TeamForm';
 export { TeamTable } from './Team/TeamTable';
 export { ParticipantForm } from './Participant/ParticipantForm';
 export { ParticipantTable } from './Participant/ParticipantTable';
+export { FunctionsTable } from './Participant/FunctionsTable';
 export { FunctionForm } from './Participant/FunctionForm';
 export { ParticipantDrawer } from './Participant/ParticipantDrawer';
 export { CeremoniesTable } from './Team/CeremoniesTable';

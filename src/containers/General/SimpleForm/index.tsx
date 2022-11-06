@@ -39,10 +39,10 @@ const TypesProperties = {
     id: 'cdTecnologia',
   },
   [SimpleFormTypes.FUNCTION]: {
-    name: 'nmFramework',
-    label: 'Framwork',
-    status: 'flFramework',
-    id: 'cdFramework',
+    name: 'nmFuncao',
+    label: 'Função',
+    status: 'flFuncao',
+    id: 'cdFuncao',
   },
 };
 

@@ -7,15 +7,15 @@ import { useForm } from 'antd/lib/form/Form';
 type TechnologyFormProps = {
   visible: boolean;
   closeModal: () => void;
-  // requestTechnologies: () => void;
+  requestTechnologies: () => void;
 };
 
-export function TechnologyForm({ visible, closeModal }: TechnologyFormProps) {
+export function TechnologyForm({ visible, closeModal, requestTechnologies }: TechnologyFormProps) {
   const [form] = useForm();
 
   const newTechnology = useCallback(async (values: NewTechnology) => {
     await createTechnology(values);
-    // requestTechnologies();
+    requestTechnologies();
     closeModal();
   }, []);
 

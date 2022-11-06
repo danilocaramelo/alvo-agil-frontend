@@ -10,12 +10,16 @@ import {
 type FunctionFormProps = {
   visible: boolean;
   closeModal: () => void;
+  requestFunctions: () => void;
 };
 
-export function FunctionForm({ visible, closeModal }: FunctionFormProps) {
+export function FunctionForm({ visible, closeModal, requestFunctions }: FunctionFormProps) {
   const [form] = useForm();
+
   const newParticipantFunction = useCallback(async (values: ParticipantFunction) => {
     await createParticipantFunction(values);
+    requestFunctions();
+    closeModal();
   }, []);
 
   return (

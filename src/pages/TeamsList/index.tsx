@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { CustomDropdown } from '../../components/CustomDropdown';
 import { Ceremony, getCeremonies } from '../../connections/ceremony';
 import { Framework, getFrameworks } from '../../connections/framework';
+import { getTeams, Team } from '../../connections/team';
 import { getTechnologies, Technology } from '../../connections/technology';
 import {
   CeremoniesTable,
@@ -20,6 +21,7 @@ export function TeamsList() {
   const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
   const [frameworks, setFrameworks] = useState<Framework[] | undefined>([]);
   const [technologies, setTechnologies] = useState<Technology[] | undefined>([]);
+  const [teams, setTeams] = useState<Team[] | undefined>([]);
 
   const [teamFormVisible, setTeamFormVisible] = useState<boolean>(false);
   const openTeamForm = useCallback(() => setTeamFormVisible(true), []);
@@ -36,6 +38,13 @@ export function TeamsList() {
   const [frameworkFormVisible, setFrameworkFormVisible] = useState<boolean>(false);
   const openFrameworkForm = useCallback(() => setFrameworkFormVisible(true), []);
   const closeFrameworkForm = useCallback(() => setFrameworkFormVisible(false), []);
+
+  const requestTeams = useCallback(async () => {
+    setLoadingTable(true);
+    const response = await getTeams();
+    setTeams(response);
+    setLoadingTable(false);
+  }, []);
 
   const requestCeremonies = useCallback(async () => {
     setLoadingTable(true);
@@ -77,7 +86,7 @@ export function TeamsList() {
       <div className='card-container'>
         <Tabs type='card'>
           <Tabs.TabPane tab='Squads' key='1'>
-            <TeamTable />
+            <TeamTable teams={teams} requestTeams={requestTeams} loading={loadingTable} />
           </Tabs.TabPane>
           <Tabs.TabPane tab='Cerimônias' key='3'>
             <CeremoniesTable
@@ -102,13 +111,17 @@ export function TeamsList() {
           </Tabs.TabPane>
         </Tabs>
       </div>
-      <TeamForm visible={teamFormVisible} closeModal={closeTeamForm} />
+      <TeamForm visible={teamFormVisible} closeModal={closeTeamForm} requestTeams={requestTeams} />
       <CerimonyForm
         visible={cerimonyFormVisible}
         closeModal={closeCerimonyForm}
         requestCeremonies={requestCeremonies}
       />
-      <TechnologyForm visible={technologyFormVisible} closeModal={closeTechnologyForm} />
+      <TechnologyForm
+        visible={technologyFormVisible}
+        closeModal={closeTechnologyForm}
+        requestTechnologies={requestTechnologies}
+      />
       <FrameworkForm
         visible={frameworkFormVisible}
         closeModal={closeFrameworkForm}

@@ -2,73 +2,68 @@ import { Popover, Row, Table, Tag } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { deleteTechnology, Technology, updateTechnology } from '../../../connections/technology';
 import { CustomButton } from '../../../components';
 import { SimpleForm, SimpleFormTypes } from '../../General/SimpleForm';
+import { deleteFunction, FunctionElement, updateFunction } from '../../../connections/functions';
 
-type TechnologiesTableProps = {
-  technologies: Technology[] | undefined;
+type FunctionsTableProps = {
+  functions: FunctionElement[] | undefined;
   loading: boolean;
-  requestTechnologies: () => void;
+  requestFunctions: () => void;
 };
 
-export function TechnologiesTable({
-  technologies,
-  loading,
-  requestTechnologies,
-}: TechnologiesTableProps) {
+export function FunctionsTable({ functions, loading, requestFunctions }: FunctionsTableProps) {
   const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [editFormInitialValues, setEditFormInitialValues] = useState<Technology | undefined>();
-
-  const closeEditForm = useCallback(() => setEditFormVisible(false), []);
-
-  const editTechnology = useCallback(async (values: Technology) => {
-    await updateTechnology(values);
-    requestTechnologies();
-  }, []);
+  const [editFormInitialValues, setEditFormInitialValues] = useState<FunctionElement | undefined>();
 
   const openEditForm = useCallback(
-    (initialValues: Technology) => () => {
+    (initialValues: FunctionElement) => () => {
       setEditFormInitialValues(initialValues);
       setEditFormVisible(true);
     },
     [],
   );
+  const closeEditForm = useCallback(() => setEditFormVisible(false), []);
 
-  const removeTechnology = useCallback(async (ceremonyId: number) => {
-    await deleteTechnology(ceremonyId);
-    requestTechnologies();
+  const removeFunction = useCallback(async (ceremonyId: number) => {
+    await deleteFunction(ceremonyId);
+    requestFunctions();
+  }, []);
+
+  const editFunction = useCallback(async (values: FunctionElement) => {
+    await updateFunction(values);
+    requestFunctions();
   }, []);
 
   useEffect(() => {
-    requestTechnologies();
+    requestFunctions();
   }, []);
 
-  const columns: ColumnsType<Technology> = [
+  const columns: ColumnsType<FunctionElement> = [
     {
       title: 'Nome',
-      dataIndex: 'nmTecnologia',
-      key: 'nmTecnologia',
+      dataIndex: 'nmFuncao',
+      key: 'nmFuncao',
       align: 'center',
     },
     {
       title: 'Status',
-      key: 'flTecnologia',
-      dataIndex: 'flTecnologia',
+      key: 'flFuncao',
+      dataIndex: 'flFuncao',
       align: 'center',
-      render: (_, { flTecnologia }) =>
-        flTecnologia === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
+      render: (_, { flFuncao }) =>
+        flFuncao === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
     {
       title: 'Ações',
       key: 'actions',
-      dataIndex: 'cdTecnologia',
+      dataIndex: 'cdFuncao',
       align: 'center',
-      render: (_, tecnologia) => (
+      render: (_, functionElement) => (
         <>
           <CustomButton
             icon={<EditOutlined />}
-            onClick={openEditForm(tecnologia)}
+            onClick={openEditForm(functionElement)}
             style={{ marginRight: '10px' }}
           />
           <Popover
@@ -77,7 +72,7 @@ export function TechnologiesTable({
                 <div>Tem certeza que deseja excluir?</div>
                 <Row justify='center'>
                   <CustomButton
-                    onClick={() => removeTechnology(tecnologia.cdTecnologia)}
+                    onClick={() => removeFunction(functionElement.cdFuncao)}
                     label='Confirma'
                     color='orange'
                     style={{ marginTop: '10px' }}
@@ -87,7 +82,7 @@ export function TechnologiesTable({
             }
             trigger='click'
           >
-            <CustomButton icon={<DeleteOutlined />} onClick={() => console.log()} />
+            <CustomButton icon={<DeleteOutlined />} />
           </Popover>
         </>
       ),
@@ -95,20 +90,20 @@ export function TechnologiesTable({
   ];
 
   return (
-    <div id='technologies-table'>
+    <div id='function-table'>
       <Table
         columns={columns}
-        dataSource={technologies}
+        dataSource={functions}
         loading={loading}
-        rowKey='cdTecnologia'
+        rowKey='cdFuncao'
         pagination={{ pageSize: 4 }}
       />
       <SimpleForm
         visible={editFormVisible}
         closeModal={closeEditForm}
-        submit={editTechnology}
-        type={SimpleFormTypes.TECHNOLOGY}
-        request={requestTechnologies}
+        submit={editFunction}
+        type={SimpleFormTypes.FUNCTION}
+        request={requestFunctions}
         initialValues={editFormInitialValues}
       />
     </div>

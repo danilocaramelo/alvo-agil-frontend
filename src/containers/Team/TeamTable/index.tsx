@@ -1,22 +1,20 @@
-import { Table, Tag } from 'antd';
+import { Popover, Row, Table, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { getTeams, Team } from '../../../connections/team';
+import { deleteTeam, getTeams, Team } from '../../../connections/team';
 import './TeamTable.scss';
 import { CustomButton } from '../../../components';
 
-export function TeamTable() {
-  const [teams, setTeams] = useState<Team[] | undefined>([]);
-  const [loadingTable, setLoadingTable] = useState(false);
+type TeamTableProps = {
+  teams: Team[] | undefined;
+  loading: boolean;
+  requestTeams: () => void;
+};
+
+export function TeamTable({ teams, loading, requestTeams }: TeamTableProps) {
   const navigate = useNavigate();
-  const requestTeams = useCallback(async () => {
-    setLoadingTable(true);
-    const response = await getTeams();
-    setTeams(response);
-    setLoadingTable(false);
-  }, []);
 
   useEffect(() => {
     requestTeams();
@@ -24,6 +22,11 @@ export function TeamTable() {
 
   const redirect = useCallback((teamId: number) => {
     navigate(teamId.toString());
+  }, []);
+
+  const removeTeam = useCallback(async (ceremonyId: number) => {
+    await deleteTeam(ceremonyId);
+    requestTeams();
   }, []);
 
   const columns: ColumnsType<Team> = [
@@ -70,7 +73,24 @@ export function TeamTable() {
             onClick={() => console.log()}
             style={{ marginRight: '10px' }}
           />
-          <CustomButton icon={<DeleteOutlined />} onClick={() => console.log()} />
+          <Popover
+            content={
+              <>
+                <div>Tem certeza que deseja excluir?</div>
+                <Row justify='center'>
+                  <CustomButton
+                    onClick={() => removeTeam(team.cdTime)}
+                    label='Confirma'
+                    color='orange'
+                    style={{ marginTop: '10px' }}
+                  />
+                </Row>
+              </>
+            }
+            trigger='click'
+          >
+            <CustomButton icon={<DeleteOutlined />} />
+          </Popover>
         </>
       ),
     },
@@ -81,7 +101,7 @@ export function TeamTable() {
       <Table
         columns={columns}
         dataSource={teams}
-        loading={loadingTable}
+        loading={loading}
         rowKey='cdTime'
         pagination={{ pageSize: 4 }}
       />

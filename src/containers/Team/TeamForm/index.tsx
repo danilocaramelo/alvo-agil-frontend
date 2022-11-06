@@ -10,9 +10,30 @@ import { getTechnologies, Technology } from '../../../connections/technology';
 type TeamFormProps = {
   visible: boolean;
   closeModal: () => void;
+  requestTeams: () => void;
 };
 
-export function TeamForm({ visible, closeModal }: TeamFormProps) {
+type FormValues = {
+  nmTime: string;
+  flTime: 'S' | 'N';
+  dtInicioTime: moment.Moment;
+  cerimonias: [
+    {
+      cdCerimonia: number;
+    },
+  ];
+  framework: {
+    cdFramework: number;
+  };
+  tecnologias: [
+    {
+      cdTecnologia: number;
+    },
+  ];
+  perguntas: null;
+};
+
+export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
   const [frameworks, setFrameworks] = useState<Framework[] | undefined>([]);
   const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
   const [technologies, setTechnologies] = useState<Technology[] | undefined>([]);
@@ -39,8 +60,11 @@ export function TeamForm({ visible, closeModal }: TeamFormProps) {
     requestTechnologies();
   }, []);
 
-  const newTeam = useCallback(async (values: NewTeam) => {
-    await createTeam(values);
+  const newTeam = useCallback(async (values: FormValues) => {
+    const finalValues: NewTeam = {...values, dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD') };
+    await createTeam(finalValues);
+    requestTeams();
+    closeModal();
   }, []);
 
   return (
@@ -62,9 +86,9 @@ export function TeamForm({ visible, closeModal }: TeamFormProps) {
           </Select>
         </Form.Item>
         <Form.Item label='Data de início' name='dtInicioTime'>
-          <DatePicker format='DD/MM/YYYY' />
+          <DatePicker format='YYYY/MM/DD' />
         </Form.Item>
-        <Form.Item label='Framework' name='frameworka'>
+        <Form.Item label='Framework' name='framework'>
           <Select>
             {frameworks?.map((framework) => (
               <Select.Option value={framework.cdFramework} key={framework.cdFramework}>
@@ -73,7 +97,7 @@ export function TeamForm({ visible, closeModal }: TeamFormProps) {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label='Cerimonias' name='ceremonies'>
+        <Form.Item label='Cerimonias' name='cerimonias'>
           <Select mode='multiple'>
             {ceremonies?.map((ceremony) => (
               <Select.Option value={ceremony.cdCerimonia} key={ceremony.cdCerimonia}>
@@ -82,7 +106,7 @@ export function TeamForm({ visible, closeModal }: TeamFormProps) {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label='Tecnologias' name='technologies'>
+        <Form.Item label='Tecnologias' name='tecnologias'>
           <Select mode='multiple'>
             {technologies?.map((technology) => (
               <Select.Option value={technology.cdTecnologia} key={technology.cdTecnologia}>

@@ -71,7 +71,12 @@ export function CeremoniesTable({ ceremonies, loading, requestCeremonies }: Cere
               <>
                 <div>Tem certeza que deseja excluir?</div>
                 <Row justify='center'>
-                  <Button onClick={() => removeCeremony(ceremony.cdCerimonia)}>Confirma</Button>
+                  <CustomButton
+                    onClick={() => removeCeremony(ceremony.cdCerimonia)}
+                    label='Confirma'
+                    color='orange'
+                    style={{ marginTop: '10px' }}
+                  />
                 </Row>
               </>
             }

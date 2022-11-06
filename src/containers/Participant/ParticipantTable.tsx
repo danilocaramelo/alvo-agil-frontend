@@ -8,6 +8,7 @@ import { CustomButton } from '../../components';
 
 export function ParticipantTable() {
   const [participants, setParticipants] = useState<Participant[] | undefined>([]);
+  const [selectedParticipant, setSelectedParticipant] = useState<Participant | undefined>();
   const [loadingTable, setLoadingTable] = useState(false);
   const [showParticipantDrawer, setShowParticipantDrawer] = useState(false);
 
@@ -23,7 +24,13 @@ export function ParticipantTable() {
   }, []);
 
   const closeParticipantDrawer = useCallback(() => setShowParticipantDrawer(false), []);
-  const openParticipantDrawer = useCallback(() => setShowParticipantDrawer(true), []);
+  const openParticipantDrawer = useCallback(
+    (participant: Participant) => () => {
+      setSelectedParticipant(participant);
+      setShowParticipantDrawer(true);
+    },
+    [],
+  );
 
   const columns: ColumnsType<Participant> = [
     {
@@ -62,7 +69,7 @@ export function ParticipantTable() {
         <>
           <CustomButton
             style={{ marginRight: '10px' }}
-            onClick={openParticipantDrawer}
+            onClick={openParticipantDrawer(participant)}
             icon={<EyeOutlined />}
           />
           <CustomButton
@@ -91,7 +98,11 @@ export function ParticipantTable() {
           pagination={{ pageSize: 4 }}
         />
       </div>
-      <ParticipantDrawer showDrawer={showParticipantDrawer} closeDrawer={closeParticipantDrawer} />
+      <ParticipantDrawer
+        participant={selectedParticipant}
+        showDrawer={showParticipantDrawer}
+        closeDrawer={closeParticipantDrawer}
+      />
     </>
   );
 }

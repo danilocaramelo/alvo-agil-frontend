@@ -1,4 +1,4 @@
-import { Button, Popover, Row, Table, Tag } from 'antd';
+import { Popover, Row, Table, Tag } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
@@ -71,7 +71,12 @@ export function FrameworksTable({ frameworks, loading, requestFrameworks }: Fram
               <>
                 <div>Tem certeza que deseja excluir?</div>
                 <Row justify='center'>
-                  <Button onClick={() => removeFramework(framework.cdFramework)}>Confirma</Button>
+                  <CustomButton
+                    onClick={() => removeFramework(framework.cdFramework)}
+                    label='Confirma'
+                    color='orange'
+                    style={{ marginTop: '10px' }}
+                  />
                 </Row>
               </>
             }
