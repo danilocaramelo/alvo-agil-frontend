@@ -1,7 +1,7 @@
 export type AgilWheelElement = {
     label: string;
     children?: AgilWheelElement[];
-    score: number;
+    score?: number;
     uv?: number;
     count?: number;
 }

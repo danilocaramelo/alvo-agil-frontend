@@ -22,9 +22,9 @@ export const data2: AgilWheelData = {
               count: 0,
             },
           ],
-          uv: 0,
-          score: 0,
-          count: 0,
+          // uv: 0,
+          // score: 0,
+          // count: 0,
         },
         {
           label: 'proteção',
