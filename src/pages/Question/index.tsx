@@ -14,6 +14,7 @@ const { Title } = Typography;
 export function Questions() {
   const [agilWheelData] = useState<AgilWheelData>({
     label: 'Start',
+    data: 'YYYY-MM-DD',
     children: [],
   });
   const [createLayerModalVisible, setCreateLayerModalVisible] = useState<boolean>(false);

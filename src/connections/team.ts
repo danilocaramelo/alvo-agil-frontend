@@ -2,17 +2,20 @@ import { notification } from 'antd';
 import api from '../config/httRequest';
 import { Ceremony } from './ceremony';
 import { Framework } from './framework';
+import { Participant } from './particpant';
 import { Technology } from './technology';
 
 export type Team = {
   cdTime: number;
   cerimonias: Ceremony[];
   dtInicioTime: string;
+  dtFinalizacaoTime: string | undefined;
   flTime: 'S' | 'N';
   framework: Framework;
   nmTime: string;
   perguntas: [];
   tecnologias: Technology[];
+  participantes: Participant[];
 };
 
 export type NewTeam = {
@@ -38,6 +41,16 @@ export type NewTeam = {
 export async function getTeams(): Promise<Team[] | undefined> {
   try {
     const response = await api.get('/time/todos');
+    return response.data;
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}
+
+export async function getTeam(teamId: number): Promise<Team | undefined> {
+  try {
+    const response = await api.get(`/time/busca/${teamId}`);
     return response.data;
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });

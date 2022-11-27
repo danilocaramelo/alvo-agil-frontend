@@ -6,60 +6,42 @@ import {
   CalendarOutlined,
   ToolOutlined,
   AimOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { AgilWheel, ParticipantDrawer } from '../../containers';
 import { useCallback, useEffect, useState } from 'react';
 import './style.scss';
 import { data2 } from '../../containers/General/AgilWheel/datamock_copy';
+import { useParams } from 'react-router-dom';
+import { getTeam, Team as TeamEntity } from '../../connections/team';
+import { CustomButton } from '../../components';
+import { AddParticipantModal } from './AddParticipantModal';
 const { Title, Text } = Typography;
 
-interface DataType {
-  gender: string;
-  name: {
-    title: string;
-    first: string;
-    last: string;
-  };
-  email: string;
-  picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
-  nat: string;
-}
-
 export function Team() {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<DataType[]>([]);
   const [showParticipantDrawer, setShowParticipantDrawer] = useState(false);
+  const params = useParams();
+  const teamId = params.id;
+  const [teamData, setTeamData] = useState<TeamEntity>();
+  const [loadingTeam, setLoadingTeam] = useState<boolean>(false);
+  const [addParticipantModalVisible, setAddParticipantModalVisible] = useState<boolean>(false);
 
-  const secondList = [
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.',
-    'Australian walks 100km after outback crash.',
-    'Man charged over missing wedding girl.',
-    'Los Angeles battles huge wildfires.',
-  ];
+  const secondList = teamData?.tecnologias;
 
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
-      .then((res) => res.json())
-      .then((body) => {
-        setData([...data, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
+  const closeAddParticipantModal = useCallback(() => setAddParticipantModalVisible(false), []);
+  const openAddParticipantModal = useCallback(() => {
+    setAddParticipantModalVisible(true);
+  }, []);
+
+  const requestTeam = useCallback(async () => {
+    setLoadingTeam(true);
+    const response = await getTeam(Number(teamId));
+    setTeamData(response);
+    setLoadingTeam(false);
+  }, []);
 
   useEffect(() => {
-    loadMoreData();
+    requestTeam();
   }, []);
 
   const closeParticipantDrawer = useCallback(() => setShowParticipantDrawer(false), []);
@@ -70,7 +52,7 @@ export function Team() {
       <Row>
         <Col span={8}>
           <Row justify='center'>
-            <Title level={2}>Nome do Time</Title>
+            <Title level={2}>{teamData?.nmTime}</Title>
           </Row>
         </Col>
         <Col span={12}>
@@ -84,13 +66,13 @@ export function Team() {
             <Col className='team-description-item' span={8}>
               <Tooltip title='Status'>
                 <IssuesCloseOutlined className='team-description-icon' />
-                <Text>Ativo</Text>
+                <Text>{teamData?.flTime === 'S' ? 'Ativo' : 'Inativo'}</Text>
               </Tooltip>
             </Col>
             <Col className='team-description-item' span={8}>
               <Tooltip title='Framework'>
                 <ToolOutlined className='team-description-icon' />
-                <Text>Scrum</Text>
+                <Text>{teamData?.framework?.nmFramework}</Text>
               </Tooltip>
             </Col>
           </Row>
@@ -104,13 +86,13 @@ export function Team() {
             <Col className='team-description-item' span={8}>
               <Tooltip title='Data de início do time'>
                 <CalendarOutlined className='team-description-icon' />
-                <Text>18/07/2022</Text>
+                <Text>{teamData?.dtInicioTime}</Text>
               </Tooltip>
             </Col>
             <Col className='team-description-item' span={8}>
               <Tooltip title='Data final do time'>
                 <CalendarOutlined className='team-description-icon' />
-                <Text>18/12/2022</Text>
+                <Text>{teamData?.dtFinalizacaoTime}</Text>
               </Tooltip>
             </Col>
           </Row>
@@ -124,11 +106,12 @@ export function Team() {
               <Select.Option value='2'>23/10/2022</Select.Option>
             </Select>
           </Row>
-          <AgilWheel data={data2}/>
+          <AgilWheel data={data2} />
         </Col>
         <Col span={12}>
           <Row>
             <Col span={12}>
+              <CustomButton label='Adicionar participante' onClick={openAddParticipantModal} />
               <div
                 id='scrollableDiv'
                 style={{
@@ -139,20 +122,22 @@ export function Team() {
                 }}
               >
                 <InfiniteScroll
-                  dataLength={data.length}
-                  next={loadMoreData}
-                  hasMore={data.length < 50}
+                  dataLength={teamData?.participantes?.length ?? 0}
+                  next={() => {
+                    console.log();
+                  }}
+                  hasMore={loadingTeam}
                   loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
                   scrollableTarget='scrollableDiv'
                 >
                   <List
-                    dataSource={data}
+                    dataSource={teamData?.participantes}
                     renderItem={(item) => (
-                      <List.Item key={item.email}>
+                      <List.Item key={item.emailParticipante}>
                         <List.Item.Meta
-                          avatar={<Avatar src={item.picture.large} />}
-                          title={<a onClick={openParticipantDrawer}>{item.name.last}</a>}
-                          description={item.email}
+                          avatar={<Avatar icon={<UserOutlined />} />}
+                          title={<a onClick={openParticipantDrawer}>{item.nmParticipante}</a>}
+                          description={item.emailParticipante}
                         />
                       </List.Item>
                     )}
@@ -164,13 +149,18 @@ export function Team() {
               <List
                 bordered
                 dataSource={secondList}
-                renderItem={(item) => <List.Item>{item}</List.Item>}
+                renderItem={(item) => <List.Item>{item.nmTecnologia}</List.Item>}
               />
             </Col>
           </Row>
         </Col>
       </Row>
       <ParticipantDrawer showDrawer={showParticipantDrawer} closeDrawer={closeParticipantDrawer} />
+      <AddParticipantModal
+        visible={addParticipantModalVisible}
+        closeModal={closeAddParticipantModal}
+        team={teamData}
+      />
     </div>
   );
 }
