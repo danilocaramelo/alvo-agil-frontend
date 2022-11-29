@@ -11,7 +11,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import paths from '../config/paths';
 import { Home, Participant, Team, TeamsList } from '../pages';
 import { Questions } from '../pages/Question';
-import icon from '../assets/Icone01.svg';
+import icon from '../assets/icone.png';
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -62,8 +62,16 @@ function BaseLayout() {
   return (
     <Layout style={{ height: '100%' }}>
       <Sider collapsed theme='light'>
-        <div style={{ height: 60 }}>{/* <img src={icon} /> */}</div>
-        <Menu theme='light' defaultSelectedKeys={[menuKeyByPathname]} mode='inline' items={items} />
+        <div style={{ height: 60, width: 60 }}>
+          <img style={{ height: 50, width: 50, marginLeft: 15, marginTop: 5 }} src={icon} />
+        </div>
+        <Menu
+          style={{ marginTop: 20 }}
+          theme='light'
+          defaultSelectedKeys={[menuKeyByPathname]}
+          mode='inline'
+          items={items}
+        />
       </Sider>
       <Layout>
         <Header style={{ backgroundColor: '#2c00d5' }}>

@@ -49,10 +49,12 @@ export function Team() {
 
   return (
     <div className='team-page'>
-      <Row>
+      <Row style={{ marginBottom: 50 }}>
         <Col span={8}>
           <Row justify='center'>
-            <Title level={2}>{teamData?.nmTime}</Title>
+            <Title level={2} className='team-name'>
+              {teamData?.nmTime}
+            </Title>
           </Row>
         </Col>
         <Col span={12}>
@@ -60,19 +62,23 @@ export function Team() {
             <Col className='team-description-item' span={8}>
               <Tooltip title='Nº de pessoas'>
                 <TeamOutlined className='team-description-icon' />
-                <Text>5</Text>
+                <Text className='team-description-text'>
+                  {teamData?.participantes?.length ?? 0}
+                </Text>
               </Tooltip>
             </Col>
             <Col className='team-description-item' span={8}>
               <Tooltip title='Status'>
                 <IssuesCloseOutlined className='team-description-icon' />
-                <Text>{teamData?.flTime === 'S' ? 'Ativo' : 'Inativo'}</Text>
+                <Text className='team-description-text'>
+                  {teamData?.flTime === 'S' ? 'Ativo' : 'Inativo'}
+                </Text>
               </Tooltip>
             </Col>
             <Col className='team-description-item' span={8}>
               <Tooltip title='Framework'>
                 <ToolOutlined className='team-description-icon' />
-                <Text>{teamData?.framework?.nmFramework}</Text>
+                <Text className='team-description-text'>{teamData?.framework?.nmFramework}</Text>
               </Tooltip>
             </Col>
           </Row>
@@ -80,19 +86,19 @@ export function Team() {
             <Col className='team-description-item' span={8}>
               <Tooltip title='Última nota'>
                 <AimOutlined className='team-description-icon' />
-                <Text>3.5</Text>
+                <Text className='team-description-text'>3.5</Text>
               </Tooltip>
             </Col>
             <Col className='team-description-item' span={8}>
               <Tooltip title='Data de início do time'>
                 <CalendarOutlined className='team-description-icon' />
-                <Text>{teamData?.dtInicioTime}</Text>
+                <Text className='team-description-text'>{teamData?.dtInicioTime}</Text>
               </Tooltip>
             </Col>
             <Col className='team-description-item' span={8}>
               <Tooltip title='Data final do time'>
                 <CalendarOutlined className='team-description-icon' />
-                <Text>{teamData?.dtFinalizacaoTime}</Text>
+                <Text className='team-description-text'>{teamData?.dtFinalizacaoTime}</Text>
               </Tooltip>
             </Col>
           </Row>
@@ -111,7 +117,9 @@ export function Team() {
         <Col span={12}>
           <Row>
             <Col span={12}>
-              <CustomButton label='Adicionar participante' onClick={openAddParticipantModal} />
+              <Row justify='center' style={{ marginBottom: 20 }}>
+                <CustomButton label='Adicionar participante' onClick={openAddParticipantModal} />
+              </Row>
               <div
                 id='scrollableDiv'
                 style={{

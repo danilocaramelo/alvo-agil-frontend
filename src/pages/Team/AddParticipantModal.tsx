@@ -20,14 +20,26 @@ export function AddParticipantModal({
 }: AddParticipantModalProps) {
   const [form] = useForm();
   const [participants, setParticipants] = useState<Participant[] | undefined>([]);
-  const updateTeamParticipants = useCallback(async (values: Participant[]) => {
-    if (team) {
-      const newTeam: Team = { ...team, participantes: values };
-      await updateTeam(newTeam);
-    }
-    // requestCeremonies();
-    closeModal();
-  }, []);
+
+  const updateTeamParticipants = useCallback(
+    async (values: { participantes: string[] }) => {
+      const newParticipants = participants?.filter((participant) => {
+        return values.participantes.some((valueId) => {
+          return Number(valueId) === participant.cdParticipante;
+        });
+      });
+      if (team && newParticipants) {
+        const newTeam: Team = {
+          ...team,
+          participantes: [...team.participantes, ...newParticipants],
+        };
+        await updateTeam(newTeam);
+      }
+      // requestCeremonies();
+      closeModal();
+    },
+    [participants],
+  );
 
   const requestParticipants = useCallback(async () => {
     const response = await getParticipants();
@@ -42,7 +54,7 @@ export function AddParticipantModal({
     <CustomModal
       visible={visible}
       closeModal={closeModal}
-      onFinish={(values) => console.log(values)}
+      onFinish={updateTeamParticipants}
       okButtonText='Criar'
       form={form}
     >

@@ -1,10 +1,20 @@
 .team-page {
   height: 100%;
+
+  .team-name {
+    color: #f58327;
+  }
+
   .team-description-item {
     font-size: 17px;
   }
 
   .team-description-icon {
     margin-right: 10px;
+    color: #2c00d5;
+  }
+
+  .team-description-text {
+    color: #f58327;
   }
 }
