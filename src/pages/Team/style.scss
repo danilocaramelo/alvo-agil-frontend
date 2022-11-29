@@ -3,6 +3,7 @@
 
   .team-name {
     color: #f58327;
+    margin-bottom: 50px;
   }
 
   .team-description-item {
@@ -16,5 +17,13 @@
 
   .team-description-text {
     color: #f58327;
+  }
+
+  .list {
+    margin-top: 40px;
+    min-height: 140px;
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
   }
 }
