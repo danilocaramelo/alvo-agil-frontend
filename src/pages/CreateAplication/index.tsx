@@ -11,7 +11,7 @@ import './style.scss';
 const { Panel } = Collapse;
 const { Title } = Typography;
 
-export function Questions() {
+export function CreateAplication() {
   const [agilWheelData] = useState<AgilWheelData>({
     label: 'Start',
     data: 'YYYY-MM-DD',

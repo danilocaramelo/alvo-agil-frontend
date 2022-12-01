@@ -15,7 +15,11 @@ export type NewFunction = {
 export async function getFunctions(): Promise<FunctionElement[] | undefined> {
   try {
     const response = await api.get('/funcao/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

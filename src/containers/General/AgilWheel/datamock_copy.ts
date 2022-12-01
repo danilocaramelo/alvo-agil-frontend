@@ -15,26 +15,13 @@ export const data2: AgilWheelData = {
           children: [
             {
               // descrição pergunta
-              label: 'pergunta A',
+              label: 'As informações sigilosas estão resguardadas de forma segura',
               // nota
-              score: 5,
+              score: 1,
               peso: 1,
             },
             {
-              label: 'pergunta B',
-              score: 2,
-            },
-          ],
-        },
-        {
-          label: 'proteção',
-          children: [
-            {
-              label: 'pergunta C',
-              score: 1,
-            },
-            {
-              label: 'pergunta D',
+              label: 'Os acessos aos softwares são controlados e organizados de mofo que somente as pessoas certas recebem as autorizações necessárias',
               score: 1,
             },
           ],
@@ -42,18 +29,22 @@ export const data2: AgilWheelData = {
       ],
     },
     {
-      label: 'cliente',
+      label: 'relação interpessoal',
       children: [
         {
           label: 'feedback',
           children: [
             {
-              label: 'pergunta 1',
-              score: 3,
+              label: 'Eu dou feedbacks construtivos rotineiramente',
+              score: 1,
             },
             {
-              label: 'pergunta 2',
-              score: 3,
+              label: 'Tenho recebido feedbacks de meus colegas de trabalho com regularidade',
+              score: 1,
+            },
+            {
+              label: 'Troco feedbacks com meu superior com frequência',
+              score: 1,
             },
           ],
         },
@@ -61,12 +52,16 @@ export const data2: AgilWheelData = {
           label: 'pontualidade',
           children: [
             {
-              label: 'pergunta 3',
-              score: 3,
+              label: 'Sempre chego no horário',
+              score: 1,
             },
             {
-              label: 'pergunta 4',
-              score: 3,
+              label: 'Não tenho feito horas extras',
+              score: 1,
+            },
+            {
+              label: 'As entregas são realizadas dentro dos prazos estipulados',
+              score: 1,
             },
           ],
         },
@@ -79,43 +74,12 @@ export const data2: AgilWheelData = {
           label: 'comunicação',
           children: [
             {
-              label: 'pergunta 1',
-              score: 3,
+              label: 'As tarefas sempre são escritas de forma clara',
+              score: 1,
             },
             {
-              label: 'pergunta 2',
-              score: 3,
-            },
-          ],
-        },
-        {
-          label: 'motivação',
-          children: [
-            {
-              label: 'pergunta 3',
-              score: 3,
-            },
-            {
-              label: 'pergunta 4',
-              score: 3,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      label: 'teste',
-      children: [
-        {
-          label: 'comunicação',
-          children: [
-            {
-              label: 'pergunta 1',
-              score: 3,
-            },
-            {
-              label: 'pergunta 2',
-              score: 3,
+              label: 'A comunicação com outros integrantes da equipe é objetiva e esclarecedora',
+              score: 1,
             },
           ],
         },
@@ -123,12 +87,12 @@ export const data2: AgilWheelData = {
           label: 'motivação',
           children: [
             {
-              label: 'pergunta 3',
-              score: 6,
+              label: 'Sinto-me motivado a trabalhar nesta empresa',
+              score: 1,
             },
             {
-              label: 'pergunta 4',
-              score: 3,
+              label: 'Aqui há desafios que me mantém interessado em continuar me desenvolvendo',
+              score: 1,
             },
           ],
         },

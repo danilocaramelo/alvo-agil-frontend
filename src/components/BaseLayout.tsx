@@ -9,8 +9,7 @@ import {
 import { MenuProps, Row, Layout, Menu, Typography, Button } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import paths from '../config/paths';
-import { Home, Participant, Team, TeamsList } from '../pages';
-import { Questions } from '../pages/Question';
+import { Avaliation, CreateAplication, Home, Participant, Team, TeamsList } from '../pages';
 import icon from '../assets/icone.png';
 
 const { Header, Content, Sider } = Layout;
@@ -49,8 +48,8 @@ const items: MenuItem[] = [
     <UserOutlined style={{ color: '#2c00d5' }} />,
   ),
   getItem(
-    <Link to={paths.QUESTION}>perguntas</Link>,
-    paths.QUESTION,
+    <Link to={paths.CREATE_APLICATION}>perguntas</Link>,
+    paths.CREATE_APLICATION,
     <QuestionOutlined style={{ color: '#2c00d5' }} />,
   ),
 ];
@@ -96,7 +95,8 @@ function BaseLayout() {
             <Route path={paths.TEAMS} element={<TeamsList />} />
             <Route path={paths.PARTICIPANT} element={<Participant />} />
             <Route path={paths.TEAM} element={<Team />} />
-            <Route path={paths.QUESTION} element={<Questions />} />
+            <Route path={paths.CREATE_APLICATION} element={<CreateAplication />} />
+            <Route path={paths.AVALIATION} element={<Avaliation />} />
           </Routes>
         </Content>
       </Layout>

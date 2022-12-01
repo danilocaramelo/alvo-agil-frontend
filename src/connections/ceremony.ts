@@ -15,7 +15,11 @@ export type NewCeremony = {
 export async function getCeremonies(): Promise<Ceremony[] | undefined> {
   try {
     const response = await api.get('/cerimonia/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

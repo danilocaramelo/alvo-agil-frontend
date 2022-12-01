@@ -6,11 +6,21 @@ import {
   getParticipantFunctions,
   ParticipantFunction,
 } from '../../connections/participantFunction';
+import { createParticipant, NewParticipant } from '../../connections/particpant';
 import { getTeams, Team } from '../../connections/team';
 
 type ParticipantFormProps = {
   visible: boolean;
   closeModal: () => void;
+};
+
+type FormValues = {
+  nmParticipante: string;
+  flParticipante: 'S' | 'N';
+  dtInicioParticipante: moment.Moment;
+  dtFimParticipante?: moment.Moment;
+  emailParticipante: string;
+  cdFuncao: number;
 };
 
 export function ParticipantForm({ visible, closeModal }: ParticipantFormProps) {
@@ -35,11 +45,24 @@ export function ParticipantForm({ visible, closeModal }: ParticipantFormProps) {
     requestTeams();
   }, []);
 
+  const newParticipant = useCallback(async (values: FormValues) => {
+    const finalValues: NewParticipant = {
+      ...values,
+      dtInicioParticipante: values.dtInicioParticipante?.format('YYYY-MM-DD'),
+      dtFimParticipante: values.dtFimParticipante
+        ? values.dtFimParticipante.format('YYYY-MM-DD')
+        : undefined,
+    };
+    await createParticipant(finalValues);
+    requestTeams();
+    closeModal();
+  }, []);
+
   return (
     <CustomModal
       closeModal={closeModal}
       visible={visible}
-      onFinish={(values) => console.log(values)}
+      onFinish={newParticipant}
       okButtonText='Criar'
       form={form}
     >
@@ -81,7 +104,7 @@ export function ParticipantForm({ visible, closeModal }: ParticipantFormProps) {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item label='Função' name='funcao'>
+            <Form.Item label='Função' name='cdFuncao'>
               <Select>
                 {participantFunctions?.map((participantFunction) => (
                   <Select.Option

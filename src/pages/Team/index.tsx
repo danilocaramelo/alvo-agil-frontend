@@ -13,7 +13,7 @@ import { AgilWheel, ParticipantDrawer } from '../../containers';
 import { useCallback, useEffect, useState } from 'react';
 import './style.scss';
 import { data2 } from '../../containers/General/AgilWheel/datamock_copy';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getTeam, Team as TeamEntity, updateTeam } from '../../connections/team';
 import { CustomButton } from '../../components';
 import { AddParticipantModal } from './AddParticipantModal';
@@ -26,6 +26,8 @@ export function Team() {
   const [teamData, setTeamData] = useState<TeamEntity>();
   const [loadingTeam, setLoadingTeam] = useState<boolean>(false);
   const [addParticipantModalVisible, setAddParticipantModalVisible] = useState<boolean>(false);
+  const navigate = useNavigate();
+
 
   const teamTechnologies = teamData?.tecnologias;
   const teamCeremonies = teamData?.cerimonias;
@@ -77,7 +79,7 @@ export function Team() {
       <Row>
         <Col span={8}>
           <Row justify='center'>
-            <CustomButton label='Criar nova avaliação' />
+            <CustomButton label='Criar nova avaliação' onClick={() => navigate('avaliation')}/>
           </Row>
           <Row justify='center' style={{ marginTop: 20 }}>
             <Select style={{ width: 120 }} defaultValue='1'>

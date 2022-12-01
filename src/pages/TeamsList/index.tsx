@@ -95,7 +95,7 @@ export function TeamsList() {
               requestCeremonies={requestCeremonies}
             />
           </Tabs.TabPane>
-          <Tabs.TabPane tab='Tecnolgias' key='4'>
+          <Tabs.TabPane tab='Tecnologias' key='4'>
             <TechnologiesTable
               requestTechnologies={requestTechnologies}
               technologies={technologies}

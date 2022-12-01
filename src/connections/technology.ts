@@ -15,7 +15,11 @@ export type NewTechnology = {
 export async function getTechnologies(): Promise<Technology[] | undefined> {
   try {
     const response = await api.get('/tecnologia/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

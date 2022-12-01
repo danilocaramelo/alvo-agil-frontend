@@ -8,25 +8,29 @@ export type Participant = {
   nmParticipante: string;
   flParticipante: 'S' | 'N';
   dtInicioParticipante: string;
-  dtFimParticipante: string;
+  dtFimParticipante?: string;
   emailParticipante: string;
-  time: Team;
+  time?: Team;
   funcao: ParticipantFunction;
 };
 
 export type NewParticipant = {
-  cdParticipante: number;
   nmParticipante: string;
   flParticipante: 'S' | 'N';
   dtInicioParticipante: string;
-  dtFimParticipante: string;
+  dtFimParticipante?: string;
   emailParticipante: string;
+  cdFuncao: number;
 };
 
 export async function getParticipants(): Promise<Participant[] | undefined> {
   try {
     const response = await api.get('/participante/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

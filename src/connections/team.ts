@@ -41,7 +41,11 @@ export type NewTeam = {
 export async function getTeams(): Promise<Team[] | undefined> {
   try {
     const response = await api.get('/time/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
@@ -51,7 +55,11 @@ export async function getTeams(): Promise<Team[] | undefined> {
 export async function getTeam(teamId: number): Promise<Team | undefined> {
   try {
     const response = await api.get(`/time/busca/${teamId}`);
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return undefined;
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
