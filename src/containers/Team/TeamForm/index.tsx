@@ -19,15 +19,15 @@ type FormValues = {
   dtInicioTime: moment.Moment;
   cerimonias: [
     {
-      cdCerimonia: number;
+      cdCerimonia: string;
     },
   ];
   framework: {
-    cdFramework: number;
+    cdFramework: string;
   };
   tecnologias: [
     {
-      cdTecnologia: number;
+      cdTecnologia: string;
     },
   ];
   perguntas: null;
@@ -61,7 +61,11 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
   }, []);
 
   const newTeam = useCallback(async (values: FormValues) => {
-    const finalValues: NewTeam = {...values, dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD') };
+    console.log(values);
+    const finalValues: NewTeam = {
+      ...values,
+      dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD'),
+    };
     await createTeam(finalValues);
     requestTeams();
     closeModal();
@@ -91,7 +95,7 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
         <Form.Item label='Framework' name='framework'>
           <Select>
             {frameworks?.map((framework) => (
-              <Select.Option value={framework.cdFramework} key={framework.cdFramework}>
+              <Select.Option value={String(framework.cdFramework)} key={framework.cdFramework}>
                 {framework.nmFramework}
               </Select.Option>
             ))}
@@ -100,7 +104,7 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
         <Form.Item label='Cerimonias' name='cerimonias'>
           <Select mode='multiple'>
             {ceremonies?.map((ceremony) => (
-              <Select.Option value={ceremony.cdCerimonia} key={ceremony.cdCerimonia}>
+              <Select.Option value={String(ceremony.cdCerimonia)} key={ceremony.cdCerimonia}>
                 {ceremony.nmCerimonia}
               </Select.Option>
             ))}
@@ -109,7 +113,7 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
         <Form.Item label='Tecnologias' name='tecnologias'>
           <Select mode='multiple'>
             {technologies?.map((technology) => (
-              <Select.Option value={technology.cdTecnologia} key={technology.cdTecnologia}>
+              <Select.Option value={String(technology.cdTecnologia)} key={technology.cdTecnologia}>
                 {technology.nmTecnologia}
               </Select.Option>
             ))}

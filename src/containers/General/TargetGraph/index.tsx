@@ -1,12 +1,12 @@
 import { Sunburst } from '@ant-design/plots';
 import { SunburstConfig } from '@ant-design/charts';
-import { AgilWheelData } from './types';
+import { Aplication, NewAplication } from '../../../connections/aplication';
 
-type AgilWheelProps = {
-  data: AgilWheelData;
+type AplicationProps = {
+  data: Aplication | NewAplication;
 };
 
-export const AgilWheel = ({ data }: AgilWheelProps) => {
+export const TargetGraph = ({ data }: AplicationProps) => {
   const config = {
     data: data,
     innerRadius: 0.3,

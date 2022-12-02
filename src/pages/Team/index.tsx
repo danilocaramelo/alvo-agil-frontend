@@ -12,7 +12,7 @@ import {
 import { AgilWheel, ParticipantDrawer } from '../../containers';
 import { useCallback, useEffect, useState } from 'react';
 import './style.scss';
-import { data2 } from '../../containers/General/AgilWheel/datamock_copy';
+import { data2 } from '../../mocks/datamock_copy';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getTeam, Team as TeamEntity, updateTeam } from '../../connections/team';
 import { CustomButton } from '../../components';

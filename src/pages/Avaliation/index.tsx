@@ -1,16 +1,28 @@
 import { Col, Radio, Row, Select, Space, Typography } from 'antd';
 import './style.scss';
-import { data2 } from '../../containers/General/AgilWheel/datamock_copy';
+import { data2 } from '../../mocks/datamock_copy';
 import { CustomButton } from '../../components';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { getAplicationsList } from '../../connections/aplication';
 
 const { Title } = Typography;
 
 export function Avaliation() {
+  const [aplications, setAplications] = useState<any>([]);
+
   const sendAvaliation = useCallback(() => {
     console.log(data2);
   }, [data2]);
 
+  const requestAplications = useCallback(async () => {
+    const response = await getAplicationsList();
+    setAplications(response);
+  }, []);
+
+  useEffect(() => {
+    requestAplications();
+    console.log(aplications);
+  }, []);
   return (
     <div className='avaliation-page'>
       <Row justify='center'>
@@ -33,7 +45,7 @@ export function Avaliation() {
                         question.score = item.target.value;
                       }}
                     >
-                      <Space direction='vertical'>
+                      <Space>
                         <Radio value={1}>1</Radio>
                         <Radio value={2}>2</Radio>
                         <Radio value={3}>3</Radio>

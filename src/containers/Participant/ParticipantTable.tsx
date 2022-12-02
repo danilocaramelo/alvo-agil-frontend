@@ -1,8 +1,8 @@
-import { Table, Tag } from 'antd';
+import { Popover, Row, Table, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { getParticipants, Participant } from '../../connections/particpant';
+import { deleteParticipant, getParticipants, Participant } from '../../connections/particpant';
 import { ParticipantDrawer } from './ParticipantDrawer';
 import { CustomButton } from '../../components';
 
@@ -31,6 +31,11 @@ export function ParticipantTable() {
     },
     [],
   );
+
+  const removeParticipant = useCallback(async (participantId: number) => {
+    await deleteParticipant(participantId);
+    requestParticipants();
+  }, []);
 
   const columns: ColumnsType<Participant> = [
     {
@@ -77,11 +82,24 @@ export function ParticipantTable() {
             onClick={() => console.log()}
             icon={<EditOutlined />}
           />
-          <CustomButton
-            style={{ marginRight: '10px' }}
-            onClick={() => console.log()}
-            icon={<DeleteOutlined />}
-          />
+          <Popover
+            content={
+              <>
+                <div>Tem certeza que deseja excluir?</div>
+                <Row justify='center'>
+                  <CustomButton
+                    onClick={() => removeParticipant(participant.cdParticipante)}
+                    label='Confirma'
+                    color='orange'
+                    style={{ marginTop: '10px' }}
+                  />
+                </Row>
+              </>
+            }
+            trigger='click'
+          >
+            <CustomButton icon={<DeleteOutlined />} />
+          </Popover>
         </>
       ),
     },

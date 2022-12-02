@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Row, Tabs, Typography } from 'antd';
-import './Participant.css';
+import './style.scss';
 import { FunctionForm, FunctionsTable, ParticipantForm, ParticipantTable } from '../../containers';
 import { CustomDropdown } from '../../components/CustomDropdown';
 import { FunctionElement, getFunctions } from '../../connections/functions';

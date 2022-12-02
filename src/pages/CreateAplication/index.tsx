@@ -2,19 +2,23 @@ import { Button, Card, Col, Collapse, Result, Row, Typography } from 'antd';
 import { useCallback, useState } from 'react';
 import { CustomButton } from '../../components';
 import { AgilWheel } from '../../containers';
-import { AgilWheelData, AgilWheelElement } from '../../containers/General/AgilWheel/types';
 import { CreateThemeModal } from '../../containers/Questions/CreateThemeModal';
 import { CreateLayerModal } from '../../containers/Questions/CreateLayerModal';
 import { CreateQuestionModal } from '../../containers/Questions/CreateQuestionModal';
 import './style.scss';
+import {
+  AplicationElement,
+  createAplication,
+  getAplication,
+  NewAplication,
+} from '../../connections/aplication';
 
 const { Panel } = Collapse;
 const { Title } = Typography;
 
 export function CreateAplication() {
-  const [agilWheelData] = useState<AgilWheelData>({
+  const [aplication] = useState<NewAplication>({
     label: 'Start',
-    data: 'YYYY-MM-DD',
     children: [],
   });
   const [createLayerModalVisible, setCreateLayerModalVisible] = useState<boolean>(false);
@@ -22,23 +26,23 @@ export function CreateAplication() {
   const [createQuestionModalVisible, setCreateQuestionModalVisible] = useState<boolean>(false);
 
   const createLayer = useCallback((label: string) => {
-    const newElement: AgilWheelElement = { label, score: 1, children: [] };
-    agilWheelData.children.push(newElement);
+    const newElement: AplicationElement = { label, score: 1, children: [] };
+    aplication.children.push(newElement);
   }, []);
 
   const createTheme = useCallback((label: string, layer: string) => {
-    const newElement: AgilWheelElement = { label, score: 1, children: [] };
-    const layerIndex = agilWheelData.children.findIndex((element) => element.label === layer);
-    agilWheelData.children[layerIndex].children?.push(newElement);
+    const newElement: AplicationElement = { label, score: 1, children: [] };
+    const layerIndex = aplication.children.findIndex((element) => element.label === layer);
+    aplication.children[layerIndex].children?.push(newElement);
   }, []);
 
   const createQuestion = useCallback((label: string, layer: string, theme: string) => {
-    const newElement: AgilWheelElement = { label, score: 1 };
-    const layerIndex = agilWheelData.children.findIndex((element) => element.label === layer);
-    const themeIndex = agilWheelData.children[layerIndex].children?.findIndex(
+    const newElement: AplicationElement = { label, score: 1 };
+    const layerIndex = aplication.children.findIndex((element) => element.label === layer);
+    const themeIndex = aplication.children[layerIndex].children?.findIndex(
       (element) => element.label === theme,
     );
-    const targetLayer = agilWheelData.children[layerIndex];
+    const targetLayer = aplication.children[layerIndex];
     const targetTheme = targetLayer ? targetLayer.children![themeIndex!] : null;
     if (targetTheme) {
       targetTheme.children!.push(newElement);
@@ -48,6 +52,11 @@ export function CreateAplication() {
   const openLayerModalVisible = useCallback(() => setCreateLayerModalVisible(true), []);
   const openThemeModalVisible = useCallback(() => setCreateThemeModalVisible(true), []);
   const openQuestionModalVisible = useCallback(() => setCreateQuestionModalVisible(true), []);
+
+  const newAplication = useCallback(async () => {
+    console.log(aplication);
+    await createAplication(aplication);
+  }, [aplication]);
 
   return (
     <div className='question-page'>
@@ -82,17 +91,20 @@ export function CreateAplication() {
       </div>
       <Row align='middle' style={{ height: '440px' }}>
         <Col span={12}>
-          {agilWheelData.children.length ? (
-            <AgilWheel data={agilWheelData} />
+          {aplication.children.length ? (
+            <AgilWheel data={aplication} />
           ) : (
             <Result status='404' subTitle='Hum... nada por aqui ainda. Comece a criar :)' />
           )}
+          <Row justify='center'>
+            <CustomButton label='Criar aplicação' onClick={newAplication} />
+          </Row>
         </Col>
         <Col span={12} style={{ height: '100%' }}>
           <Card style={{ height: '100%' }}>
-            {agilWheelData.children[0]?.children?.length ? (
+            {aplication.children[0]?.children?.length ? (
               <Collapse>
-                {agilWheelData.children.map((layer) =>
+                {aplication.children.map((layer) =>
                   layer.children?.map((theme) => (
                     <Panel key={theme.label} header={theme.label} className='collapse-panel'>
                       {theme.children?.map((question) => (
@@ -119,13 +131,13 @@ export function CreateAplication() {
         visible={createThemeModalVisible}
         setVisible={setCreateThemeModalVisible}
         createTheme={createTheme}
-        agilWheelData={agilWheelData}
+        agilWheelData={aplication}
       />
       <CreateQuestionModal
         visible={createQuestionModalVisible}
         setVisible={setCreateQuestionModalVisible}
         createQuestion={createQuestion}
-        agilWheelData={agilWheelData}
+        agilWheelData={aplication}
       />
     </div>
   );

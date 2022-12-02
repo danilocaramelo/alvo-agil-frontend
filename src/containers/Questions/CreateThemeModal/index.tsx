@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
-import { Button, Form, Input, Modal, Row, Select } from 'antd';
-import { AgilWheelData } from '../../General/AgilWheel/types';
+import { Form, Input, Select } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { CustomModal } from '../../../components';
+import { NewAplication } from '../../../connections/aplication';
 
 type CreateThemeModalProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
   createTheme: (label: string, layer: string) => void;
-  agilWheelData: AgilWheelData;
+  agilWheelData: NewAplication;
 };
 
 export function CreateThemeModal({

@@ -46,3 +46,13 @@ export async function createParticipant(body: NewParticipant) {
     console.log(e);
   }
 }
+
+export async function deleteParticipant(id: number) {
+  try {
+    await api.delete(`participante/deleta/${id}`);
+    notification.success({ message: 'Sucesso ao deletar o participante :)' });
+  } catch (e) {
+    notification.error({ message: 'erro ao criar o participante :(' });
+    console.log(e);
+  }
+}

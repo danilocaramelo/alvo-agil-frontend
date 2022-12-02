@@ -1,9 +1,9 @@
-import { AgilWheelData } from './types';
+import { Aplication } from '../connections/aplication';
 
-export const data2: AgilWheelData = {
-  // nome avaliação || data da aplicação
+export const data2: Aplication = {
+  cdAplicacao: '1',
   label: '',
-  data: 'YYYY-MM-DD',
+  dtAplicacao: 'YYYY-MM-DD',
   children: [
     {
       // camada
@@ -21,7 +21,8 @@ export const data2: AgilWheelData = {
               peso: 1,
             },
             {
-              label: 'Os acessos aos softwares são controlados e organizados de mofo que somente as pessoas certas recebem as autorizações necessárias',
+              label:
+                'Os acessos aos softwares são controlados e organizados de modo que somente as pessoas certas recebem as autorizações necessárias',
               score: 1,
             },
           ],

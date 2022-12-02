@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
-import { Button, Form, Input, Modal, Row, Select } from 'antd';
-import { AgilWheelData, AgilWheelElement } from '../../General/AgilWheel/types';
+import { Form, Input, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { CustomModal } from '../../../components';
+import { AplicationElement, NewAplication } from '../../../connections/aplication';
 
 type CreateQuestionModalProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
   createQuestion: (label: string, layer: string, theme: string) => void;
-  agilWheelData: AgilWheelData;
+  agilWheelData: NewAplication;
 };
 
 export function CreateQuestionModal({
@@ -17,7 +17,7 @@ export function CreateQuestionModal({
   createQuestion,
   agilWheelData,
 }: CreateQuestionModalProps) {
-  const [themes, setThemes] = useState<AgilWheelElement[] | undefined>([]);
+  const [themes, setThemes] = useState<AplicationElement[] | undefined>([]);
   const closeModal = useCallback(() => setVisible(false), []);
   const [form] = useForm();
 

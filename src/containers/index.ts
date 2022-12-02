@@ -8,4 +8,4 @@ export { ParticipantDrawer } from './Participant/ParticipantDrawer';
 export { CeremoniesTable } from './Team/CeremoniesTable';
 export { CerimonyForm } from './Team/CeremonyForm';
 export { FrameworksTable } from './Team/FrameworksTable';
-export { AgilWheel } from './General/AgilWheel';
+export { TargetGraph as AgilWheel } from './General/TargetGraph';

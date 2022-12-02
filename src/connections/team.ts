@@ -24,15 +24,15 @@ export type NewTeam = {
   dtInicioTime: string;
   cerimonias: [
     {
-      cdCerimonia: number;
+      cdCerimonia: string;
     },
   ];
   framework: {
-    cdFramework: number;
+    cdFramework: string;
   };
   tecnologias: [
     {
-      cdTecnologia: number;
+      cdTecnologia: string;
     },
   ];
   perguntas: null;
