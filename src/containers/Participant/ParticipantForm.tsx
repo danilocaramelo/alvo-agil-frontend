@@ -65,6 +65,7 @@ export function ParticipantForm({
         ? values.dtFimParticipante.format('YYYY-MM-DD')
         : undefined,
     };
+    console.log(initialValues);
     if (initialValues) {
       updateParticipant({ ...finalValues, cdParticipante: String(initialValues.cdParticipante) });
     } else {
@@ -72,7 +73,7 @@ export function ParticipantForm({
     }
     await requestParticipants();
     closeModal();
-  }, []);
+  }, [initialValues]);
 
   if (initialValues) {
     form.setFieldsValue(initialValues);

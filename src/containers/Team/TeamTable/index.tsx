@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { deleteTeam, getTeams, Team } from '../../../connections/team';
+import { deleteTeam, Team } from '../../../connections/team';
 import './TeamTable.scss';
 import { CustomButton } from '../../../components';
+import { TeamForm } from '../TeamForm';
 
 type TeamTableProps = {
   teams: Team[] | undefined;
@@ -15,6 +16,9 @@ type TeamTableProps = {
 
 export function TeamTable({ teams, loading, requestTeams }: TeamTableProps) {
   const navigate = useNavigate();
+  const [teamFormVisible, setTeamFormVisible] = useState<boolean>(false);
+  const closeTeamForm = useCallback(() => setTeamFormVisible(false), []);
+  const [teamInitialValues, setTeamInitialValues] = useState<Team>();
 
   useEffect(() => {
     requestTeams();
@@ -70,7 +74,10 @@ export function TeamTable({ teams, loading, requestTeams }: TeamTableProps) {
           />
           <CustomButton
             icon={<EditOutlined />}
-            onClick={() => console.log()}
+            onClick={() => {
+              setTeamInitialValues(team);
+              setTeamFormVisible(true);
+            }}
             style={{ marginRight: '10px' }}
           />
           <Popover
@@ -104,6 +111,12 @@ export function TeamTable({ teams, loading, requestTeams }: TeamTableProps) {
         loading={loading}
         rowKey='cdTime'
         pagination={{ pageSize: 4 }}
+      />
+      <TeamForm
+        visible={teamFormVisible}
+        closeModal={closeTeamForm}
+        requestTeams={requestTeams}
+        initialValues={teamInitialValues}
       />
     </div>
   );

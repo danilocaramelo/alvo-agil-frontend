@@ -1,32 +1,53 @@
 import { DatePicker, Form, Input, Select } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
+import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import { CustomModal } from '../../../components';
 import { Ceremony, getCeremonies } from '../../../connections/ceremony';
 import { Framework, getFrameworks } from '../../../connections/framework';
-import { createTeam, NewTeam } from '../../../connections/team';
+import { createTeam, NewTeam, Team, updateTeam } from '../../../connections/team';
 import { getTechnologies, Technology } from '../../../connections/technology';
 
 type TeamFormProps = {
   visible: boolean;
   closeModal: () => void;
   requestTeams: () => void;
+  initialValues?: Team;
 };
 
 type FormValues = {
-  nmTime: string;
-  flTime: 'S' | 'N';
-  dtInicioTime: moment.Moment;
-  cerimonias: string[];
-  framework: string;
-  tecnologias: string[];
+  nmTime?: string;
+  flTime?: 'S' | 'N';
+  dtInicioTime?: moment.Moment;
+  dtFinalizacaoTime?: moment.Moment;
+  cerimonias?: string[];
+  framework?: string | null;
+  tecnologias?: string[];
 };
 
-export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
+export function TeamForm({ visible, closeModal, requestTeams, initialValues }: TeamFormProps) {
   const [frameworks, setFrameworks] = useState<Framework[] | undefined>([]);
   const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
   const [technologies, setTechnologies] = useState<Technology[] | undefined>([]);
   const [form] = useForm();
+
+  console.log(initialValues);
+
+  if (initialValues) {
+    form.setFieldValue('nmTime', initialValues.nmTime);
+    form.setFieldValue('flTime', initialValues.flTime);
+    form.setFieldValue(
+      'dtInicioTime',
+      initialValues.dtInicioTime ? moment(initialValues.dtInicioTime) : undefined,
+    );
+    form.setFieldValue(
+      'dtFinalizacaoTime',
+      initialValues.dtFinalizacaoTime ? moment(initialValues?.dtFinalizacaoTime) : undefined,
+    );
+    form.setFieldValue('framework', initialValues.framework);
+    form.setFieldValue('cerimonias', initialValues.cerimonias);
+    form.setFieldValue('tecnologias', initialValues.tecnologias);
+  }
 
   const requestFrameworks = useCallback(async () => {
     const responseFrameworks = await getFrameworks();
@@ -49,15 +70,19 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
     requestTechnologies();
   }, []);
 
-  const newTeam = useCallback(async (values: FormValues) => {
+  const submit = useCallback(async (values: FormValues) => {
     const finalValues: NewTeam = {
       ...values,
       dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD'),
+      dtFinalizacaoTime: values.dtFinalizacaoTime?.format('YYYY-MM-DD'),
       participantes: [],
     };
-    console.log(values);
-    await createTeam(finalValues);
-    requestTeams();
+    if (initialValues) {
+      await updateTeam({ ...finalValues, cdTime: initialValues.cdTime });
+    } else {
+      await createTeam(finalValues);
+    }
+    await requestTeams();
     closeModal();
   }, []);
 
@@ -65,7 +90,7 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
     <CustomModal
       closeModal={closeModal}
       visible={visible}
-      onFinish={newTeam}
+      onFinish={submit}
       okButtonText='Criar'
       form={form}
     >
@@ -80,7 +105,10 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
           </Select>
         </Form.Item>
         <Form.Item label='Data de início' name='dtInicioTime'>
-          <DatePicker format='YYYY/MM/DD' />
+          <DatePicker format='DD/MM/YYYY' />
+        </Form.Item>
+        <Form.Item label='Data de final' name='dtFinalizacaoTime'>
+          <DatePicker format='DD/MM/YYYY' />
         </Form.Item>
         <Form.Item label='Framework' name='framework'>
           <Select>

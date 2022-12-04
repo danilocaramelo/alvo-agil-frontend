@@ -11,7 +11,7 @@ export function Avaliation() {
   const [aplications, setAplications] = useState<any>([]);
 
   const sendAvaliation = useCallback(() => {
-    console.log(data2);
+    console.log();
   }, [data2]);
 
   const requestAplications = useCallback(async () => {
@@ -22,7 +22,6 @@ export function Avaliation() {
 
   useEffect(() => {
     requestAplications();
-    console.log(aplications);
   }, []);
   return (
     <div className='avaliation-page'>

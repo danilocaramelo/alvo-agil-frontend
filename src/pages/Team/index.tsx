@@ -72,7 +72,6 @@ export function Team() {
         cerimonias,
         participantes: idsNewsParticipants,
       };
-      console.log(newTeam);
       await updateTeam(newTeam);
       await requestTeam();
     },

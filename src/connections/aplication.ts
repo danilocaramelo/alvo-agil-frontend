@@ -23,7 +23,7 @@ export type NewAplication = {
 
 export async function getAplicationsList(): Promise<Aplication[] | undefined> {
   try {
-    const response = await api.get('/aplicacao/todos');
+    const response = await api.get('/agil/aplicacao/todos');
     if (response.data) {
       return response.data;
     } else {
@@ -37,7 +37,7 @@ export async function getAplicationsList(): Promise<Aplication[] | undefined> {
 
 export async function getAplication(id: string): Promise<Aplication | undefined> {
   try {
-    const response = await api.get(`/roda/aplicacao/${id}`);
+    const response = await api.get(`/agil/aplicacao/${id}`);
     if (response.data) {
       return response.data;
     } else {
@@ -51,7 +51,8 @@ export async function getAplication(id: string): Promise<Aplication | undefined>
 
 export async function createAplication(aplication: NewAplication) {
   try {
-    await api.post('/roda/aplicacao/add', aplication);
+    await api.post('/agil/aplicacao/add', aplication);
+    notification.success({ message: 'sucesso ao criar a aplicação :)' });
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
