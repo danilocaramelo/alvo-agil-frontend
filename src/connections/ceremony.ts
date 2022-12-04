@@ -15,7 +15,11 @@ export type NewCeremony = {
 export async function getCeremonies(): Promise<Ceremony[] | undefined> {
   try {
     const response = await api.get('/cerimonia/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
@@ -35,6 +39,15 @@ export async function createCeremony(newCeremony: NewCeremony) {
 export async function deleteCeremony(ceremonyId: number) {
   try {
     await api.delete(`/cerimonia/deleta/${ceremonyId}`);
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}
+
+export async function updateCeremony(ceremony: Ceremony) {
+  try {
+    await api.put('/cerimonia/atualiza/', ceremony);
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

@@ -1,3 +1,6 @@
 export { Home } from './Home';
-export { Team } from './Team/Team';
-export { Participant } from './Participant/Participant';
+export { TeamsList } from './TeamsList';
+export { Participant } from './Participant';
+export { Team } from './Team';
+export { CreateAplication } from './CreateAplication';
+export { Avaliation } from './Avaliation';

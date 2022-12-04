@@ -1,15 +1,17 @@
 import { useCallback } from 'react';
-import { Button, Form, Input, Modal, Row, Select } from 'antd';
+import { Col, Form, Input, Row, Select } from 'antd';
 import { createTechnology, NewTechnology } from '../../../connections/technology';
+import { CustomModal } from '../../../components';
+import { useForm } from 'antd/lib/form/Form';
 
 type TechnologyFormProps = {
   visible: boolean;
-  setVisible: (arg: boolean) => void;
+  closeModal: () => void;
   requestTechnologies: () => void;
 };
 
-export function TechnologyForm({ visible, setVisible, requestTechnologies }: TechnologyFormProps) {
-  const closeModal = useCallback(() => setVisible(false), []);
+export function TechnologyForm({ visible, closeModal, requestTechnologies }: TechnologyFormProps) {
+  const [form] = useForm();
 
   const newTechnology = useCallback(async (values: NewTechnology) => {
     await createTechnology(values);
@@ -18,26 +20,28 @@ export function TechnologyForm({ visible, setVisible, requestTechnologies }: Tec
   }, []);
 
   return (
-    <Modal visible={visible} onCancel={closeModal} closable={false} footer={null} centered>
-      <Form onFinish={newTechnology}>
-        <Form.Item label='Nome da Tecnologia' name='nmTecnologia'>
-          <Input />
-        </Form.Item>
-        <Form.Item label='Status' name='flTecnologia'>
-          <Select>
-            <Select.Option value='S'>Ativo</Select.Option>
-            <Select.Option value='N'>Inativo</Select.Option>
-          </Select>
-        </Form.Item>
-        <Row>
-          <Button onClick={closeModal} style={{}}>
-            Cancelar
-          </Button>
-          <Button htmlType='submit' type='primary'>
-            Enviar
-          </Button>
-        </Row>
-      </Form>
-    </Modal>
+    <CustomModal
+      visible={visible}
+      closeModal={closeModal}
+      onFinish={newTechnology}
+      okButtonText='Criar'
+      form={form}
+    >
+      <Row>
+        <Col span={16}>
+          <Form.Item label='Tecnologia' name='nmTecnologia'>
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col span={7} offset={1}>
+          <Form.Item label='Status' name='flTecnologia'>
+            <Select>
+              <Select.Option value='S'>Ativo</Select.Option>
+              <Select.Option value='N'>Inativo</Select.Option>
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
+    </CustomModal>
   );
 }

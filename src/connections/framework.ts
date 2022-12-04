@@ -15,7 +15,11 @@ export type NewFramework = {
 export async function getFrameworks(): Promise<Framework[] | undefined> {
   try {
     const response = await api.get('/framework/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
@@ -35,6 +39,15 @@ export async function createFramework(newFramework: NewFramework) {
 export async function deleteFramework(frameworkId: number) {
   try {
     await api.delete(`/framework/deleta/${frameworkId}`);
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}
+
+export async function updateFramework(framework: Framework) {
+  try {
+    await api.put('/framework/atualiza/', framework);
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

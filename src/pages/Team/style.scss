@@ -1,0 +1,37 @@
+.team-page {
+  height: 100%;
+
+  .team-name {
+    color: #f58327;
+    margin-bottom: 50px;
+  }
+
+  .team-description-item {
+    font-size: 17px;
+  }
+
+  .team-description-icon {
+    margin-right: 10px;
+    color: #2c00d5;
+  }
+
+  .team-description-text {
+    color: #f58327;
+  }
+
+  .list {
+    height: 140px;
+    overflow: auto;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+
+  .ant-list-empty-text {
+    display: none;
+  }
+
+  .list-title {
+    font-size: 15px;
+    margin-top: 20px;
+  }
+}

@@ -1,30 +1,37 @@
-import { Button, Popover, Row, Table, Tag } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { Popover, Row, Table, Tag } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { Ceremony, deleteCeremony, getCeremonies } from '../../../connections/ceremony';
-import { CerimonyForm } from '../CeremonyForm';
+import { Ceremony, deleteCeremony, updateCeremony } from '../../../connections/ceremony';
+import { CustomButton } from '../../../components';
+import { SimpleForm, SimpleFormTypes } from '../../General/SimpleForm';
 
-export function CeremoniesTable() {
-  const [loadingTable, setLoadingTable] = useState(false);
-  const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
-  const [isCerimonyModalOpen, setIsCerimonyModalOpen] = useState(false);
-  const openCerimonyModal = useCallback(() => setIsCerimonyModalOpen(true), []);
-  // const [popOverDelete, setPopOverDelete] = useState<boolean>(false);
-  // const hide = () => {
-  //   setPopOverDelete(false);
-  // };
+type CeremoniesTableProps = {
+  ceremonies: Ceremony[] | undefined;
+  loading: boolean;
+  requestCeremonies: () => void;
+};
 
-  const requestCeremonies = useCallback(async () => {
-    setLoadingTable(true);
-    const response = await getCeremonies();
-    setCeremonies(response);
-    setLoadingTable(false);
+export function CeremoniesTable({ ceremonies, loading, requestCeremonies }: CeremoniesTableProps) {
+  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
+  const [editFormInitialValues, setEditFormInitialValues] = useState<Ceremony | undefined>();
+
+  const openEditForm = useCallback(
+    (initialValues: Ceremony) => () => {
+      setEditFormInitialValues(initialValues);
+      setEditFormVisible(true);
+    },
+    [],
+  );
+  const closeEditForm = useCallback(() => setEditFormVisible(false), []);
+
+  const editCeremony = useCallback(async (values: Ceremony) => {
+    await updateCeremony(values);
+    requestCeremonies();
   }, []);
 
   const removeCeremony = useCallback(async (ceremonyId: number) => {
     await deleteCeremony(ceremonyId);
-    // hide();
     requestCeremonies();
   }, []);
 
@@ -37,11 +44,13 @@ export function CeremoniesTable() {
       title: 'Nome',
       dataIndex: 'nmCerimonia',
       key: 'nmCerimonia',
+      align: 'center',
     },
     {
       title: 'Status',
       key: 'flCerimonia',
       dataIndex: 'flCerimonia',
+      align: 'center',
       render: (_, { flCerimonia }) =>
         flCerimonia === 'S' ? <Tag color='green'>Ativo</Tag> : <Tag color='red'>Inativo</Tag>,
     },
@@ -49,37 +58,53 @@ export function CeremoniesTable() {
       title: 'Ações',
       key: 'actions',
       dataIndex: 'cdCerimonia',
-      render: (_, { cdCerimonia }) => (
-        <Popover
-          content={
-            <>
-              <div>Tem certeza que deseja excluir?</div>
-              <Row justify='center'>
-                <Button onClick={() => removeCeremony(cdCerimonia)}>Confirma</Button>
-              </Row>
-            </>
-          }
-          trigger='click'
-        >
-          <Button shape='circle' icon={<DeleteOutlined />} />
-        </Popover>
+      align: 'center',
+      render: (_, ceremony) => (
+        <>
+          <CustomButton
+            icon={<EditOutlined />}
+            onClick={openEditForm(ceremony)}
+            style={{ marginRight: '10px' }}
+          />
+          <Popover
+            content={
+              <>
+                <div>Tem certeza que deseja excluir?</div>
+                <Row justify='center'>
+                  <CustomButton
+                    onClick={() => removeCeremony(ceremony.cdCerimonia)}
+                    label='Confirma'
+                    color='orange'
+                    style={{ marginTop: '10px' }}
+                  />
+                </Row>
+              </>
+            }
+            trigger='click'
+          >
+            <CustomButton icon={<DeleteOutlined />} onClick={() => console.log()} />
+          </Popover>
+        </>
       ),
     },
   ];
 
   return (
     <div id='ceremonies-table'>
-      <Button onClick={openCerimonyModal}>Nova Cerimonia</Button>
       <Table
         columns={columns}
         dataSource={ceremonies}
-        loading={loadingTable}
+        loading={loading}
         rowKey='cdCerimonia'
+        pagination={{ pageSize: 4 }}
       />
-      <CerimonyForm
-        visible={isCerimonyModalOpen}
-        setVisible={setIsCerimonyModalOpen}
-        requestCeremonies={requestCeremonies}
+      <SimpleForm
+        visible={editFormVisible}
+        closeModal={closeEditForm}
+        submit={editCeremony}
+        type={SimpleFormTypes.CEREMONY}
+        request={requestCeremonies}
+        initialValues={editFormInitialValues}
       />
     </div>
   );

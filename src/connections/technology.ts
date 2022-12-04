@@ -15,7 +15,11 @@ export type NewTechnology = {
 export async function getTechnologies(): Promise<Technology[] | undefined> {
   try {
     const response = await api.get('/tecnologia/todos');
-    return response.data;
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
@@ -35,6 +39,15 @@ export async function deleteTechnology(technologyId: number) {
   try {
     await api.delete(`/tecnologia/deleta/${technologyId}`);
     notification.success({ message: 'sucesso ao deletar a Tecnologia :)' });
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}
+
+export async function updateTechnology(technology: Technology) {
+  try {
+    await api.put('/tecnologia/atualiza/', technology);
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
