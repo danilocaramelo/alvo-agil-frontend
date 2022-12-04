@@ -19,10 +19,12 @@ export type Team = {
 };
 
 export type NewTeam = {
+  cdTime?: number;
   nmTime?: string;
   flTime?: 'S' | 'N';
   dtInicioTime?: string;
-  framework?: string;
+  dtFinalizacaoTime?: string;
+  framework?: string | null;
   cerimonias?: string[];
   tecnologias?: string[];
   participantes?: string[];
@@ -78,6 +80,8 @@ export async function deleteTeam(teamId: number) {
 export async function updateTeam(team: NewTeam) {
   try {
     await api.put('/time/atualiza/', team);
+    notification.success({ message: 'Sucesso ao atualizar o time :)' });
+
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

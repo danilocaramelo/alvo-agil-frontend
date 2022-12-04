@@ -6,7 +6,7 @@ const getInstance = () => {
   if (_instance !== null) return _instance;
 
   const newInstance = axios.create({
-    baseURL: 'http://54.233.107.70:5000/alvo',
+    baseURL: 'http://15.228.252.214:5000/alvo',
     withCredentials: false,
     headers: {
       'Content-Type': 'application/json',

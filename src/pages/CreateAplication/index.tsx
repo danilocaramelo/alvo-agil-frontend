@@ -24,7 +24,7 @@ export function CreateAplication() {
 
   const createLayer = useCallback(
     (label: string) => {
-      const newElement: AplicationElement = { label, score: 1, children: [] };
+      const newElement: AplicationElement = { label, children: [] };
       aplication.children.push(newElement);
     },
     [aplication],
@@ -32,7 +32,7 @@ export function CreateAplication() {
 
   const createTheme = useCallback(
     (label: string, layer: string) => {
-      const newElement: AplicationElement = { label, score: 1, children: [] };
+      const newElement: AplicationElement = { label, children: [] };
       const layerIndex = aplication.children.findIndex((element) => element.label === layer);
       aplication.children[layerIndex].children?.push(newElement);
     },

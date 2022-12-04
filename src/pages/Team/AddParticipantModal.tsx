@@ -23,18 +23,22 @@ export function AddParticipantModal({
 
   const updateTeamParticipants = useCallback(
     async (values: { participantes: string[] }) => {
-      console.log(values);
-      const framework = String(team?.framework.cdFramework);
-      const technologies = team?.tecnologias.map((technology) => String(technology.cdTecnologia));
-      const ceremonies = team?.cerimonias.map((ceremony) => String(ceremony.cdCerimonia));
+      const framework = team?.framework?.cdFramework
+        ? String(team?.framework?.cdFramework)
+        : undefined;
+      const technologies = team?.tecnologias?.map((technology) => String(technology.cdTecnologia));
+      const ceremonies = team?.cerimonias?.map((ceremony) => String(ceremony.cdCerimonia));
+      const newParticipants = team?.participantes
+        ? [...values.participantes, ...team.participantes]
+        : values.participantes;
+      const finalParticipants = newParticipants.map((cdParticipante) => String(cdParticipante));
       const newTeam: NewTeam = {
         ...team,
         framework,
         tecnologias: technologies,
         cerimonias: ceremonies,
-        participantes: values.participantes,
+        participantes: finalParticipants,
       };
-      console.log(newTeam);
       await updateTeam(newTeam);
       requestTeam();
       closeModal();

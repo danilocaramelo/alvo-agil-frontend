@@ -51,13 +51,6 @@ export function ParticipantTable({
       align: 'center',
     },
     {
-      title: 'Time',
-      dataIndex: 'time',
-      key: 'time',
-      align: 'center',
-      render: (_, { time }) => (time ? time.nmTime : '-'),
-    },
-    {
       title: 'Função',
       dataIndex: 'funcao',
       align: 'center',
