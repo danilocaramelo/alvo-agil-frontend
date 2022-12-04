@@ -7,7 +7,7 @@ import { AplicationElement, NewAplication } from '../../../connections/aplicatio
 type CreateQuestionModalProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
-  createQuestion: (label: string, layer: string, theme: string) => void;
+  createQuestion: (label: string, layer: string, theme: string, peso: number) => void;
   agilWheelData: NewAplication;
 };
 
@@ -35,8 +35,8 @@ export function CreateQuestionModal({
   );
 
   const newQuestion = useCallback(
-    async (values: { label: string; layer: string; theme: string }) => {
-      createQuestion(values.label, values.layer, values.theme);
+    async (values: { label: string; layer: string; theme: string; peso: number }) => {
+      createQuestion(values.label, values.layer, values.theme, values.peso);
       form.resetFields();
       closeModal();
     },
@@ -54,6 +54,9 @@ export function CreateQuestionModal({
     >
       <>
         <Form.Item label='Nome da Pergunta' name='label'>
+          <Input />
+        </Form.Item>
+        <Form.Item label='Peso da Pergunta' name='peso'>
           <Input />
         </Form.Item>
         <Form.Item label='Nome da Camada' name='layer'>

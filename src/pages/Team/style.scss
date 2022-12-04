@@ -20,14 +20,18 @@
   }
 
   .list {
-    margin-top: 40px;
-    min-height: 140px;
+    height: 140px;
+    overflow: auto;
     background-color: #fff;
-    border: none;
     border-radius: 10px;
   }
 
   .ant-list-empty-text {
     display: none;
+  }
+
+  .list-title {
+    font-size: 15px;
+    margin-top: 20px;
   }
 }

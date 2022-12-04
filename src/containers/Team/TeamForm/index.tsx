@@ -17,20 +17,9 @@ type FormValues = {
   nmTime: string;
   flTime: 'S' | 'N';
   dtInicioTime: moment.Moment;
-  cerimonias: [
-    {
-      cdCerimonia: string;
-    },
-  ];
-  framework: {
-    cdFramework: string;
-  };
-  tecnologias: [
-    {
-      cdTecnologia: string;
-    },
-  ];
-  perguntas: null;
+  cerimonias: string[];
+  framework: string;
+  tecnologias: string[];
 };
 
 export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
@@ -61,11 +50,12 @@ export function TeamForm({ visible, closeModal, requestTeams }: TeamFormProps) {
   }, []);
 
   const newTeam = useCallback(async (values: FormValues) => {
-    console.log(values);
     const finalValues: NewTeam = {
       ...values,
       dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD'),
+      participantes: [],
     };
+    console.log(values);
     await createTeam(finalValues);
     requestTeams();
     closeModal();

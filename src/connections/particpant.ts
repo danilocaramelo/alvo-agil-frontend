@@ -15,12 +15,13 @@ export type Participant = {
 };
 
 export type NewParticipant = {
-  nmParticipante: string;
-  flParticipante: 'S' | 'N';
-  dtInicioParticipante: string;
+  cdParticipante?: string;
+  nmParticipante?: string;
+  flParticipante?: 'S' | 'N';
+  dtInicioParticipante?: string;
   dtFimParticipante?: string;
-  emailParticipante: string;
-  cdFuncao: number;
+  emailParticipante?: string;
+  cdFuncao?: number;
 };
 
 export async function getParticipants(): Promise<Participant[] | undefined> {
@@ -51,6 +52,16 @@ export async function deleteParticipant(id: number) {
   try {
     await api.delete(`participante/deleta/${id}`);
     notification.success({ message: 'Sucesso ao deletar o participante :)' });
+  } catch (e) {
+    notification.error({ message: 'erro ao criar o participante :(' });
+    console.log(e);
+  }
+}
+
+export async function updateParticipant(body: NewParticipant) {
+  try {
+    await api.put('participante/atualiza', body);
+    notification.success({ message: 'Sucesso ao atulizar o participante :)' });
   } catch (e) {
     notification.error({ message: 'erro ao criar o participante :(' });
     console.log(e);

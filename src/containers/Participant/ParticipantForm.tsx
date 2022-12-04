@@ -6,12 +6,19 @@ import {
   getParticipantFunctions,
   ParticipantFunction,
 } from '../../connections/participantFunction';
-import { createParticipant, NewParticipant } from '../../connections/particpant';
+import {
+  createParticipant,
+  NewParticipant,
+  Participant,
+  updateParticipant,
+} from '../../connections/particpant';
 import { getTeams, Team } from '../../connections/team';
 
 type ParticipantFormProps = {
   visible: boolean;
   closeModal: () => void;
+  requestParticipants: () => void;
+  initialValues?: Participant;
 };
 
 type FormValues = {
@@ -23,7 +30,12 @@ type FormValues = {
   cdFuncao: number;
 };
 
-export function ParticipantForm({ visible, closeModal }: ParticipantFormProps) {
+export function ParticipantForm({
+  visible,
+  closeModal,
+  requestParticipants,
+  initialValues,
+}: ParticipantFormProps) {
   const [form] = useForm();
   const [participantFunctions, setParticipantFunctions] = useState<
     ParticipantFunction[] | undefined
@@ -45,7 +57,7 @@ export function ParticipantForm({ visible, closeModal }: ParticipantFormProps) {
     requestTeams();
   }, []);
 
-  const newParticipant = useCallback(async (values: FormValues) => {
+  const submit = useCallback(async (values: FormValues) => {
     const finalValues: NewParticipant = {
       ...values,
       dtInicioParticipante: values.dtInicioParticipante?.format('YYYY-MM-DD'),
@@ -53,18 +65,27 @@ export function ParticipantForm({ visible, closeModal }: ParticipantFormProps) {
         ? values.dtFimParticipante.format('YYYY-MM-DD')
         : undefined,
     };
-    await createParticipant(finalValues);
-    requestTeams();
+    if (initialValues) {
+      updateParticipant({ ...finalValues, cdParticipante: String(initialValues.cdParticipante) });
+    } else {
+      await createParticipant(finalValues);
+    }
+    await requestParticipants();
     closeModal();
   }, []);
+
+  if (initialValues) {
+    form.setFieldsValue(initialValues);
+  }
 
   return (
     <CustomModal
       closeModal={closeModal}
       visible={visible}
-      onFinish={newParticipant}
+      onFinish={submit}
       okButtonText='Criar'
       form={form}
+      initialValues={initialValues}
     >
       <>
         <Form.Item label='Nome' name='nmParticipante'>

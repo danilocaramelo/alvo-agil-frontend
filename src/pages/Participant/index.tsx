@@ -4,12 +4,14 @@ import './style.scss';
 import { FunctionForm, FunctionsTable, ParticipantForm, ParticipantTable } from '../../containers';
 import { CustomDropdown } from '../../components/CustomDropdown';
 import { FunctionElement, getFunctions } from '../../connections/functions';
+import { getParticipants, Participant as ParticipantElement } from '../../connections/particpant';
 
 const { Title } = Typography;
 
 export function Participant() {
-  const [loadingTable, setLoadingTable] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [functions, setFunctions] = useState<FunctionElement[] | undefined>([]);
+  const [participants, setParticipants] = useState<ParticipantElement[] | undefined>([]);
 
   const [participantFormVisible, setParticipantFormVisible] = useState<boolean>(false);
   const openParticipantForm = useCallback(() => setParticipantFormVisible(true), []);
@@ -20,10 +22,17 @@ export function Participant() {
   const closeFunctionForm = useCallback(() => setFunctionFormVisible(false), []);
 
   const requestFunctions = useCallback(async () => {
-    setLoadingTable(true);
+    setLoading(true);
     const response = await getFunctions();
     setFunctions(response);
-    setLoadingTable(false);
+    setLoading(false);
+  }, []);
+
+  const requestParticipants = useCallback(async () => {
+    setLoading(true);
+    const response = await getParticipants();
+    setParticipants(response);
+    setLoading(false);
   }, []);
 
   const dropdownMenu = [
@@ -42,18 +51,26 @@ export function Participant() {
       <div className='card-container'>
         <Tabs type='card'>
           <Tabs.TabPane tab='Participantes' key='1'>
-            <ParticipantTable />
+            <ParticipantTable
+              requestParticipants={requestParticipants}
+              participants={participants}
+              loading={loading}
+            />
           </Tabs.TabPane>
           <Tabs.TabPane tab='Funções' key='2'>
             <FunctionsTable
               functions={functions}
-              loading={loadingTable}
+              loading={loading}
               requestFunctions={requestFunctions}
             />
           </Tabs.TabPane>
         </Tabs>
       </div>
-      <ParticipantForm visible={participantFormVisible} closeModal={closeParticipantForm} />
+      <ParticipantForm
+        visible={participantFormVisible}
+        closeModal={closeParticipantForm}
+        requestParticipants={requestParticipants}
+      />
       <FunctionForm
         visible={functionFormVisible}
         closeModal={closeFunctionForm}

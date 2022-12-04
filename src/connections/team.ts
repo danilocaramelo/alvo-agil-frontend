@@ -19,23 +19,13 @@ export type Team = {
 };
 
 export type NewTeam = {
-  nmTime: string;
-  flTime: 'S' | 'N';
-  dtInicioTime: string;
-  cerimonias: [
-    {
-      cdCerimonia: string;
-    },
-  ];
-  framework: {
-    cdFramework: string;
-  };
-  tecnologias: [
-    {
-      cdTecnologia: string;
-    },
-  ];
-  perguntas: null;
+  nmTime?: string;
+  flTime?: 'S' | 'N';
+  dtInicioTime?: string;
+  framework?: string;
+  cerimonias?: string[];
+  tecnologias?: string[];
+  participantes?: string[];
 };
 
 export async function getTeams(): Promise<Team[] | undefined> {
@@ -85,7 +75,7 @@ export async function deleteTeam(teamId: number) {
   }
 }
 
-export async function updateTeam(team: Team) {
+export async function updateTeam(team: NewTeam) {
   try {
     await api.put('/time/atualiza/', team);
   } catch (e) {

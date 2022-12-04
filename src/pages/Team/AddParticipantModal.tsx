@@ -3,19 +3,19 @@ import { Col, Form, Row, Select } from 'antd';
 import { CustomModal } from '../../components';
 import { useForm } from 'antd/lib/form/Form';
 import { getParticipants, Participant } from '../../connections/particpant';
-import { Team, updateTeam } from '../../connections/team';
+import { NewTeam, Team, updateTeam } from '../../connections/team';
 
 type AddParticipantModalProps = {
   visible: boolean;
   closeModal: () => void;
   team: Team | undefined;
-  //   requestCeremonies: () => void;
+  requestTeam: () => void;
 };
 
 export function AddParticipantModal({
   visible,
   closeModal,
-  //   requestCeremonies,
+  requestTeam,
   team,
 }: AddParticipantModalProps) {
   const [form] = useForm();
@@ -23,19 +23,20 @@ export function AddParticipantModal({
 
   const updateTeamParticipants = useCallback(
     async (values: { participantes: string[] }) => {
-      const newParticipants = participants?.filter((participant) => {
-        return values.participantes.some((valueId) => {
-          return Number(valueId) === participant.cdParticipante;
-        });
-      });
-      if (team && newParticipants) {
-        const newTeam: Team = {
-          ...team,
-          participantes: [...team.participantes, ...newParticipants],
-        };
-        await updateTeam(newTeam);
-      }
-      // requestCeremonies();
+      console.log(values);
+      const framework = String(team?.framework.cdFramework);
+      const technologies = team?.tecnologias.map((technology) => String(technology.cdTecnologia));
+      const ceremonies = team?.cerimonias.map((ceremony) => String(ceremony.cdCerimonia));
+      const newTeam: NewTeam = {
+        ...team,
+        framework,
+        tecnologias: technologies,
+        cerimonias: ceremonies,
+        participantes: values.participantes,
+      };
+      console.log(newTeam);
+      await updateTeam(newTeam);
+      requestTeam();
       closeModal();
     },
     [participants],

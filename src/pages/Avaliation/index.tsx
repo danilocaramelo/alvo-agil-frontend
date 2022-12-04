@@ -17,6 +17,7 @@ export function Avaliation() {
   const requestAplications = useCallback(async () => {
     const response = await getAplicationsList();
     setAplications(response);
+    console.log(aplications);
   }, []);
 
   useEffect(() => {

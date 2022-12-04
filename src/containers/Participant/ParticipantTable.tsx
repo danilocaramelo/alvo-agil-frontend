@@ -2,22 +2,26 @@ import { Popover, Row, Table, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { deleteParticipant, getParticipants, Participant } from '../../connections/particpant';
+import { deleteParticipant, Participant } from '../../connections/particpant';
 import { ParticipantDrawer } from './ParticipantDrawer';
 import { CustomButton } from '../../components';
+import { ParticipantForm } from './ParticipantForm';
 
-export function ParticipantTable() {
-  const [participants, setParticipants] = useState<Participant[] | undefined>([]);
+type ParticipantTableProps = {
+  participants: Participant[] | undefined;
+  loading: boolean;
+  requestParticipants: () => void;
+};
+
+export function ParticipantTable({
+  participants,
+  loading,
+  requestParticipants,
+}: ParticipantTableProps) {
   const [selectedParticipant, setSelectedParticipant] = useState<Participant | undefined>();
-  const [loadingTable, setLoadingTable] = useState(false);
   const [showParticipantDrawer, setShowParticipantDrawer] = useState(false);
-
-  const requestParticipants = useCallback(async () => {
-    setLoadingTable(true);
-    const response = await getParticipants();
-    setParticipants(response);
-    setLoadingTable(false);
-  }, []);
+  const [participantFormVisible, setParticipantFormVisible] = useState(false);
+  const [participantInitialValues, setParticipantInitialValues] = useState<Participant>();
 
   useEffect(() => {
     requestParticipants();
@@ -31,6 +35,8 @@ export function ParticipantTable() {
     },
     [],
   );
+
+  const closeParticipantForm = useCallback(() => setParticipantFormVisible(false), []);
 
   const removeParticipant = useCallback(async (participantId: number) => {
     await deleteParticipant(participantId);
@@ -79,7 +85,10 @@ export function ParticipantTable() {
           />
           <CustomButton
             style={{ marginRight: '10px' }}
-            onClick={() => console.log()}
+            onClick={() => {
+              setParticipantInitialValues(participant);
+              setParticipantFormVisible(true);
+            }}
             icon={<EditOutlined />}
           />
           <Popover
@@ -111,7 +120,7 @@ export function ParticipantTable() {
         <Table
           columns={columns}
           dataSource={participants}
-          loading={loadingTable}
+          loading={loading}
           rowKey='cdTime'
           pagination={{ pageSize: 4 }}
         />
@@ -120,6 +129,12 @@ export function ParticipantTable() {
         participant={selectedParticipant}
         showDrawer={showParticipantDrawer}
         closeDrawer={closeParticipantDrawer}
+      />
+      <ParticipantForm
+        visible={participantFormVisible}
+        closeModal={closeParticipantForm}
+        requestParticipants={requestParticipants}
+        initialValues={participantInitialValues}
       />
     </>
   );
