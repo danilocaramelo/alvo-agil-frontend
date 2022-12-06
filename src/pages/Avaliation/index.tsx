@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Col, Radio, Row, Select, Space, Typography } from 'antd';
 import './style.scss';
 import { data2 } from '../../mocks/datamock_copy';

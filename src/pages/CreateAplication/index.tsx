@@ -14,7 +14,7 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 
 export function CreateAplication() {
-  const [aplication, setAplication] = useState<NewAplication>({
+  const [aplication] = useState<NewAplication>({
     label: '',
     children: [],
   });
@@ -24,7 +24,7 @@ export function CreateAplication() {
 
   const createLayer = useCallback(
     (label: string) => {
-      const newElement: AplicationElement = { label, children: [] };
+      const newElement: AplicationElement = { label, children: [], score: 1 };
       aplication.children.push(newElement);
     },
     [aplication],
@@ -32,7 +32,7 @@ export function CreateAplication() {
 
   const createTheme = useCallback(
     (label: string, layer: string) => {
-      const newElement: AplicationElement = { label, children: [] };
+      const newElement: AplicationElement = { label, children: [], score: 1 };
       const layerIndex = aplication.children.findIndex((element) => element.label === layer);
       aplication.children[layerIndex].children?.push(newElement);
     },
