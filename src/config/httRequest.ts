@@ -6,7 +6,7 @@ const getInstance = () => {
   if (_instance !== null) return _instance;
 
   const newInstance = axios.create({
-    baseURL: 'http://15.228.252.214:5000/alvo',
+    baseURL: 'https://alvo-backend.herokuapp.com/alvo',
     withCredentials: false,
     headers: {
       'Content-Type': 'application/json',

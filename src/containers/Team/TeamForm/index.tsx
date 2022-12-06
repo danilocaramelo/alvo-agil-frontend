@@ -44,9 +44,15 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
       'dtFinalizacaoTime',
       initialValues.dtFinalizacaoTime ? moment(initialValues?.dtFinalizacaoTime) : undefined,
     );
-    form.setFieldValue('framework', initialValues.framework);
-    form.setFieldValue('cerimonias', initialValues.cerimonias);
-    form.setFieldValue('tecnologias', initialValues.tecnologias);
+    form.setFieldValue('framework', initialValues.framework.cdFramework);
+    form.setFieldValue(
+      'cerimonias',
+      initialValues.cerimonias.map((cerimony) => cerimony.cdCerimonia),
+    );
+    form.setFieldValue(
+      'tecnologias',
+      initialValues.tecnologias.map((technology) => technology.cdTecnologia),
+    );
   }
 
   const requestFrameworks = useCallback(async () => {
@@ -70,28 +76,32 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
     requestTechnologies();
   }, []);
 
-  const submit = useCallback(async (values: FormValues) => {
-    const finalValues: NewTeam = {
-      ...values,
-      dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD'),
-      dtFinalizacaoTime: values.dtFinalizacaoTime?.format('YYYY-MM-DD'),
-      participantes: [],
-    };
-    if (initialValues) {
-      await updateTeam({ ...finalValues, cdTime: initialValues.cdTime });
-    } else {
-      await createTeam(finalValues);
-    }
-    await requestTeams();
-    closeModal();
-  }, []);
+  const submit = useCallback(
+    async (values: FormValues) => {
+      const finalValues: NewTeam = {
+        ...values,
+        dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD'),
+        dtFinalizacaoTime: values.dtFinalizacaoTime?.format('YYYY-MM-DD'),
+        participantes: [],
+      };
+      if (initialValues) {
+        await updateTeam({ ...finalValues, cdTime: initialValues.cdTime });
+      } else {
+        await createTeam(finalValues);
+      }
+      await requestTeams();
+      form.resetFields();
+      closeModal();
+    },
+    [initialValues],
+  );
 
   return (
     <CustomModal
       closeModal={closeModal}
       visible={visible}
       onFinish={submit}
-      okButtonText='Criar'
+      okButtonText={initialValues ? 'Editar' : 'Criar'}
       form={form}
     >
       <>
@@ -113,7 +123,7 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
         <Form.Item label='Framework' name='framework'>
           <Select>
             {frameworks?.map((framework) => (
-              <Select.Option value={String(framework.cdFramework)} key={framework.cdFramework}>
+              <Select.Option value={framework.cdFramework} key={framework.cdFramework}>
                 {framework.nmFramework}
               </Select.Option>
             ))}
@@ -122,7 +132,7 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
         <Form.Item label='Cerimonias' name='cerimonias'>
           <Select mode='multiple'>
             {ceremonies?.map((ceremony) => (
-              <Select.Option value={String(ceremony.cdCerimonia)} key={ceremony.cdCerimonia}>
+              <Select.Option value={ceremony.cdCerimonia} key={ceremony.cdCerimonia}>
                 {ceremony.nmCerimonia}
               </Select.Option>
             ))}
@@ -131,7 +141,7 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
         <Form.Item label='Tecnologias' name='tecnologias'>
           <Select mode='multiple'>
             {technologies?.map((technology) => (
-              <Select.Option value={String(technology.cdTecnologia)} key={technology.cdTecnologia}>
+              <Select.Option value={technology.cdTecnologia} key={technology.cdTecnologia}>
                 {technology.nmTecnologia}
               </Select.Option>
             ))}
