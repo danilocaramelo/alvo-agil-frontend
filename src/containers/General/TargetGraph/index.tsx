@@ -3,12 +3,18 @@ import { SunburstConfig } from '@ant-design/charts';
 import { Aplication, NewAplication } from '../../../connections/aplication';
 
 type AplicationProps = {
-  data: Aplication | NewAplication;
+  data: Aplication | NewAplication | undefined;
+};
+
+const emptyData: Aplication = {
+  cdAplicacao: 0,
+  label: '',
+  children: [],
 };
 
 export const TargetGraph = ({ data }: AplicationProps) => {
   const config = {
-    data: data,
+    data: data ? data : emptyData,
     innerRadius: 0.3,
     interactions: [
       {
@@ -25,6 +31,8 @@ export const TargetGraph = ({ data }: AplicationProps) => {
       },
     },
   };
+
+  console.log(data);
 
   return <Sunburst {...(config as SunburstConfig)} />;
 };

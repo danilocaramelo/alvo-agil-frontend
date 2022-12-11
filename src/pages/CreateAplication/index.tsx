@@ -16,6 +16,7 @@ const { Title } = Typography;
 export function CreateAplication() {
   const [aplication] = useState<NewAplication>({
     label: '',
+    dtAvaliacao: null,
     children: [],
   });
   const [createLayerModalVisible, setCreateLayerModalVisible] = useState<boolean>(false);
@@ -65,6 +66,7 @@ export function CreateAplication() {
       if (targetTheme) {
         targetTheme.children?.push(newElement);
       }
+      console.log(newElement);
     },
     [aplication],
   );

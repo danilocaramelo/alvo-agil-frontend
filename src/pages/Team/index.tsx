@@ -19,6 +19,7 @@ import { getTeam, NewTeam, Team as TeamEntity, updateTeam } from '../../connecti
 import { CustomButton } from '../../components';
 import { AddParticipantModal } from './AddParticipantModal';
 import moment from 'moment';
+import { Aplication, getAvaliationListByTeam } from '../../connections/aplication';
 const { Title, Text } = Typography;
 
 export function Team() {
@@ -26,7 +27,12 @@ export function Team() {
   const params = useParams();
   const teamId = params.id;
   const [teamData, setTeamData] = useState<TeamEntity>();
+  const [teamAvaliationsData, setTeamAvaliationsData] = useState<Aplication[] | undefined>([]);
+  const [selectedTeamAvaliation, setSelectedTeamAvaliation] = useState<Aplication | undefined>(
+    undefined,
+  );
   const [loadingTeam, setLoadingTeam] = useState<boolean>(false);
+  const [loadingTeamAvaliations, setLoadingTeamAvaliations] = useState<boolean>(false);
   const [addParticipantModalVisible, setAddParticipantModalVisible] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -45,8 +51,30 @@ export function Team() {
     setLoadingTeam(false);
   }, []);
 
+  const requestTeamAvaliations = useCallback(async () => {
+    if (teamId) {
+      setLoadingTeamAvaliations(true);
+      const response = await getAvaliationListByTeam(Number(teamId));
+      setTeamAvaliationsData(response);
+      setLoadingTeamAvaliations(false);
+    }
+  }, []);
+
+  const selectTeamAvaliation = useCallback(
+    (value: string) => {
+      console.log(typeof value);
+      const avaliation = teamAvaliationsData?.find(
+        (element) => Number(value) === Number(element.cdAvaliacao),
+      );
+      console.log(avaliation);
+      setSelectedTeamAvaliation(avaliation);
+    },
+    [teamAvaliationsData],
+  );
+
   useEffect(() => {
     requestTeam();
+    requestTeamAvaliations();
   }, []);
 
   const closeParticipantDrawer = useCallback(() => setShowParticipantDrawer(false), []);
@@ -95,12 +123,13 @@ export function Team() {
             <CustomButton label='Criar nova avaliação' onClick={() => navigate('avaliation')} />
           </Row>
           <Row justify='center' style={{ marginTop: 20 }}>
-            <Select style={{ width: 120 }} defaultValue='1'>
-              <Select.Option value='1'>17/09/2022</Select.Option>
-              <Select.Option value='2'>23/10/2022</Select.Option>
+            <Select style={{ width: 120 }} onSelect={selectTeamAvaliation}>
+              {teamAvaliationsData?.map((avaliation: Aplication) => (
+                <Select.Option key={avaliation.cdAvaliacao}>{avaliation.label}</Select.Option>
+              ))}
             </Select>
           </Row>
-          <AgilWheel data={data2} />
+          <AgilWheel data={selectedTeamAvaliation} />
         </Col>
         <Col span={8}>
           <Row style={{ marginBottom: 10 }}>

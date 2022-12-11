@@ -9,15 +9,18 @@ export type AplicationElement = {
 };
 
 export type Aplication = {
-  cdAplicacao: string;
+  cdAplicacao: number;
   label: string;
-  dtAplicacao?: string;
+  dtAvaliacao?: string;
+  cdAvaliacao?: number;
+  cdTime?: number;
+  notaTotal?: number;
   children: AplicationElement[];
 };
 
 export type NewAplication = {
   label: string;
-  dtAplicacao?: string;
+  dtAvaliacao?: string | null;
   children: AplicationElement[];
 };
 
@@ -53,6 +56,30 @@ export async function createAplication(aplication: NewAplication) {
   try {
     await api.post('/agil/aplicacao/add', aplication);
     notification.success({ message: 'sucesso ao criar a aplicação :)' });
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}
+
+export async function createAvaliation(aplication: Aplication) {
+  try {
+    await api.post('/agil/avaliacao/add', aplication);
+    notification.success({ message: 'sucesso ao criar a avaliacao :)' });
+  } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
+    console.log(e);
+  }
+}
+
+export async function getAvaliationListByTeam(teamId: number): Promise<Aplication[] | undefined> {
+  try {
+    const response = await api.get(`/agil/avaliacao/time/${teamId}`);
+    if (response.data) {
+      return response.data;
+    } else {
+      return [];
+    }
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

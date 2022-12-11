@@ -1,9 +1,9 @@
 import { Aplication } from '../connections/aplication';
 
 export const data2: Aplication = {
-  cdAplicacao: '1',
+  cdAplicacao: 1,
   label: '',
-  dtAplicacao: 'YYYY-MM-DD',
+  dtAvaliacao: 'YYYY-MM-DD',
   children: [
     {
       // camada
