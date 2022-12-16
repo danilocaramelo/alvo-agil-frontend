@@ -82,7 +82,7 @@ export function CeremoniesTable({ ceremonies, loading, requestCeremonies }: Cere
             }
             trigger='click'
           >
-            <CustomButton icon={<DeleteOutlined />} onClick={() => console.log()} />
+            <CustomButton icon={<DeleteOutlined />} />
           </Popover>
         </>
       ),

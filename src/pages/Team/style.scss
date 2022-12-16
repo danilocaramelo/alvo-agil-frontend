@@ -24,6 +24,7 @@
     overflow: auto;
     background-color: #fff;
     border-radius: 10px;
+    border: none;
   }
 
   .ant-list-empty-text {
@@ -33,5 +34,9 @@
   .list-title {
     font-size: 15px;
     margin-top: 20px;
+  }
+
+  .ant-select-selector {
+    border-radius: 20px !important;
   }
 }

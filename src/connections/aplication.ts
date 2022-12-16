@@ -6,6 +6,7 @@ export type AplicationElement = {
   children?: AplicationElement[];
   score?: number;
   peso?: number;
+  nota?: number;
 };
 
 export type Aplication = {

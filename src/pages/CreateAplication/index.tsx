@@ -66,7 +66,6 @@ export function CreateAplication() {
       if (targetTheme) {
         targetTheme.children?.push(newElement);
       }
-      console.log(newElement);
     },
     [aplication],
   );

@@ -87,7 +87,7 @@ export function TechnologiesTable({
             }
             trigger='click'
           >
-            <CustomButton icon={<DeleteOutlined />} onClick={() => console.log()} />
+            <CustomButton icon={<DeleteOutlined />} />
           </Popover>
         </>
       ),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Sunburst } from '@ant-design/plots';
 import { SunburstConfig } from '@ant-design/charts';
 import { Aplication, NewAplication } from '../../../connections/aplication';
@@ -25,14 +26,19 @@ export const TargetGraph = ({ data }: AplicationProps) => {
       field: 'score',
       ignoreParentValue: true,
     },
+    tooltip: {
+      customContent: (title: any, data: any) => {
+        return `<div>${data[0]?.data?.data?.label}: ${
+          data[0]?.data?.data?.score ? data[0]?.data?.data?.score : data[0]?.data?.data?.nota
+        }</div>`;
+      },
+    },
     drilldown: {
       breadCrumb: {
         rootText: 'início',
       },
     },
   };
-
-  console.log(data);
 
   return <Sunburst {...(config as SunburstConfig)} />;
 };

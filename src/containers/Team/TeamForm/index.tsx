@@ -31,8 +31,6 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
   const [technologies, setTechnologies] = useState<Technology[] | undefined>([]);
   const [form] = useForm();
 
-  console.log(initialValues);
-
   if (initialValues) {
     form.setFieldValue('nmTime', initialValues.nmTime);
     form.setFieldValue('flTime', initialValues.flTime);
@@ -82,7 +80,7 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
         ...values,
         dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD'),
         dtFinalizacaoTime: values.dtFinalizacaoTime?.format('YYYY-MM-DD'),
-        participantes: [],
+        participantes: initialValues?.participantes.map(participant => String(participant.cdParticipante)),
       };
       if (initialValues) {
         await updateTeam({ ...finalValues, cdTime: initialValues.cdTime });

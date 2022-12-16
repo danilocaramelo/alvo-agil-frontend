@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Col, Form, Input, Row, Select } from 'antd';
 import { CustomModal } from '../../../components';
 import { useForm } from 'antd/lib/form/Form';

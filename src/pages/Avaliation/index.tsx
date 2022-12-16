@@ -5,26 +5,30 @@ import { CustomButton } from '../../components';
 import { useCallback, useEffect, useState } from 'react';
 import { Aplication, createAvaliation, getAplicationsList } from '../../connections/aplication';
 import moment from 'moment';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const { Title } = Typography;
 
 export function Avaliation() {
   const [aplications, setAplications] = useState<Aplication[] | undefined>([]);
-  const [teste, setTeste] = useState<Aplication | undefined>(undefined);
+  const [selectedAplication, setSelectedAplication] = useState<Aplication | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const params = useParams();
   const teamId = params.id;
 
   const sendAvaliation = useCallback(async () => {
-    if (teste) {
-      teste.cdTime = Number(teamId);
-      teste.dtAvaliacao = moment().format('YYYY-MM-DD');
-      teste.label = `${teste.label} ${moment().format('DD-MM-YYYY')}`
-      await createAvaliation(teste);
+    if (selectedAplication) {
+      selectedAplication.cdTime = Number(teamId);
+      selectedAplication.dtAvaliacao = moment().format('YYYY-MM-DD');
+      selectedAplication.label = `${moment(selectedAplication.dtAvaliacao).format(
+        'DD/MM/YYYY',
+      )} - ${selectedAplication.label}`;
+      await createAvaliation(selectedAplication);
     }
-  }, [teste]);
+    navigate(`/teams/${teamId}`);
+  }, [selectedAplication]);
 
   const requestAplications = useCallback(async () => {
     setLoading(true);
@@ -36,7 +40,7 @@ export function Avaliation() {
   const selectAplication = useCallback(
     (value: string) => {
       const aplication = aplications?.find((element) => Number(value) === element.cdAplicacao);
-      setTeste(aplication);
+      setSelectedAplication(aplication);
     },
     [aplications],
   );
@@ -56,8 +60,8 @@ export function Avaliation() {
       </Row>
       <Row>
         <Col span={22} offset={2}>
-          {teste &&
-            teste.children?.map((layer) =>
+          {selectedAplication &&
+            selectedAplication.children?.map((layer) =>
               layer.children?.map((theme) =>
                 theme.children?.map((question) => {
                   return (

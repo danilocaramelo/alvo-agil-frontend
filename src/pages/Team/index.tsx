@@ -1,5 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Avatar, Col, List, Popover, Row, Select, Skeleton, Tooltip, Typography } from 'antd';
+import {
+  Avatar,
+  Col,
+  Empty,
+  List,
+  Popover,
+  Row,
+  Select,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
   TeamOutlined,
@@ -13,13 +24,13 @@ import {
 import { AgilWheel, ParticipantDrawer } from '../../containers';
 import { useCallback, useEffect, useState } from 'react';
 import './style.scss';
-import { data2 } from '../../mocks/datamock_copy';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getTeam, NewTeam, Team as TeamEntity, updateTeam } from '../../connections/team';
 import { CustomButton } from '../../components';
 import { AddParticipantModal } from './AddParticipantModal';
 import moment from 'moment';
 import { Aplication, getAvaliationListByTeam } from '../../connections/aplication';
+import { ScoreInformations } from '../../containers/Team/ScoreInformations';
 const { Title, Text } = Typography;
 
 export function Team() {
@@ -62,11 +73,9 @@ export function Team() {
 
   const selectTeamAvaliation = useCallback(
     (value: string) => {
-      console.log(typeof value);
       const avaliation = teamAvaliationsData?.find(
         (element) => Number(value) === Number(element.cdAvaliacao),
       );
-      console.log(avaliation);
       setSelectedTeamAvaliation(avaliation);
     },
     [teamAvaliationsData],
@@ -123,13 +132,21 @@ export function Team() {
             <CustomButton label='Criar nova avaliação' onClick={() => navigate('avaliation')} />
           </Row>
           <Row justify='center' style={{ marginTop: 20 }}>
-            <Select style={{ width: 120 }} onSelect={selectTeamAvaliation}>
+            <Select
+              style={{ width: '80%', borderRadius: '5px' }}
+              onSelect={selectTeamAvaliation}
+              loading={loadingTeamAvaliations}
+            >
               {teamAvaliationsData?.map((avaliation: Aplication) => (
                 <Select.Option key={avaliation.cdAvaliacao}>{avaliation.label}</Select.Option>
               ))}
             </Select>
           </Row>
-          <AgilWheel data={selectedTeamAvaliation} />
+          {selectedTeamAvaliation ? (
+            <AgilWheel data={selectedTeamAvaliation} />
+          ) : (
+            <Empty description='selecione uma avaliação :)' style={{ marginTop: 100 }} />
+          )}
         </Col>
         <Col span={8}>
           <Row style={{ marginBottom: 10 }}>
@@ -151,9 +168,11 @@ export function Team() {
                 </Tooltip>
               </div>
               <div>
-                <Tooltip title='Nota da avaliação selecionada'>
+                <Tooltip title={ScoreInformations}>
                   <AimOutlined className='team-description-icon' />
-                  <Text className='team-description-text'>3.5</Text>
+                  <Text className='team-description-text'>
+                    {selectedTeamAvaliation?.notaTotal ? selectedTeamAvaliation.notaTotal : '-'}
+                  </Text>
                 </Tooltip>
               </div>
             </Col>
@@ -190,9 +209,7 @@ export function Team() {
           <div id='scrollableDiv' className='list'>
             <InfiniteScroll
               dataLength={teamData?.tecnologias?.length ?? 0}
-              next={() => {
-                console.log();
-              }}
+              next={() => null}
               hasMore={loadingTeam}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
               scrollableTarget='scrollableDiv'
@@ -212,9 +229,7 @@ export function Team() {
           <div id='scrollableDiv' className='list'>
             <InfiniteScroll
               dataLength={teamData?.cerimonias?.length ?? 0}
-              next={() => {
-                console.log();
-              }}
+              next={() => null}
               hasMore={loadingTeam}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
               scrollableTarget='scrollableDiv'
@@ -244,9 +259,7 @@ export function Team() {
           >
             <InfiniteScroll
               dataLength={teamData?.participantes?.length ?? 0}
-              next={() => {
-                console.log();
-              }}
+              next={() => null}
               hasMore={loadingTeam}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
               scrollableTarget='scrollableDiv'
