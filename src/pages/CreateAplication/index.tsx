@@ -3,10 +3,12 @@ import { Card, Col, Collapse, Input, Popover, Result, Row, Typography } from 'an
 import { DeleteOutlined } from '@ant-design/icons';
 import { useCallback, useState } from 'react';
 import { CustomButton } from '../../components';
-import { AgilWheel } from '../../containers';
-import { CreateThemeModal } from '../../containers/Questions/CreateThemeModal';
-import { CreateLayerModal } from '../../containers/Questions/CreateLayerModal';
-import { CreateQuestionModal } from '../../containers/Questions/CreateQuestionModal';
+import {
+  TargetGraph,
+  CreateThemeModal,
+  CreateLayerModal,
+  CreateQuestionModal,
+} from '../../containers';
 import './style.scss';
 import { AplicationElement, createAplication, NewAplication } from '../../connections/aplication';
 
@@ -16,6 +18,7 @@ const { Title } = Typography;
 export function CreateAplication() {
   const [aplication] = useState<NewAplication>({
     label: '',
+    dtAvaliacao: null,
     children: [],
   });
   const [createLayerModalVisible, setCreateLayerModalVisible] = useState<boolean>(false);
@@ -121,16 +124,24 @@ export function CreateAplication() {
             />
           </Row>
           {aplication.children.length ? (
-            <AgilWheel data={aplication} />
+            <TargetGraph data={aplication} />
           ) : (
-            <Result status='404' subTitle='Hum... nada por aqui ainda. Comece a criar :)' />
+            <Result
+              status='404'
+              subTitle='Hum... nada por aqui ainda. Comece a criar :)'
+              style={{ paddingBottom: 30 }}
+            />
           )}
           <Row justify='center'>
-            <CustomButton
-              label='Criar aplicação'
-              onClick={newAplication}
-              props={{ disabled: !hasMinimalAplication() }}
-            />
+            {aplication.children.length ? (
+              <CustomButton
+                label='Criar aplicação'
+                onClick={newAplication}
+                props={{ disabled: !hasMinimalAplication() }}
+              />
+            ) : (
+              <div></div>
+            )}
           </Row>
         </Col>
         <Col span={12} style={{ height: '100%' }}>
@@ -190,13 +201,13 @@ export function CreateAplication() {
         visible={createThemeModalVisible}
         setVisible={setCreateThemeModalVisible}
         createTheme={createTheme}
-        agilWheelData={aplication}
+        targetGraph={aplication}
       />
       <CreateQuestionModal
         visible={createQuestionModalVisible}
         setVisible={setCreateQuestionModalVisible}
         createQuestion={createQuestion}
-        agilWheelData={aplication}
+        targetGraph={aplication}
       />
     </div>
   );

@@ -1,10 +1,9 @@
 import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import moment from 'moment';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { CustomModal } from '../../components';
 import {
-  getParticipantFunctions,
   ParticipantFunction,
 } from '../../connections/participantFunction';
 import {
@@ -19,6 +18,7 @@ type ParticipantFormProps = {
   closeModal: () => void;
   requestParticipants: () => void;
   initialValues?: Participant;
+  participantFunctions?: ParticipantFunction[];
 };
 
 type FormValues = {
@@ -35,20 +35,9 @@ export function ParticipantForm({
   closeModal,
   requestParticipants,
   initialValues,
+  participantFunctions,
 }: ParticipantFormProps) {
   const [form] = useForm();
-  const [participantFunctions, setParticipantFunctions] = useState<
-    ParticipantFunction[] | undefined
-  >([]);
-
-  const requestParticipantFunctions = useCallback(async () => {
-    const responseFrameworks = await getParticipantFunctions();
-    setParticipantFunctions(responseFrameworks);
-  }, []);
-
-  useEffect(() => {
-    requestParticipantFunctions();
-  }, []);
 
   const submit = useCallback(
     async (values: FormValues) => {
@@ -65,6 +54,7 @@ export function ParticipantForm({
         await createParticipant(finalValues);
       }
       await requestParticipants();
+      form.resetFields();
       closeModal();
     },
     [initialValues],
@@ -120,7 +110,9 @@ export function ParticipantForm({
           <Form.Item label='fim' name='dtFimParticipante'>
             <DatePicker format='DD/MM/YYYY' />
           </Form.Item>
-          <Row>
+        </Row>
+        <Row justify='center'>
+          <Col span={14}>
             <Form.Item label='Função' name='cdFuncao'>
               <Select>
                 {participantFunctions?.map((participantFunction) => (
@@ -133,7 +125,7 @@ export function ParticipantForm({
                 ))}
               </Select>
             </Form.Item>
-          </Row>
+          </Col>
         </Row>
       </>
     </CustomModal>

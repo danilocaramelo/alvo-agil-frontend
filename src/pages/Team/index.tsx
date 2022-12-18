@@ -1,5 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Avatar, Col, List, Popover, Row, Select, Skeleton, Tooltip, Typography } from 'antd';
+import {
+  Avatar,
+  Col,
+  Empty,
+  List,
+  Popover,
+  Row,
+  Select,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
   TeamOutlined,
@@ -10,15 +21,15 @@ import {
   UserOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import { AgilWheel, ParticipantDrawer } from '../../containers';
+import { TargetGraph, ParticipantDrawer, ScoreInformations } from '../../containers';
 import { useCallback, useEffect, useState } from 'react';
 import './style.scss';
-import { data2 } from '../../mocks/datamock_copy';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getTeam, NewTeam, Team as TeamEntity, updateTeam } from '../../connections/team';
 import { CustomButton } from '../../components';
 import { AddParticipantModal } from './AddParticipantModal';
 import moment from 'moment';
+import { Aplication, getAvaliationListByTeam } from '../../connections/aplication';
 const { Title, Text } = Typography;
 
 export function Team() {
@@ -26,8 +37,14 @@ export function Team() {
   const params = useParams();
   const teamId = params.id;
   const [teamData, setTeamData] = useState<TeamEntity>();
+  const [teamAvaliationsData, setTeamAvaliationsData] = useState<Aplication[] | undefined>([]);
+  const [selectedTeamAvaliation, setSelectedTeamAvaliation] = useState<Aplication | undefined>(
+    undefined,
+  );
   const [loadingTeam, setLoadingTeam] = useState<boolean>(false);
+  const [loadingTeamAvaliations, setLoadingTeamAvaliations] = useState<boolean>(false);
   const [addParticipantModalVisible, setAddParticipantModalVisible] = useState<boolean>(false);
+  const [teamAverage, setTeamAverega] = useState<string | undefined>();
   const navigate = useNavigate();
 
   const teamTechnologies = teamData?.tecnologias;
@@ -45,9 +62,44 @@ export function Team() {
     setLoadingTeam(false);
   }, []);
 
+  const requestTeamAvaliations = useCallback(async () => {
+    if (teamId) {
+      setLoadingTeamAvaliations(true);
+      const response = await getAvaliationListByTeam(Number(teamId));
+      setTeamAvaliationsData(response);
+      setLoadingTeamAvaliations(false);
+    }
+  }, []);
+
+  const calculateTeamsAvaliationAverage = useCallback(async () => {
+    if (teamAvaliationsData?.length) {
+      let sum = 0;
+      teamAvaliationsData?.forEach((avaliation) => {
+        sum = sum + avaliation.notaTotal!;
+      });
+      const result = parseFloat(String(sum / teamAvaliationsData?.length)).toFixed(1);
+      setTeamAverega(result);
+    }
+  }, [teamAvaliationsData]);
+
+  const selectTeamAvaliation = useCallback(
+    (value: string) => {
+      const avaliation = teamAvaliationsData?.find(
+        (element) => Number(value) === Number(element.cdAvaliacao),
+      );
+      setSelectedTeamAvaliation(avaliation);
+    },
+    [teamAvaliationsData],
+  );
+
   useEffect(() => {
     requestTeam();
+    requestTeamAvaliations();
   }, []);
+
+  useEffect(() => {
+    calculateTeamsAvaliationAverage();
+  }, [teamAvaliationsData]);
 
   const closeParticipantDrawer = useCallback(() => setShowParticipantDrawer(false), []);
   const openParticipantDrawer = useCallback(() => setShowParticipantDrawer(true), []);
@@ -95,12 +147,32 @@ export function Team() {
             <CustomButton label='Criar nova avaliação' onClick={() => navigate('avaliation')} />
           </Row>
           <Row justify='center' style={{ marginTop: 20 }}>
-            <Select style={{ width: 120 }} defaultValue='1'>
-              <Select.Option value='1'>17/09/2022</Select.Option>
-              <Select.Option value='2'>23/10/2022</Select.Option>
+            <Select
+              style={{ width: '80%', borderRadius: '5px' }}
+              onSelect={selectTeamAvaliation}
+              loading={loadingTeamAvaliations}
+            >
+              {teamAvaliationsData?.map((avaliation: Aplication) => (
+                <Select.Option key={avaliation.cdAvaliacao}>{avaliation.label}</Select.Option>
+              ))}
             </Select>
           </Row>
-          <AgilWheel data={data2} />
+          <Row justify='center' style={{ marginTop: '20px', marginBottom: '-10px' }}>
+            {selectedTeamAvaliation?.notaTotal && (
+              <Tooltip title={ScoreInformations}>
+                <div>
+                  <AimOutlined className='score-label' />
+                  <Text className='score-label'>Nota:</Text>
+                  <Text className='score'> {selectedTeamAvaliation?.notaTotal}</Text>
+                </div>
+              </Tooltip>
+            )}
+          </Row>
+          {selectedTeamAvaliation ? (
+            <TargetGraph data={selectedTeamAvaliation} />
+          ) : (
+            <Empty description='selecione uma avaliação :)' style={{ marginTop: 100 }} />
+          )}
         </Col>
         <Col span={8}>
           <Row style={{ marginBottom: 10 }}>
@@ -122,9 +194,9 @@ export function Team() {
                 </Tooltip>
               </div>
               <div>
-                <Tooltip title='Nota da avaliação selecionada'>
+                <Tooltip title='Media total do time'>
                   <AimOutlined className='team-description-icon' />
-                  <Text className='team-description-text'>3.5</Text>
+                  <Text className='team-description-text'>{teamAverage ? teamAverage : '-'}</Text>
                 </Tooltip>
               </div>
             </Col>
@@ -161,9 +233,7 @@ export function Team() {
           <div id='scrollableDiv' className='list'>
             <InfiniteScroll
               dataLength={teamData?.tecnologias?.length ?? 0}
-              next={() => {
-                console.log();
-              }}
+              next={() => null}
               hasMore={loadingTeam}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
               scrollableTarget='scrollableDiv'
@@ -183,9 +253,7 @@ export function Team() {
           <div id='scrollableDiv' className='list'>
             <InfiniteScroll
               dataLength={teamData?.cerimonias?.length ?? 0}
-              next={() => {
-                console.log();
-              }}
+              next={() => null}
               hasMore={loadingTeam}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
               scrollableTarget='scrollableDiv'
@@ -215,9 +283,7 @@ export function Team() {
           >
             <InfiniteScroll
               dataLength={teamData?.participantes?.length ?? 0}
-              next={() => {
-                console.log();
-              }}
+              next={() => null}
               hasMore={loadingTeam}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
               scrollableTarget='scrollableDiv'

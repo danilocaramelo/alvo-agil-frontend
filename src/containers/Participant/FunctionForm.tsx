@@ -19,6 +19,7 @@ export function FunctionForm({ visible, closeModal, requestFunctions }: Function
   const newParticipantFunction = useCallback(async (values: ParticipantFunction) => {
     await createParticipantFunction(values);
     requestFunctions();
+    form.resetFields();
     closeModal();
   }, []);
 

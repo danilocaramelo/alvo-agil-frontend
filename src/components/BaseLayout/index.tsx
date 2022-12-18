@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   PieChartOutlined,
   TeamOutlined,
@@ -7,10 +7,10 @@ import {
   QuestionOutlined,
 } from '@ant-design/icons';
 import { MenuProps, Row, Layout, Menu, Typography, Button } from 'antd';
-import { Link, Route, Routes } from 'react-router-dom';
-import paths from '../config/paths';
-import { Avaliation, CreateAplication, Home, Participant, Team, TeamsList } from '../pages';
-import icon from '../assets/icone.png';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import paths from '../../config/paths';
+import { Avaliation, CreateAplication, Home, Participant, Team, TeamsList } from '../../pages';
+import icon from '../../assets/icone.png';
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -55,13 +55,17 @@ const items: MenuItem[] = [
 ];
 
 function BaseLayout() {
-  // const [collapsed, setCollapsed] = useState(false);
   const menuKeyByPathname = useMemo(() => location.pathname || '/', [location.pathname]);
+  const navigate = useNavigate();
+
+  const redirect = useCallback(() => {
+    navigate('');
+  }, []);
 
   return (
     <Layout style={{ height: '100%' }}>
       <Sider collapsed theme='light'>
-        <div style={{ height: 60, width: 60 }}>
+        <div style={{ height: 60, width: 60 }} onClick={redirect}>
           <img style={{ height: 50, width: 50, marginLeft: 15, marginTop: 5 }} src={icon} />
         </div>
         <Menu
@@ -100,7 +104,6 @@ function BaseLayout() {
           </Routes>
         </Content>
       </Layout>
-      {/* <Footer style={{ textAlign: 'center' }}>Meta Ágil ©2022 UCSAL</Footer> */}
     </Layout>
   );
 }
