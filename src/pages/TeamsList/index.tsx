@@ -1,5 +1,5 @@
 import { Row, Tabs, Typography } from 'antd';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CustomDropdown } from '../../components/CustomDropdown';
 import { Ceremony, getCeremonies } from '../../connections/ceremony';
 import { Framework, getFrameworks } from '../../connections/framework';
@@ -75,6 +75,12 @@ export function TeamsList() {
   ];
   const { Title } = Typography;
 
+  useEffect(() => {
+    requestCeremonies();
+    requestFrameworks();
+    requestTechnologies();
+  }, []);
+
   return (
     <>
       <Row justify='space-between' style={{ marginBottom: '20px' }}>
@@ -86,7 +92,14 @@ export function TeamsList() {
       <div className='card-container'>
         <Tabs type='card'>
           <Tabs.TabPane tab='Squads' key='1'>
-            <TeamTable teams={teams} requestTeams={requestTeams} loading={loadingTable} />
+            <TeamTable
+              teams={teams}
+              requestTeams={requestTeams}
+              loading={loadingTable}
+              ceremonies={ceremonies}
+              frameworks={frameworks}
+              technologies={technologies}
+            />
           </Tabs.TabPane>
           <Tabs.TabPane tab='Cerimônias' key='3'>
             <CeremoniesTable
@@ -111,7 +124,14 @@ export function TeamsList() {
           </Tabs.TabPane>
         </Tabs>
       </div>
-      <TeamForm visible={teamFormVisible} closeModal={closeTeamForm} requestTeams={requestTeams} />
+      <TeamForm
+        visible={teamFormVisible}
+        closeModal={closeTeamForm}
+        requestTeams={requestTeams}
+        ceremonies={ceremonies}
+        frameworks={frameworks}
+        technologies={technologies}
+      />
       <CerimonyForm
         visible={cerimonyFormVisible}
         closeModal={closeCerimonyForm}

@@ -45,6 +45,7 @@ export function Team() {
   const [loadingTeam, setLoadingTeam] = useState<boolean>(false);
   const [loadingTeamAvaliations, setLoadingTeamAvaliations] = useState<boolean>(false);
   const [addParticipantModalVisible, setAddParticipantModalVisible] = useState<boolean>(false);
+  const [teamAverage, setTeamAverega] = useState<string | undefined>();
   const navigate = useNavigate();
 
   const teamTechnologies = teamData?.tecnologias;
@@ -71,6 +72,18 @@ export function Team() {
     }
   }, []);
 
+  const calculateTeamsAvaliationAverage = useCallback(async () => {
+    if (teamAvaliationsData?.length) {
+      console.log(teamAvaliationsData![0]);
+      let sum = 0;
+      teamAvaliationsData?.forEach((avaliation) => {
+        sum = sum + avaliation.notaTotal!;
+      });
+      const result = parseFloat(String(sum / teamAvaliationsData?.length)).toFixed(1);
+      setTeamAverega(result);
+    }
+  }, [teamAvaliationsData]);
+
   const selectTeamAvaliation = useCallback(
     (value: string) => {
       const avaliation = teamAvaliationsData?.find(
@@ -85,6 +98,10 @@ export function Team() {
     requestTeam();
     requestTeamAvaliations();
   }, []);
+
+  useEffect(() => {
+    calculateTeamsAvaliationAverage();
+  }, [teamAvaliationsData]);
 
   const closeParticipantDrawer = useCallback(() => setShowParticipantDrawer(false), []);
   const openParticipantDrawer = useCallback(() => setShowParticipantDrawer(true), []);
@@ -142,6 +159,17 @@ export function Team() {
               ))}
             </Select>
           </Row>
+          <Row justify='center' style={{ marginTop: '20px', marginBottom: '-10px' }}>
+            {selectedTeamAvaliation?.notaTotal && (
+              <Tooltip title={ScoreInformations}>
+                <div>
+                  <AimOutlined className='score-label' />
+                  <Text className='score-label'>Nota:</Text>
+                  <Text className='score'> {selectedTeamAvaliation?.notaTotal}</Text>
+                </div>
+              </Tooltip>
+            )}
+          </Row>
           {selectedTeamAvaliation ? (
             <AgilWheel data={selectedTeamAvaliation} />
           ) : (
@@ -168,11 +196,9 @@ export function Team() {
                 </Tooltip>
               </div>
               <div>
-                <Tooltip title={ScoreInformations}>
+                <Tooltip title='Media total do time'>
                   <AimOutlined className='team-description-icon' />
-                  <Text className='team-description-text'>
-                    {selectedTeamAvaliation?.notaTotal ? selectedTeamAvaliation.notaTotal : '-'}
-                  </Text>
+                  <Text className='team-description-text'>{teamAverage ? teamAverage : '-'}</Text>
                 </Tooltip>
               </div>
             </Col>

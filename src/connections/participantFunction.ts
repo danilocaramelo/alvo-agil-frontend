@@ -26,7 +26,7 @@ export async function createParticipantFunction(body: ParticipantFunction) {
     await api.post('/funcao/add', body);
     notification.success({ message: 'Sucesso ao criar a função :)' });
   } catch (e) {
-    notification.error({ message: 'erro ao criar o participante :(' });
+    notification.error({ message: 'erro ao criar a função :(' });
     console.log(e);
   }
 }

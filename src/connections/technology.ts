@@ -31,6 +31,7 @@ export async function createTechnology(newTechnology: NewTechnology) {
     await api.post('/tecnologia/add', newTechnology);
     notification.success({ message: 'sucesso ao criar a Tecnologia :)' });
   } catch (e) {
+    notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);
   }
 }
@@ -48,6 +49,7 @@ export async function deleteTechnology(technologyId: number) {
 export async function updateTechnology(technology: Technology) {
   try {
     await api.put('/tecnologia/atualiza/', technology);
+    notification.success({ message: 'sucesso ao editar a Tecnologia :)' });
   } catch (e) {
     notification.error({ message: 'erro ao conectar a api :(' });
     console.log(e);

@@ -6,17 +6,20 @@ import { deleteParticipant, Participant } from '../../connections/particpant';
 import { ParticipantDrawer } from './ParticipantDrawer';
 import { CustomButton } from '../../components';
 import { ParticipantForm } from './ParticipantForm';
+import { ParticipantFunction } from '../../connections/participantFunction';
 
 type ParticipantTableProps = {
   participants: Participant[] | undefined;
   loading: boolean;
   requestParticipants: () => void;
+  participantFunctions?: ParticipantFunction[];
 };
 
 export function ParticipantTable({
   participants,
   loading,
   requestParticipants,
+  participantFunctions,
 }: ParticipantTableProps) {
   const [selectedParticipant, setSelectedParticipant] = useState<Participant | undefined>();
   const [showParticipantDrawer, setShowParticipantDrawer] = useState(false);
@@ -128,6 +131,7 @@ export function ParticipantTable({
         closeModal={closeParticipantForm}
         requestParticipants={requestParticipants}
         initialValues={participantInitialValues}
+        participantFunctions={participantFunctions}
       />
     </>
   );

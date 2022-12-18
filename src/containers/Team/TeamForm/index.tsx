@@ -13,6 +13,9 @@ type TeamFormProps = {
   closeModal: () => void;
   requestTeams: () => void;
   initialValues?: Team;
+  frameworks?: Framework[];
+  ceremonies?: Ceremony[];
+  technologies?: Technology[];
 };
 
 type FormValues = {
@@ -25,10 +28,15 @@ type FormValues = {
   tecnologias?: string[];
 };
 
-export function TeamForm({ visible, closeModal, requestTeams, initialValues }: TeamFormProps) {
-  const [frameworks, setFrameworks] = useState<Framework[] | undefined>([]);
-  const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>([]);
-  const [technologies, setTechnologies] = useState<Technology[] | undefined>([]);
+export function TeamForm({
+  visible,
+  closeModal,
+  requestTeams,
+  initialValues,
+  frameworks,
+  ceremonies,
+  technologies,
+}: TeamFormProps) {
   const [form] = useForm();
 
   if (initialValues) {
@@ -53,39 +61,20 @@ export function TeamForm({ visible, closeModal, requestTeams, initialValues }: T
     );
   }
 
-  const requestFrameworks = useCallback(async () => {
-    const responseFrameworks = await getFrameworks();
-    setFrameworks(responseFrameworks);
-  }, []);
-
-  const requestCeremonies = useCallback(async () => {
-    const responseCeremonies = await getCeremonies();
-    setCeremonies(responseCeremonies);
-  }, []);
-
-  const requestTechnologies = useCallback(async () => {
-    const responseTechnologies = await getTechnologies();
-    setTechnologies(responseTechnologies);
-  }, []);
-
-  useEffect(() => {
-    requestFrameworks();
-    requestCeremonies();
-    requestTechnologies();
-  }, []);
-
   const submit = useCallback(
     async (values: FormValues) => {
       const finalValues: NewTeam = {
         ...values,
         dtInicioTime: values.dtInicioTime?.format('YYYY-MM-DD'),
         dtFinalizacaoTime: values.dtFinalizacaoTime?.format('YYYY-MM-DD'),
-        participantes: initialValues?.participantes.map(participant => String(participant.cdParticipante)),
+        participantes: initialValues?.participantes.map((participant) =>
+          String(participant.cdParticipante),
+        ),
       };
       if (initialValues) {
         await updateTeam({ ...finalValues, cdTime: initialValues.cdTime });
       } else {
-        await createTeam(finalValues);
+        await createTeam({ ...finalValues, participantes: [] });
       }
       await requestTeams();
       form.resetFields();

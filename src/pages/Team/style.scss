@@ -19,6 +19,24 @@
     color: #f58327;
   }
 
+  .score-box {
+    margin-bottom: -10px;
+    background-color: #2c00d5;
+    width: 150px;
+    border-radius: 15px;
+    border: none;
+    text-align: center;
+  }
+
+  .score-label {
+    color: #f58327;
+    font-weight: bold;
+  }
+
+  .score {
+    color: #f58327;
+  }
+
   .list {
     height: 140px;
     overflow: auto;

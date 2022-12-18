@@ -7,14 +7,27 @@ import { deleteTeam, Team } from '../../../connections/team';
 import './TeamTable.scss';
 import { CustomButton } from '../../../components';
 import { TeamForm } from '../TeamForm';
+import { Framework } from '../../../connections/framework';
+import { Ceremony } from '../../../connections/ceremony';
+import { Technology } from '../../../connections/technology';
 
 type TeamTableProps = {
   teams: Team[] | undefined;
   loading: boolean;
   requestTeams: () => void;
+  frameworks?: Framework[];
+  ceremonies?: Ceremony[];
+  technologies?: Technology[];
 };
 
-export function TeamTable({ teams, loading, requestTeams }: TeamTableProps) {
+export function TeamTable({
+  teams,
+  loading,
+  requestTeams,
+  frameworks,
+  ceremonies,
+  technologies,
+}: TeamTableProps) {
   const navigate = useNavigate();
   const [teamFormVisible, setTeamFormVisible] = useState<boolean>(false);
   const closeTeamForm = useCallback(() => setTeamFormVisible(false), []);
@@ -117,6 +130,9 @@ export function TeamTable({ teams, loading, requestTeams }: TeamTableProps) {
         closeModal={closeTeamForm}
         requestTeams={requestTeams}
         initialValues={teamInitialValues}
+        ceremonies={ceremonies}
+        frameworks={frameworks}
+        technologies={technologies}
       />
     </div>
   );

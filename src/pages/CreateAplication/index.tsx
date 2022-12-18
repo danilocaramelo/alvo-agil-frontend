@@ -124,14 +124,22 @@ export function CreateAplication() {
           {aplication.children.length ? (
             <AgilWheel data={aplication} />
           ) : (
-            <Result status='404' subTitle='Hum... nada por aqui ainda. Comece a criar :)' />
+            <Result
+              status='404'
+              subTitle='Hum... nada por aqui ainda. Comece a criar :)'
+              style={{ paddingBottom: 30 }}
+            />
           )}
           <Row justify='center'>
-            <CustomButton
-              label='Criar aplicação'
-              onClick={newAplication}
-              props={{ disabled: !hasMinimalAplication() }}
-            />
+            {aplication.children.length ? (
+              <CustomButton
+                label='Criar aplicação'
+                onClick={newAplication}
+                props={{ disabled: !hasMinimalAplication() }}
+              />
+            ) : (
+              <div></div>
+            )}
           </Row>
         </Col>
         <Col span={12} style={{ height: '100%' }}>

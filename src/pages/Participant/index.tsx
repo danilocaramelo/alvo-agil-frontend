@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Tabs, Typography } from 'antd';
 import './style.scss';
 import { FunctionForm, FunctionsTable, ParticipantForm, ParticipantTable } from '../../containers';
@@ -40,6 +40,10 @@ export function Participant() {
     { label: 'Nova Função', onClick: openFunctionForm },
   ];
 
+  useEffect(() => {
+    requestFunctions();
+  }, []);
+
   return (
     <>
       <Row justify='space-between' style={{ marginBottom: '20px' }}>
@@ -55,6 +59,7 @@ export function Participant() {
               requestParticipants={requestParticipants}
               participants={participants}
               loading={loading}
+              participantFunctions={functions}
             />
           </Tabs.TabPane>
           <Tabs.TabPane tab='Funções' key='2'>
@@ -70,6 +75,7 @@ export function Participant() {
         visible={participantFormVisible}
         closeModal={closeParticipantForm}
         requestParticipants={requestParticipants}
+        participantFunctions={functions}
       />
       <FunctionForm
         visible={functionFormVisible}
