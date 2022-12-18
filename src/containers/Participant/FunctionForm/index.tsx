@@ -1,11 +1,11 @@
 import { Col, Form, Input, Row, Select } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useCallback } from 'react';
-import { CustomModal } from '../../components';
+import { CustomModal } from '../../../components';
 import {
   createParticipantFunction,
   ParticipantFunction,
-} from '../../connections/participantFunction';
+} from '../../../connections/participantFunction';
 
 type FunctionFormProps = {
   visible: boolean;
