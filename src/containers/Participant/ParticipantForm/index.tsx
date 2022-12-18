@@ -2,16 +2,16 @@ import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import moment from 'moment';
 import { useCallback } from 'react';
-import { CustomModal } from '../../components';
+import { CustomModal } from '../../../components';
 import {
   ParticipantFunction,
-} from '../../connections/participantFunction';
+} from '../../../connections/participantFunction';
 import {
   createParticipant,
   NewParticipant,
   Participant,
   updateParticipant,
-} from '../../connections/particpant';
+} from '../../../connections/particpant';
 
 type ParticipantFormProps = {
   visible: boolean;

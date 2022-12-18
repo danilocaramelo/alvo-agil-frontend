@@ -2,11 +2,11 @@ import { Popover, Row, Table, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
-import { deleteParticipant, Participant } from '../../connections/particpant';
-import { ParticipantDrawer } from './ParticipantDrawer';
-import { CustomButton } from '../../components';
-import { ParticipantForm } from './ParticipantForm';
-import { ParticipantFunction } from '../../connections/participantFunction';
+import { deleteParticipant, Participant } from '../../../connections/particpant';
+import { ParticipantDrawer } from '../ParticipantDrawer';
+import { CustomButton } from '../../../components';
+import { ParticipantForm } from '../ParticipantForm';
+import { ParticipantFunction } from '../../../connections/participantFunction';
 
 type ParticipantTableProps = {
   participants: Participant[] | undefined;

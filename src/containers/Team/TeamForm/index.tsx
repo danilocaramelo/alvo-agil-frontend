@@ -1,12 +1,12 @@
 import { DatePicker, Form, Input, Select } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import moment from 'moment';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { CustomModal } from '../../../components';
-import { Ceremony, getCeremonies } from '../../../connections/ceremony';
-import { Framework, getFrameworks } from '../../../connections/framework';
+import { Ceremony } from '../../../connections/ceremony';
+import { Framework } from '../../../connections/framework';
 import { createTeam, NewTeam, Team, updateTeam } from '../../../connections/team';
-import { getTechnologies, Technology } from '../../../connections/technology';
+import { Technology } from '../../../connections/technology';
 
 type TeamFormProps = {
   visible: boolean;
