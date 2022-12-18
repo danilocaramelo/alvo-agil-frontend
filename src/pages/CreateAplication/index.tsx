@@ -3,10 +3,12 @@ import { Card, Col, Collapse, Input, Popover, Result, Row, Typography } from 'an
 import { DeleteOutlined } from '@ant-design/icons';
 import { useCallback, useState } from 'react';
 import { CustomButton } from '../../components';
-import { AgilWheel } from '../../containers';
-import { CreateThemeModal } from '../../containers/Questions/CreateThemeModal';
-import { CreateLayerModal } from '../../containers/Questions/CreateLayerModal';
-import { CreateQuestionModal } from '../../containers/Questions/CreateQuestionModal';
+import {
+  TargetGraph,
+  CreateThemeModal,
+  CreateLayerModal,
+  CreateQuestionModal,
+} from '../../containers';
 import './style.scss';
 import { AplicationElement, createAplication, NewAplication } from '../../connections/aplication';
 
@@ -122,7 +124,7 @@ export function CreateAplication() {
             />
           </Row>
           {aplication.children.length ? (
-            <AgilWheel data={aplication} />
+            <TargetGraph data={aplication} />
           ) : (
             <Result
               status='404'
@@ -199,13 +201,13 @@ export function CreateAplication() {
         visible={createThemeModalVisible}
         setVisible={setCreateThemeModalVisible}
         createTheme={createTheme}
-        agilWheelData={aplication}
+        targetGraph={aplication}
       />
       <CreateQuestionModal
         visible={createQuestionModalVisible}
         setVisible={setCreateQuestionModalVisible}
         createQuestion={createQuestion}
-        agilWheelData={aplication}
+        targetGraph={aplication}
       />
     </div>
   );

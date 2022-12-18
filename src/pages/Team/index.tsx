@@ -21,7 +21,7 @@ import {
   UserOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import { AgilWheel, ParticipantDrawer } from '../../containers';
+import { TargetGraph, ParticipantDrawer, ScoreInformations } from '../../containers';
 import { useCallback, useEffect, useState } from 'react';
 import './style.scss';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -30,7 +30,6 @@ import { CustomButton } from '../../components';
 import { AddParticipantModal } from './AddParticipantModal';
 import moment from 'moment';
 import { Aplication, getAvaliationListByTeam } from '../../connections/aplication';
-import { ScoreInformations } from '../../containers/Team/ScoreInformations';
 const { Title, Text } = Typography;
 
 export function Team() {
@@ -74,7 +73,6 @@ export function Team() {
 
   const calculateTeamsAvaliationAverage = useCallback(async () => {
     if (teamAvaliationsData?.length) {
-      console.log(teamAvaliationsData![0]);
       let sum = 0;
       teamAvaliationsData?.forEach((avaliation) => {
         sum = sum + avaliation.notaTotal!;
@@ -171,7 +169,7 @@ export function Team() {
             )}
           </Row>
           {selectedTeamAvaliation ? (
-            <AgilWheel data={selectedTeamAvaliation} />
+            <TargetGraph data={selectedTeamAvaliation} />
           ) : (
             <Empty description='selecione uma avaliação :)' style={{ marginTop: 100 }} />
           )}

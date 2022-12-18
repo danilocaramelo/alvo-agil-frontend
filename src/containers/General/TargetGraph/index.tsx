@@ -28,8 +28,12 @@ export const TargetGraph = ({ data }: AplicationProps) => {
     },
     tooltip: {
       customContent: (title: any, data: any) => {
-        return `<div>${data[0]?.data?.data?.label}: ${
-          data[0]?.data?.data?.score ? data[0]?.data?.data?.score : data[0]?.data?.data?.nota
+        return `<div class="graphic-legend" style="padding: 5px">${data[0]?.data?.data?.label}: ${
+          data[0]?.data?.data?.score
+            ? parseFloat(data[0]?.data?.data?.score).toFixed(1)
+            : data[0]?.data?.data?.nota
+            ? parseFloat(data[0]?.data?.data?.nota).toFixed(1)
+            : ''
         }</div>`;
       },
     },

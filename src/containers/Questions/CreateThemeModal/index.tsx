@@ -8,18 +8,18 @@ type CreateThemeModalProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
   createTheme: (label: string, layer: string) => void;
-  agilWheelData: NewAplication;
+  targetGraph: NewAplication;
 };
 
 export function CreateThemeModal({
   visible,
   setVisible,
   createTheme,
-  agilWheelData,
+  targetGraph,
 }: CreateThemeModalProps) {
   const closeModal = useCallback(() => setVisible(false), []);
   const [form] = useForm();
-  const layers = agilWheelData.children;
+  const layers = targetGraph.children;
 
   const newTheme = useCallback(async (values: { label: string; layer: string }) => {
     createTheme(values.label, values.layer);

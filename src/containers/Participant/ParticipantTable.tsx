@@ -117,7 +117,7 @@ export function ParticipantTable({
           columns={columns}
           dataSource={participants}
           loading={loading}
-          rowKey='cdTime'
+          rowKey='cdParticipante'
           pagination={{ pageSize: 4 }}
         />
       </div>

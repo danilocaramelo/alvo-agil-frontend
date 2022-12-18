@@ -65,7 +65,7 @@ export function Avaliation() {
               layer.children?.map((theme) =>
                 theme.children?.map((question) => {
                   return (
-                    <>
+                    <div key={question.label}>
                       <Title key={question.label} level={5} className='question-title'>
                         {question.label}
                       </Title>
@@ -82,7 +82,7 @@ export function Avaliation() {
                           <Radio value={5}>5</Radio>
                         </Space>
                       </Radio.Group>
-                    </>
+                    </div>
                   );
                 }),
               ),

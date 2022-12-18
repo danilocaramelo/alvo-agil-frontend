@@ -8,20 +8,20 @@ type CreateQuestionModalProps = {
   visible: boolean;
   setVisible: (arg: boolean) => void;
   createQuestion: (label: string, layer: string, theme: string, peso: number) => void;
-  agilWheelData: NewAplication;
+  targetGraph: NewAplication;
 };
 
 export function CreateQuestionModal({
   visible,
   setVisible,
   createQuestion,
-  agilWheelData,
+  targetGraph,
 }: CreateQuestionModalProps) {
   const [themes, setThemes] = useState<AplicationElement[] | undefined>([]);
   const closeModal = useCallback(() => setVisible(false), []);
   const [form] = useForm();
 
-  const layers = agilWheelData.children;
+  const layers = targetGraph.children;
 
   const onChangeFormValues = useCallback(
     (changedValues: { label: string; layer: string; theme: string }) => {

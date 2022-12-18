@@ -11,10 +11,10 @@ import {
   FrameworksTable,
   TeamForm,
   TeamTable,
+  FrameworkForm,
+  TechnologiesTable,
+  TechnologyForm,
 } from '../../containers';
-import { FrameworkForm } from '../../containers/Team/FrameworkForm';
-import { TechnologiesTable } from '../../containers/Team/TechnologiesTable';
-import { TechnologyForm } from '../../containers/Team/TechnologyForm';
 
 export function TeamsList() {
   const [loadingTable, setLoadingTable] = useState<boolean>(false);

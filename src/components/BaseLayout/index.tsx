@@ -8,9 +8,9 @@ import {
 } from '@ant-design/icons';
 import { MenuProps, Row, Layout, Menu, Typography, Button } from 'antd';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-import paths from '../config/paths';
-import { Avaliation, CreateAplication, Home, Participant, Team, TeamsList } from '../pages';
-import icon from '../assets/icone.png';
+import paths from '../../config/paths';
+import { Avaliation, CreateAplication, Home, Participant, Team, TeamsList } from '../../pages';
+import icon from '../../assets/icone.png';
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -55,7 +55,6 @@ const items: MenuItem[] = [
 ];
 
 function BaseLayout() {
-  // const [collapsed, setCollapsed] = useState(false);
   const menuKeyByPathname = useMemo(() => location.pathname || '/', [location.pathname]);
   const navigate = useNavigate();
 
@@ -105,7 +104,6 @@ function BaseLayout() {
           </Routes>
         </Content>
       </Layout>
-      {/* <Footer style={{ textAlign: 'center' }}>Meta Ágil ©2022 UCSAL</Footer> */}
     </Layout>
   );
 }
