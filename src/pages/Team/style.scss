@@ -10,6 +10,12 @@
     font-size: 17px;
   }
 
+  .team-score > span {
+    background-color: #f58327;
+    border-radius: 15px;
+    padding: 1px 10px;
+  }
+
   .team-description-icon {
     margin-right: 10px;
     color: #2c00d5;
@@ -17,6 +23,10 @@
 
   .team-description-text {
     color: #f58327;
+  }
+
+  .team-description-score {
+    color: #2c00d5;
   }
 
   .score-box {

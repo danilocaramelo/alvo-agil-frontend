@@ -71,17 +71,6 @@ export function Team() {
     }
   }, []);
 
-  const calculateTeamsAvaliationAverage = useCallback(async () => {
-    if (teamAvaliationsData?.length) {
-      let sum = 0;
-      teamAvaliationsData?.forEach((avaliation) => {
-        sum = sum + avaliation.notaTotal!;
-      });
-      const result = parseFloat(String(sum / teamAvaliationsData?.length)).toFixed(1);
-      setTeamAverega(result);
-    }
-  }, [teamAvaliationsData]);
-
   const selectTeamAvaliation = useCallback(
     (value: string) => {
       const avaliation = teamAvaliationsData?.find(
@@ -96,10 +85,6 @@ export function Team() {
     requestTeam();
     requestTeamAvaliations();
   }, []);
-
-  useEffect(() => {
-    calculateTeamsAvaliationAverage();
-  }, [teamAvaliationsData]);
 
   const closeParticipantDrawer = useCallback(() => setShowParticipantDrawer(false), []);
   const openParticipantDrawer = useCallback(() => setShowParticipantDrawer(true), []);
@@ -157,17 +142,6 @@ export function Team() {
               ))}
             </Select>
           </Row>
-          <Row justify='center' style={{ marginTop: '20px', marginBottom: '-10px' }}>
-            {selectedTeamAvaliation?.notaTotal && (
-              <Tooltip title={ScoreInformations}>
-                <div>
-                  <AimOutlined className='score-label' />
-                  <Text className='score-label'>Nota:</Text>
-                  <Text className='score'> {selectedTeamAvaliation?.notaTotal}</Text>
-                </div>
-              </Tooltip>
-            )}
-          </Row>
           {selectedTeamAvaliation ? (
             <TargetGraph data={selectedTeamAvaliation} />
           ) : (
@@ -193,10 +167,12 @@ export function Team() {
                   </Text>
                 </Tooltip>
               </div>
-              <div>
-                <Tooltip title='Media total do time'>
+              <div className='team-score'>
+                <Tooltip title={ScoreInformations}>
                   <AimOutlined className='team-description-icon' />
-                  <Text className='team-description-text'>{teamAverage ? teamAverage : '-'}</Text>
+                  <Text className='team-description-score'>
+                    {selectedTeamAvaliation?.notaTotal ? selectedTeamAvaliation?.notaTotal : '-'}
+                  </Text>
                 </Tooltip>
               </div>
             </Col>
